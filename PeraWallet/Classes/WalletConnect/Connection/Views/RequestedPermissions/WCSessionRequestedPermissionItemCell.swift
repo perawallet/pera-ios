@@ -18,9 +18,8 @@ import UIKit
 import MacaroonUIKit
 
 final class WCSessionRequestedPermissionItemCell:
-    CollectionCell<SecondaryListItemView>,
-    ViewModelBindable,
-    UIInteractable {
+    CollectionCell<WCSessionRequestedPermissionItemView>,
+    ViewModelBindable {
     override static var contextPaddings: LayoutPaddings {
         return theme.contextEdgeInsets
     }
@@ -32,9 +31,13 @@ final class WCSessionRequestedPermissionItemCell:
 
         contextView.customize(Self.theme.context)
     }
+    
+    func bindData(_ viewModel: WCSessionRequestedPermissionViewModel?) {
+        contextView.bindData(viewModel)
+    }
 
     public static func calculatePreferredSize(
-        _ viewModel: SecondaryListItemViewModel?,
+        _ viewModel: WCSessionRequestedPermissionViewModel?,
         for layoutSheet: LayoutSheet,
         fittingIn size: CGSize
     ) -> CGSize {
@@ -50,20 +53,22 @@ final class WCSessionRequestedPermissionItemCell:
 
         let maxContextSize = CGSize((contextWidth, .greatestFiniteMagnitude))
 
-        let titleSize = viewModel.title?.boundingSize(
+        let titleSize = viewModel.title.boundingSize(
             multiline: false,
             fittingSize: maxContextSize
-        ) ?? .zero
-        let accessoryTitleSize = viewModel.accessory?.title?.boundingSize(
-            multiline: false,
-            fittingSize: maxContextSize
-        ) ?? .zero
+        )
 
-        let contextSize = max(titleSize.height, accessoryTitleSize.height)
+        let rowsHeight = viewModel.rows.reduce(0) {
+            $0 + $1.boundingSize(multiline: false, fittingSize: maxContextSize).height + theme.context.spacingBetweenTitleAndRows
+        }
+
+        let contextSize = titleSize.height + rowsHeight
 
         let preferredHeight =
         contextPaddings.top +
+        Self.theme.context.contentEdgeInsets.top +
         contextSize +
+        Self.theme.context.contentEdgeInsets.bottom +
         contextPaddings.bottom
         return CGSize((width, min(preferredHeight.ceil(), size.height)))
     }

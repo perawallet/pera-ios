@@ -9247,7 +9247,6 @@
       }
     },
     "title-carousel-banner-algo" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9258,7 +9257,6 @@
       }
     },
     "title-carousel-banner-cards" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9269,7 +9267,6 @@
       }
     },
     "title-carousel-banner-discover" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9280,7 +9277,6 @@
       }
     },
     "title-carousel-banner-receive" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9291,7 +9287,6 @@
       }
     },
     "title-carousel-banner-swap" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -9302,7 +9297,6 @@
       }
     },
     "title-carousel-banner-transfer" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -10377,7 +10371,6 @@
       }
     },
     "title-recently-used-card" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13442,16 +13435,6 @@
         }
       }
     },
-    "wc-session-connection-network" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Network"
-          }
-        }
-      }
-    },
     "wc-session-connection-requested-permissions" : {
       "localizations" : {
         "en" : {
@@ -13472,16 +13455,6 @@
         }
       }
     },
-    "wc-session-connection-wc-methods" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "WalletConnect methods"
-          }
-        }
-      }
-    },
     "wc-session-expiration-date" : {
       "localizations" : {
         "en" : {
@@ -13498,6 +13471,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Extend session validity"
+          }
+        }
+      }
+    },
+    "wc-session-permission-accounts-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View your wallet address & balances"
+          }
+        }
+      }
+    },
+    "wc-session-permission-arbitrary-sign-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign arbitrary data"
+          }
+        }
+      }
+    },
+    "wc-session-permission-transaction-sign-text" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Request transaction sign"
           }
         }
       }

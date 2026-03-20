@@ -18,40 +18,25 @@ import Foundation
 import MacaroonUIKit
 import pera_wallet_core
 
-struct WCSessionMethodsRequestedPermissionViewModel: SecondaryListItemViewModel {
-    private(set) var title: TextProvider?
-    private(set) var accessory: SecondaryListItemValueViewModel?
-
-    init(_ events: Set<WCSessionSupportedMethod>) {
-        bindTitle()
-        bindAccessory(events)
-    }
-}
-
-extension WCSessionMethodsRequestedPermissionViewModel {
-    private mutating func bindTitle() {
+struct WCSessionRequestedPermissionViewModel: ViewModel {
+    let title: TextProvider
+    let rows: [TextProvider]
+    
+    init(methods: Set<WCSessionSupportedMethod>, events: Set<WCSessionSupportedEvent>) {
         title =
-            String(localized: "wc-session-connection-wc-methods")
-                .footnoteRegular(lineBreakMode: .byTruncatingTail)
-    }
+            String(localized: "wc-session-connection-requested-permissions")
+                .captionMedium(
+                    alignment: .natural,
+                    lineBreakMode: .byTruncatingTail
+                )
+        
+        let methodRows = methods.compactMap {
+            WalletConnectMethod(rawValue: $0.rawValue)?.title.bodyRegular(lineBreakMode: .byTruncatingTail)
+        }
+        let eventRows = events.compactMap {
+            WalletConnectEvent(rawValue: $0.rawValue)?.title.bodyRegular(lineBreakMode: .byTruncatingTail)
+        }
 
-    private mutating func bindAccessory(_ events: Set<WCSessionSupportedMethod>) {
-        accessory = WCSessionMethodsRequestedPermissionValueViewModel(events)
-    }
-}
-
-fileprivate struct WCSessionMethodsRequestedPermissionValueViewModel: SecondaryListItemValueViewModel {
-    private(set) var icon: ImageStyle?
-    private(set) var title: TextProvider?
-
-    init(_ events: Set<WCSessionSupportedMethod>) {
-        bindTitle(events)
-    }
-}
-
-extension WCSessionMethodsRequestedPermissionValueViewModel {
-    private mutating func bindTitle(_ methods: Set<WCSessionSupportedMethod>) {
-        let aTitle: String = methods.map(\.rawValue).sorted().joined(separator: ", ")
-        title = aTitle.footnoteRegular(lineBreakMode: .byTruncatingTail)
+        rows = methodRows + eventRows
     }
 }
