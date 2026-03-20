@@ -507,17 +507,19 @@ extension SendCollectibleViewController {
         
         transactionController.setTransactionDraft(transactionDraft)
         
-        if draft.isReceiverOptingInToCollectible {
-            transactionController.getTransactionParamsAndComposeTransactionData(for: .optInAndSend)
-        } else {
-            transactionController.getTransactionParamsAndComposeTransactionData(for: .asset)
-        }
-
-        if fromAccount.requiresLedgerConnection() {
-            openLedgerConnection()
-
-            transactionController.initializeLedgerTransactionAccount()
-            transactionController.startTimer()
+        Task {
+            if draft.isReceiverOptingInToCollectible {
+                await transactionController.getTransactionParamsAndComposeTransactionData(for: .optInAndSend)
+            } else {
+                await transactionController.getTransactionParamsAndComposeTransactionData(for: .asset)
+            }
+            
+            if fromAccount.requiresLedgerConnection() {
+                openLedgerConnection()
+                
+                transactionController.initializeLedgerTransactionAccount()
+                transactionController.startTimer()
+            }
         }
     }
 

@@ -338,13 +338,15 @@ extension SelectAssetScreen {
 
         transactionController.delegate = self
         transactionController.setTransactionDraft(assetTransactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
-
-        if account.requiresLedgerConnection() {
-            openLedgerConnection()
-
-            transactionController.initializeLedgerTransactionAccount()
-            transactionController.startTimer()
+        Task {
+            await transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
+            
+            if account.requiresLedgerConnection() {
+                openLedgerConnection()
+                
+                transactionController.initializeLedgerTransactionAccount()
+                transactionController.startTimer()
+            }
         }
     }
 }

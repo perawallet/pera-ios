@@ -14,8 +14,8 @@
 
 //   OptOutAssetCoordinator.swift
 
-import Foundation
 import pera_wallet_core
+import Combine
 
 final class OptOutAssetCoordinator {
     
@@ -23,16 +23,42 @@ final class OptOutAssetCoordinator {
     
     weak var presenter: BaseViewController?
     
-    private let jointAccountTransactionHandler: JointAccountTransactionHandler
+    private let jointAccountTransactionCoordinator: JointAccountTransactionCoordinator
     private var ledgerConnectionScreen: LedgerConnectionScreen?
     private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
     private var blockchainUpdatesMonitor: BlockchainUpdatesMonitor? { presenter?.sharedDataController.blockchainUpdatesMonitor }
     private var selectedAccount: Account?
+    private var cancellables: Set<AnyCancellable> = []
     
     // MARK: - Initialisers
     
     init(accountsService: AccountsServiceable) {
-        jointAccountTransactionHandler = JointAccountTransactionHandler(accountsService: accountsService)
+        jointAccountTransactionCoordinator = JointAccountTransactionCoordinator(accountsService: accountsService)
+        setupCallbacks()
+    }
+    
+    // MARK: - Setups
+    
+    private func setupCallbacks() {
+        
+        jointAccountTransactionCoordinator.$action
+            .compactMap { $0 }
+            .sink { [weak self] in self?.handle(action: $0) }
+            .store(in: &cancellables)
+    }
+    
+    // MARK: - Handlers
+    
+    private func handle(action: JointAccountTransactionCoordinator.Action) {
+        switch action {
+        case let .connectionWithLedgerNeeded(transactionController):
+            guard let selectedAccount else { return }
+            openLedgerConnection(transactionController: transactionController, account: selectedAccount)
+        case .overlayDismissed:
+            break
+        case let .failure(error, _):
+            handle(error: error)
+        }
     }
     
     // MARK: - Actions
@@ -42,6 +68,7 @@ final class OptOutAssetCoordinator {
         return isAssetOptOutable(asset: asset, account: account, transactionController: transactionController)
     }
     
+    @MainActor
     func optOut(asset: Asset, account: Account) {
         
         guard let presenter else { return }
@@ -62,7 +89,9 @@ final class OptOutAssetCoordinator {
             switch $0 {
             case .performApprove:
                 presenter.dismiss(animated: true) {
-                    self.continueToOptOut(asset: asset, account: account)
+                    Task {
+                        await self.continueToOptOut(asset: asset, account: account)
+                    }
                 }
             case .performClose:
                 presenter.dismiss(animated: true)
@@ -79,7 +108,8 @@ final class OptOutAssetCoordinator {
     
     // MARK: - Opt-Out
     
-    private func continueToOptOut(asset: Asset, account: Account) {
+    @MainActor
+    private func continueToOptOut(asset: Asset, account: Account) async {
         
         guard let transactionController = makeTransactionController(), let creator = asset.creator, isAssetOptOutable(asset: asset, account: account, transactionController: transactionController) else { return }
         
@@ -90,7 +120,7 @@ final class OptOutAssetCoordinator {
         let assetTransactionSendDraft = AssetTransactionSendDraft(from: account, toAccount: assetAccount, amount: 0.0, assetIndex: asset.id, assetCreator: creator.address)
         
         transactionController.setTransactionDraft(assetTransactionSendDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .optOut)
+        await transactionController.getTransactionParamsAndComposeTransactionData(for: .optOut)
         transactionController.delegate = self
         
         if account.requiresLedgerConnection() {
@@ -99,28 +129,14 @@ final class OptOutAssetCoordinator {
             transactionController.startTimer()
         }
         
-        if account.isJointAccount, let sharedDataController = presenter?.sharedDataController {
-            optOutForJointAccount(jointAccount: account, draft: assetTransactionSendDraft, sharedDataController: sharedDataController, transactionController: transactionController)
-        }
-    }
-    
-    private func optOutForJointAccount(jointAccount: Account, draft: AssetTransactionSendDraft, sharedDataController: SharedDataController, transactionController: TransactionController) {
-        Task {
-            do {
-                let result = try await jointAccountTransactionHandler.handleTransaction(jointAccount: jointAccount, type: .optOut(draft: draft), sharedDataController: sharedDataController, transactionController: transactionController)
-                openPendingTransactionOverlay(signRequestMetadata: result.signRequestMetadata)
-            } catch {
-                handle(error: error)
-            }
-        }
-    }
-    
-    private func openPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata) {
-        
-        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata)
-        
-        Task { @MainActor in
-            presenter?.present(viewController, animated: true)
+        if account.isJointAccount, let presenter {
+            jointAccountTransactionCoordinator.handleTransaction(
+                jointAccount: account,
+                transactionType: .optOut(draft: assetTransactionSendDraft),
+                sharedDataController: presenter.sharedDataController,
+                transactionController: transactionController,
+                presenter: presenter
+            )
         }
     }
     
