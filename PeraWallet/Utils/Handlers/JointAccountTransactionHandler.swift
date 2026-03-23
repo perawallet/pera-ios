@@ -72,7 +72,15 @@ final class JointAccountTransactionHandler {
                 case let .success(transactionParameters):
                     
                     let transactions = [transactionData(transactionType: type, parameters: transactionParameters)]
-                    let participants = jointAccount.jointAccountParticipants ?? []
+                    let subjectAccount: Account
+                    
+                    if jointAccount.authorization.isJointAccountRekeyed, let authAddress = jointAccount.authAddress, let authHolderAccount = accountsService.account(address: authAddress) {
+                        subjectAccount = authHolderAccount
+                    } else {
+                        subjectAccount = jointAccount
+                    }
+                    
+                    let participants = subjectAccount.jointAccountParticipants ?? []
                     let signersAccounts = participants.compactMap { self.accountsService.account(address: $0) }
                     
                     guard let proposerAddress = signersAccounts.first?.address else {
@@ -92,7 +100,7 @@ final class JointAccountTransactionHandler {
                         
                         do {
                             let result = try await self.accountsService.createJointAccountSignTransactionRequest(
-                                jointAccountAddress: jointAccount.address,
+                                jointAccountAddress: subjectAccount.address,
                                 proposerAddress: proposerAddress,
                                 rawTransactionLists: rawTransactionLists,
                                 responses: responses
