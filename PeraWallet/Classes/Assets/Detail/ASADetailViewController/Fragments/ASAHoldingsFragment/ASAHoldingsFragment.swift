@@ -18,7 +18,6 @@ import UIKit
 import pera_wallet_core
 
 final class ASAHoldingsFragment: TransactionsViewController {
-    private var initialContext: ASAHoldingsHeaderContext?
     
     init(
         account: Account,
@@ -58,21 +57,8 @@ final class ASAHoldingsFragment: TransactionsViewController {
             shouldDisplayQuickActions: dataController.configuration.shouldDisplayQuickActions,
             eventHandler: eventHandler
         )
-        self.initialContext = context
         
         transactionsDataSource = TransactionsDataSource(listView, noContentType: .topAligned, headerContext: context)
-    }
-    
-    override func viewDidLoad() {
-        if let context = initialContext {
-            transactionsDataSource = TransactionsDataSource(
-                listView,
-                noContentType: .topAligned,
-                headerContext: context
-            )
-            initialContext = nil
-        }
-        super.viewDidLoad()
     }
     
     private func makeViewModel(for asset: Asset) -> ASADetailQuickActionsViewModel {
