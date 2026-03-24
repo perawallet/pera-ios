@@ -145,15 +145,12 @@ extension NodeSettingsViewController {
 
     private func select(
         node: AlgorandNode,
-        onChange change: () -> Void,
+        onChange change: @escaping () -> Void,
         onComplete completion: @escaping (ALGAPI.Network) -> Void
     ) {
         loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
         
         let oldNetwork = selectedNetwork
-        
-        api?.setupNetworkBase(node.network)
-        change()
         
         pushNotificationController.sendDeviceDetails {
             [weak self] error in
@@ -162,7 +159,9 @@ extension NodeSettingsViewController {
             self.loadingController?.stopLoading()
             
             guard let error = error else {
+                self.api?.setupNetworkBase(node.network)
                 self.pushNotificationController.unregisterDevice(from: oldNetwork)
+                change()
                 
                 self.session?.authenticatedUser?.setDefaultNode(node)
                 self.sharedDataController.resetPolling()
@@ -186,15 +185,8 @@ extension NodeSettingsViewController {
     
     private func didSelectNetwork(
         _ network: ALGAPI.Network
-    ) {
-        nodeSettingsView.reloadData()
-        
-        NotificationCenter.default.post(
-            name: Self.didUpdateNetwork,
-            object: self
-        )
-        
-        switch selectedNetwork {
+    ) {        
+        switch network {
         case .mainnet:
             PeraCoreManager.shared.network = .mainNet
         case .testnet:

@@ -22,7 +22,7 @@ enum AccountNameFormatter {
         
         let primaryTitle: String
         
-        if localAccount.name.isEmpty {
+        if localAccount.name.isEmpty || localAccount.name == localAccount.address {
             primaryTitle = localAccount.address.shortAddressDisplay
         } else {
             primaryTitle = localAccount.name
