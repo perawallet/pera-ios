@@ -100,6 +100,8 @@ final class AddAccountCompatibilityController: SwiftUICompatibilityBaseViewContr
         analytics.track(.registerAccount(registrationType: .create))
         guard let account = createUniversalWalletAccount() else { return }
         
+        navigationItem.backButtonDisplayMode = .minimal
+        
         let screen = open(.addressNameSetup(flow: legacyFlow, mode: .addBip39Wallet, account: account), by: .push) as? AddressNameSetupViewController
         screen?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         screen?.hidesCloseBarButtonItem = true
