@@ -44,7 +44,7 @@ protocol WCSessionConnectionDataController: AnyObject {
 
     subscript(sectionForHeader: SectionIdentifier) -> WCSessionConnectionHeaderViewModel? { get }
 
-    subscript(requestedPermission: WCSessionRequestedPermission) -> SecondaryListItemViewModel? { get }
+    subscript(requestedPermission: WCSessionRequestedPermission) -> WCSessionRequestedPermissionViewModel? { get }
 
     subscript(accountAddress: PublicKey) -> AccountListItemViewModel? { get }
 }
@@ -79,9 +79,7 @@ extension WCSessionConnection {
 }
 
 enum WCSessionRequestedPermission {
-    case network
-    case methods
-    case events
+    case permissions
 }
 
 enum WCSessionConnectionDataControllerEvent {

@@ -245,7 +245,11 @@ extension ASADetailScreenAPIDataController {
 
         if !isAssetUpdated(newAsset) { return }
 
-        let algAsset = ALGAsset(asset: newAsset)
+        let algAsset = ALGAsset(
+            asset: newAsset,
+            isFavorited: asset.isFavorited,
+            isPriceAlertEnabled: asset.isPriceAlertEnabled
+        )
         asset = StandardAsset(asset: algAsset, decoration: assetDetail)
         eventHandler?(.didLoadData)
     }

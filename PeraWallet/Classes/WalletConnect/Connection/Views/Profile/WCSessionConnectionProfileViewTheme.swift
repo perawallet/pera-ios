@@ -25,6 +25,11 @@ struct WCSessionConnectionProfileViewTheme:
     let icon: URLImageViewStyleSheet & URLImageViewLayoutSheet
     let iconSize: LayoutSize
     let spacingBetweenIconAndTitle: LayoutMetric
+    let networkView: ViewStyle
+    let networkViewHeight: LayoutMetric
+    let networkViewCornerRadius: LayoutMetric
+    let networkViewInsets: LayoutPaddings
+    let networkTitle: TextStyle
     let title: TextStyle
     let spacingBetweenTitleAndLink: LayoutMetric
 
@@ -32,6 +37,17 @@ struct WCSessionConnectionProfileViewTheme:
         self.icon = URLImageViewAssetTheme(family)
         self.iconSize = (72, 72)
         self.spacingBetweenIconAndTitle = 16
+        self.networkView = [
+            .backgroundColor(Colors.Text.main),
+        ]
+        self.networkViewHeight = 24
+        self.networkViewCornerRadius = 12
+        self.networkViewInsets = (4, 12, 4, 12)
+        self.networkTitle = [
+            .textOverflow(FittingText()),
+            .textColor(Colors.Alert.content),
+            .font(Typography.captionBold()),
+        ]
         self.title = [
             .textOverflow(FittingText()),
             .textColor(Colors.Text.main)
