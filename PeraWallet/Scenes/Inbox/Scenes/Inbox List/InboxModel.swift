@@ -57,6 +57,7 @@ final class InboxViewModel {
     enum Action {
         case moveToImportJointAccountScene(jointAccountAddress: String, subtitle: String, threshold: Int, accountModels: [JointAccountInviteConfirmationOverlayViewModel.AccountModel])
         case moveToRequestSendScene(request: SignRequestObject)
+        case presentPendingTransactionOverlay(request: SignRequestObject)
         case moveToAssetDetailsScene(address: String, requestCount: Int)
     }
     
@@ -128,6 +129,7 @@ final class InboxModel: InboxModelable {
     
     // MARK: - Actions - InboxModelable
     
+    @MainActor
     func requestAction(identifier: InboxRowIdentifier) {
         
         switch identifier {
@@ -232,12 +234,19 @@ final class InboxModel: InboxModelable {
         viewModel.action = .moveToImportJointAccountScene(jointAccountAddress: importRequest.address, subtitle: importRequest.address.shortAddressDisplay, threshold: importRequest.threshold, accountModels: accountModels)
     }
     
+    @MainActor
     private func handleSendRequestAction(identifier: String) {
+        
         guard let signRequest = inboxService.jointAccountSignRequests.value.first(where: { $0.id == identifier }) else { return }
-        viewModel.action = .moveToRequestSendScene(request: signRequest)
+        
+        if signRequest.didRequestFailed || !isSignatureRequired(request: signRequest) {
+            viewModel.action = .presentPendingTransactionOverlay(request: signRequest)
+        } else {
+            viewModel.action = .moveToRequestSendScene(request: signRequest)
+        }
     }
     
-    // MARK: - Handlers
+    // MARK: - Helpers
     
     private func state(signRequestStatus: SignRequestObject.Status) -> InboxViewModel.SignRequestState {
         switch signRequestStatus {
@@ -246,5 +255,16 @@ final class InboxModel: InboxModelable {
         case .failed, .declined, .expired:
                 .failed
         }
+    }
+    
+    @MainActor
+    private func isSignatureRequired(request: SignRequestObject) -> Bool {
+        
+        let participantAddresses = request.jointAccount.participantAddresses
+        let responseAddresses = request.transactionLists.flatMap { $0.responses.map { $0.address }}
+        
+        return participantAddresses
+            .filter { !responseAddresses.contains($0) }
+            .contains { accountsService.localAccount(address: $0) != nil }
     }
 }
