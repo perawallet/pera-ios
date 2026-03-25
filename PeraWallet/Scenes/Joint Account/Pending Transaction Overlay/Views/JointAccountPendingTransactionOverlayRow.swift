@@ -21,7 +21,8 @@ struct JointAccountPendingTransactionOverlayRow: View {
     enum State {
         case approved
         case rejected
-        case unknown
+        case waiting
+        case none
     }
     
     // MARK: - Properties
@@ -71,9 +72,11 @@ struct JointAccountPendingTransactionOverlayRow: View {
             Image(.Icons.close)
                 .resizable()
                 .foregroundStyle(Color.Helpers.negative)
-        case .unknown:
+        case .waiting:
             ProgressView()
                 .tint(.Text.gray)
+        case .none:
+            EmptyView()
         }
     }
 }

@@ -135,7 +135,9 @@ private extension JointAccountPendingTransactionOverlayModel.SignatureStatus {
         case .declined:
             return .rejected
         case .pending:
-            return .unknown
+            return .waiting
+        case .expired:
+            return .none
         }
     }
 }

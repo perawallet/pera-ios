@@ -34,6 +34,7 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
         case signed
         case declined
         case pending
+        case expired
     }
     
     enum TransactionStatus {
@@ -196,11 +197,13 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
     private func handle(searchResult: JointAccountsSignRequestSearchResponse) {
         
         guard let result = searchResult.results.first else { return }
+        var isTransactionInProgress = false
         
         if let status = result.status {
             switch status {
             case .pending, .ready, .submitting:
                 viewModel.transactionState = .inProgress
+                isTransactionInProgress = true
             case .confirmed:
                 viewModel.transactionState = .success
             case .failed:
@@ -222,24 +225,24 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
         
         let accounts = viewModel.accounts.map {
             let transactionResponse = updates[$0.address]
-            let signatureStatus = viewModelSignatureStatus(signRequestStatus: transactionResponse)
+            let signatureStatus = viewModelSignatureStatus(signRequestStatus: transactionResponse, isTransactionInProgress: isTransactionInProgress)
             return AccountModel(id: $0.id, address: $0.address, avatar: $0.avatar, title: $0.title, subtitle: $0.subtitle, signatureStatus: signatureStatus)
         }
         
         update(accounts: accounts)
     }
     
-    private func viewModelSignatureStatus(signRequestStatus: SignRequestStatus?) -> SignatureStatus {
+    private func viewModelSignatureStatus(signRequestStatus: SignRequestStatus?, isTransactionInProgress: Bool) -> SignatureStatus {
         switch signRequestStatus {
         case .signed: .signed
         case .declined: .declined
-        case .none: .pending
+        case .none: isTransactionInProgress ? .pending : .expired
         }
     }
     
     private func accountModel(address: String, signRequestStatus: SignRequestStatus?, localAccounts: Set<PeraAccount>) -> AccountModel {
         
-        let signatureStatus = viewModelSignatureStatus(signRequestStatus: signRequestStatus)
+        let signatureStatus = viewModelSignatureStatus(signRequestStatus: signRequestStatus, isTransactionInProgress: true)
         let title: String
         let subtitle: String?
         let avatar: ImageType
