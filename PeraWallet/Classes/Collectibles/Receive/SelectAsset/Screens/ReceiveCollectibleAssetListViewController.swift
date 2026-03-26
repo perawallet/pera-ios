@@ -18,6 +18,7 @@ import UIKit
 import MacaroonUIKit
 import MacaroonUtils
 import pera_wallet_core
+import Combine
 
 final class ReceiveCollectibleAssetListViewController:
     BaseViewController,
@@ -73,7 +74,8 @@ final class ReceiveCollectibleAssetListViewController:
     private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
 
     private let dataController: ReceiveCollectibleAssetListDataController
-    private let jointAccountTransactionHandler: JointAccountTransactionHandler
+    private let jointAccountTransactionCoordinator: JointAccountTransactionCoordinator
+    private var cancellables: Set<AnyCancellable> = []
     
     private let theme: ReceiveCollectibleAssetListViewControllerTheme
 
@@ -87,7 +89,7 @@ final class ReceiveCollectibleAssetListViewController:
         self.dataController = dataController
         self.theme = theme
         self.copyToClipboardController = copyToClipboardController
-        jointAccountTransactionHandler = JointAccountTransactionHandler(accountsService: accountsService)
+        jointAccountTransactionCoordinator = JointAccountTransactionCoordinator(accountsService: accountsService)
 
         super.init(configuration: configuration)
     }
@@ -102,19 +104,7 @@ final class ReceiveCollectibleAssetListViewController:
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        dataController.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-
-            switch event {
-            case .didUpdateAccount:
-                self.configureAccessoryOfVisibleCells()
-            case .didUpdateAssets(let snapshot):
-                self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
-            }
-        }
-
+        setupCallbacks()
         dataController.load()
     }
 
@@ -138,6 +128,37 @@ final class ReceiveCollectibleAssetListViewController:
     override func prepareLayout() {
         super.prepareLayout()
         build()
+    }
+    
+    private func setupCallbacks() {
+        
+        dataController.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didUpdateAccount:
+                self.configureAccessoryOfVisibleCells()
+            case .didUpdateAssets(let snapshot):
+                self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+            }
+        }
+        
+        jointAccountTransactionCoordinator.$action
+            .compactMap { $0 }
+            .sink { [weak self] in self?.handle(action: $0) }
+            .store(in: &cancellables)
+    }
+    
+    private func handle(action: JointAccountTransactionCoordinator.Action) {
+        switch action {
+        case let .connectionWithLedgerNeeded(transactionController):
+            openLedgerConnection(transactionController)
+        case .overlayDismissed:
+            break
+        case let .failure(error, transactionController):
+            handle(error: error, transactionController: transactionController)
+        }
     }
 
     override func setListeners() {
@@ -481,43 +502,33 @@ extension ReceiveCollectibleAssetListViewController {
                 assetIndex: asset.id
             )
             transactionController.setTransactionDraft(assetTransactionDraft)
-            transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
-
-            if account.requiresLedgerConnection() {
-                self.openLedgerConnection(transactionController)
-
-                transactionController.initializeLedgerTransactionAccount()
-                transactionController.startTimer()
-            }
             
-            if account.isJointAccount {
-                performOptInAssetTransactionForJointAccount(account: account, draft: assetTransactionDraft, transactionController: transactionController)
-            }
-        }
-    }
-    
-    private func performOptInAssetTransactionForJointAccount(account: Account, draft: AssetTransactionSendDraft, transactionController: TransactionController) {
-        Task {
-            do {
-                let result = try await jointAccountTransactionHandler.handleTransaction(jointAccount: account, type: .optIn(draft: draft), sharedDataController: sharedDataController, transactionController: transactionController)
-                openPendingTransactionOverlay(signRequestMetadata: result.signRequestMetadata)
-            } catch {
-                handle(error: error, transactionController: transactionController)
+            Task { [weak self] in
+                guard let self else { return }
+                await transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
+                
+                if account.requiresLedgerConnection() {
+                    self.openLedgerConnection(transactionController)
+                    
+                    transactionController.initializeLedgerTransactionAccount()
+                    transactionController.startTimer()
+                }
+                
+                if account.isJointAccount {
+                    self.jointAccountTransactionCoordinator.handleTransaction(
+                        jointAccount: account,
+                        transactionType: .optIn(draft: assetTransactionDraft),
+                        sharedDataController: self.sharedDataController,
+                        transactionController: transactionController,
+                        presenter: self
+                    )
+                }
             }
         }
     }
 
     private func cancelOptInAsset() {
         dismiss(animated: true)
-    }
-    
-    private func openPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata) {
-        
-        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata)
-        
-        Task { @MainActor in
-            present(viewController, animated: true)
-        }
     }
     
     private func handle(error: Error, transactionController: TransactionController) {

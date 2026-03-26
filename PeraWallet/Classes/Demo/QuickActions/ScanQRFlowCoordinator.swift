@@ -434,13 +434,17 @@ extension ScanQRFlowCoordinator {
 
             self.transactionController.delegate = self
             self.transactionController.setTransactionDraft(assetTransactionDraft)
-            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
-
-            if account.requiresLedgerConnection() {
-                self.openLedgerConnection()
-
-                self.transactionController.initializeLedgerTransactionAccount()
-                self.transactionController.startTimer()
+            
+            Task { [weak self] in
+                guard let self else { return }
+                await self.transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
+                
+                if account.requiresLedgerConnection() {
+                    self.openLedgerConnection()
+                    
+                    self.transactionController.initializeLedgerTransactionAccount()
+                    self.transactionController.startTimer()
+                }
             }
         }
     }
