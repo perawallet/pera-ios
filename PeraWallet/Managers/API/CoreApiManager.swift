@@ -218,3 +218,25 @@ private extension String {
         return String(dropLast())
     }
 }
+
+extension CoreApiManager.ApiError: LocalizedError {
+    
+    var errorDescription: String? {
+        switch self {
+        case .invalidBaseUrl:
+            return String(localized: "error-api-invalid-base-url")
+        case .cantGenerateUrlFromComponents:
+            return String(localized: "error-api-cant-generate-url")
+        case let .unableToEncodeBody(error):
+            return String(localized: "error-api-unable-to-encode-body-\(error.localizedDescription)")
+        case let .invalidHTTPStatusCode(code, description):
+            return String(localized: "error-api-invalid-status-code-\(code)-\(description ?? "")")
+        case let .responseError(error):
+            return String(localized: "error-api-response-error-\(error.localizedDescription)")
+        case .dataConversionError:
+            return String(localized: "error-api-data-conversion-error")
+        case .cancelled:
+            return String(localized: "error-api-cancelled")
+        }
+    }
+}

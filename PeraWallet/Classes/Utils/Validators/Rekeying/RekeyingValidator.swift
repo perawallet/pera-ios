@@ -38,8 +38,8 @@ extension RekeyingValidator {
         to authAcc: Account
     ) -> RekeyingValidation {
         
-        if srcAcc.isJointAccount, authAcc.isJointAccount {
-            return .success
+        if authAcc.isJointAccount, !authAcc.authorization.isRekeyed {
+            return srcAcc.isJointAccount ? .success : .failure(.invalid)
         }
         
         let isSelfRekeying = self.isSelfRekeying(
