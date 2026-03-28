@@ -113,11 +113,9 @@ final class IncomingASAAccountsViewController: BaseViewController {
         case let .moveToImportJointAccountScene(jointAccountAddress, subtitle, threshold, accountModels):
             presentImportJointAccountOverlay(jointAccountAddress: jointAccountAddress, subtitle: subtitle, threshold: threshold, accountModels: accountModels)
         case let .moveToRequestSendScene(request):
-            if request.didRequestFailed {
-                presentSigningStatusOverlay(request: request)
-            } else {
-                presentSignJointAccountTransactionScene(request: request)
-            }
+            presentSignJointAccountTransactionScene(request: request)
+        case let .presentPendingTransactionOverlay(request):
+            presentSigningStatusOverlay(request: request)
         case let .moveToAssetDetailsScene(address, requestCount):
             moveToAssetDetailsScene(address: address, requestCount: requestCount)
         }
@@ -164,7 +162,7 @@ final class IncomingASAAccountsViewController: BaseViewController {
     }
     
     private func presentSigningStatusOverlay(request: SignRequestObject) {
-        guard let responses = request.transactionLists.first?.responses else { return }
+        guard let responses = request.transactionLists.first?.responses, let proposerAddress = request.proposerAddress else { return }
         do {
             let signaturesInfo = try buildSignaturesInfo(
                 from: request.jointAccount.participantAddresses,
@@ -172,7 +170,7 @@ final class IncomingASAAccountsViewController: BaseViewController {
             )
             let signRequestMetadata = SignRequestMetadata(
                 signRequestID: request.id,
-                proposerAddress: request.jointAccount.address,
+                proposerAddress: proposerAddress,
                 signaturesInfo: signaturesInfo,
                 threshold: request.jointAccount.threshold,
                 deadline: request.expectedExpireDatetime

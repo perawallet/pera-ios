@@ -61,3 +61,7 @@ struct SignRequestTransactionResponseObject: Decodable, Equatable {
     let signatures: [[String]]?
     let deviceId: String?
 }
+
+extension SignRequestObject {
+    var proposerAddress: String? { jointAccount.participantAddresses.first }
+}
