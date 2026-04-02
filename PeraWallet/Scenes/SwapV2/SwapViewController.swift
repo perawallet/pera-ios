@@ -756,7 +756,7 @@ final class SwapViewController: BaseViewController {
     private func calculateSwapAmount(for asset: Asset, balance: Decimal, peraSwapFee: PeraSwapV2Fee?, percentage: Decimal) -> Decimal {
         guard let peraSwapFee else { return 0 }
         
-        let peraFee = peraSwapFee.fee?.assetAmount(fromFraction: asset.decimals) ?? 0
+        let peraFee = peraSwapFee.peraFee?.assetAmount(fromFraction: asset.decimals) ?? 0
         let minBalance = asset.isAlgo ? selectedAccount?.calculateMinBalance().assetAmount(fromFraction: asset.decimals) ?? 0 : 0
         var paddingFee: Decimal {
             guard asset.isAlgo else {
