@@ -61,7 +61,7 @@ public final class SwapQuote: ALGEntityModel {
         self.priceImpact = apiModel.priceImpact.unwrap { Decimal(string: $0) }
         self.peraFee = UInt64(apiModel.peraFee.unwrap(or: "0"))
         self.peraFeeAmountInFeeAsset = UInt64(apiModel.peraFeeAmountInFeeAsset.unwrap(or: "0"))
-        self.peraFeeAsset = apiModel.assetIn.unwrap(AssetDecoration.init)
+        self.peraFeeAsset = apiModel.peraFeeAsset.unwrap(AssetDecoration.init)
         self.exchangeFee = UInt64(apiModel.exchangeFee.unwrap(or: "0"))
     }
 
@@ -85,7 +85,7 @@ public final class SwapQuote: ALGEntityModel {
         apiModel.priceImpact = priceImpact.unwrap { String(describing: $0) }
         apiModel.peraFee = peraFee.unwrap { String(describing: $0) }
         apiModel.peraFeeAmountInFeeAsset = peraFeeAmountInFeeAsset.unwrap { String(describing: $0) }
-        apiModel.peraFeeAsset = assetIn?.encode()
+        apiModel.peraFeeAsset = peraFeeAsset?.encode()
         apiModel.exchangeFee = exchangeFee.unwrap { String(describing: $0) }
         return apiModel
     }
