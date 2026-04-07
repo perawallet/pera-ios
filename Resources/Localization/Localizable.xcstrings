@@ -598,7 +598,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Joint Account"
+            "value" : "Shared Account"
           }
         }
       }
@@ -638,7 +638,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Add Joint Account"
+            "value" : "Add Shared Account"
           }
         }
       }
@@ -2914,7 +2914,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Joint Account"
+            "value" : "Shared Account"
           }
         }
       }
@@ -3214,7 +3214,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Choose the accounts that will jointly manage and sign transactions for this account."
+            "value" : "Choose the accounts that will manage and sign transactions for this account."
           }
         }
       }
@@ -3244,7 +3244,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Create Joint Account"
+            "value" : "Create Shared Account"
           }
         }
       }
@@ -3384,7 +3384,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Joint Account #%lld"
+            "value" : "Shared Account #%lld"
           }
         }
       }
@@ -3848,7 +3848,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Joint account request"
+            "value" : "Shared account request"
           }
         }
       }
@@ -3914,7 +3914,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "**You’ve been invited** to join a joint account %@"
+            "value" : "**You’ve been invited** to join a shared account %@"
           }
         }
       }
@@ -3998,7 +3998,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This is your unified inbox where you can manage all incoming requests. Here you can accept or reject asset transfer requests for assets or NFTs which you are not opted into already, respond to joint account invitations, and sign pending transactions for your joint accounts."
+            "value" : "This is your unified inbox where you can manage all incoming requests. Here you can accept or reject asset transfer requests for assets or NFTs which you are not opted into already, respond to shared account invitations, and sign pending transactions for your shared accounts."
           }
         }
       }
@@ -4256,7 +4256,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Once you create a joint account, you cannot change the participants."
+            "value" : "Once you create a shared account, you cannot change the participants."
           }
         }
       }
@@ -4266,7 +4266,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Once you create a joint account, rekeying any of the participating accounts may result in losing access."
+            "value" : "Once you create a shared account, rekeying any of the participating accounts may result in losing access."
           }
         }
       }
@@ -4276,7 +4276,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Before You Create a Joint Account"
+            "value" : "Before You Create a Shared Account"
           }
         }
       }
@@ -4286,7 +4286,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Joint account invitation accepted"
+            "value" : "Shared account invitation accepted"
           }
         }
       }
@@ -4380,7 +4380,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Joint Account"
+            "value" : "Shared Account"
           }
         }
       }
@@ -4390,7 +4390,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Joint account invitation ignored"
+            "value" : "Shared account invitation ignored"
           }
         }
       }
@@ -4548,7 +4548,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Joint Account"
+            "value" : "Shared Account"
           }
         }
       }
@@ -6792,7 +6792,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rekey your joint account to a different joint account. Learn more"
+            "value" : "Rekey your shared account to a different shared account. Learn more"
           }
         }
       }
@@ -7662,7 +7662,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unable to create Joint Account transaction"
+            "value" : "Unable to create Shared Account transaction"
           }
         }
       }
@@ -7684,7 +7684,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unable to find Joint Account transaction"
+            "value" : "Unable to find Shared Account transaction"
           }
         }
       }
@@ -7694,7 +7694,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unable to sign Joint Account transaction"
+            "value" : "Unable to sign Shared Account transaction"
           }
         }
       }
@@ -10498,7 +10498,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rekey to Joint Account"
+            "value" : "Rekey to Shared Account"
           }
         }
       }

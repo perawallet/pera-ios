@@ -48,7 +48,7 @@ public enum FeatureFlag: String, CaseIterable {
         case .liquidConnectEnabled: "Enable Liquid Connect"
         case .ledgerDeflexFilterEnabled: "Enable Ledger Deflex Filter"
         case .webviewV2Enabled: .empty
-        case .jointAccountEnabled: "Enable Joint Account"
+        case .jointAccountEnabled: "Enable Shared Account"
         case .xoSwapEnabled: "Enable XO Swap"
         }
     }
