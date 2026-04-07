@@ -88,7 +88,7 @@ final class SwapPricingService {
     
     func peraFee(for quote: SwapQuote?) -> String {
         guard
-            let peraFee = quote?.peraFee,
+            let peraFee = quote?.peraFeeAmountInFeeAsset ?? quote?.peraFee,
             let decimals = quote?.peraFeeAsset?.decimals ?? quote?.assetOut?.decimals
         else {
             return "-"
