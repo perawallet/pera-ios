@@ -299,7 +299,7 @@ extension AccountListItemViewModel {
 extension AccountListItemViewModel {
     
     mutating func bindIconBottomRightBadge(_ account: Account) {
-        if account.authorization == .jointAccount, let participantsCount = account.jointAccountParticipants?.count {
+        if account.authorization.isJointAccount, let participantsCount = account.jointAccountParticipants?.count {
             badge = .text("\(participantsCount)")
         } else if !account.isBackedUp {
             badge = .image(.circleBadgeWarning)

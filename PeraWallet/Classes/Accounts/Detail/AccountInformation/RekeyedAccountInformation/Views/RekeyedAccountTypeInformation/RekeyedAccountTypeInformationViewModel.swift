@@ -56,6 +56,8 @@ extension RekeyedAccountTypeInformationViewModel {
             icon = makeUnknownAccountToLedgerAccountRekeyedAccountTypeIcon()
         } else if authorization.isUnknownToStandardRekeyed {
             icon = makeUnknownAccountToStandardAccountRekeyedAccountTypeIcon()
+        } else if authorization.isJointAccountRekeyed {
+            icon = makeJointAccountRekeyedAccountTypeIcon()
         } else {
             icon = nil
         }
@@ -80,6 +82,8 @@ extension RekeyedAccountTypeInformationViewModel {
             title = makeUnknownAccountToLedgerAccountRekeyedAccountTypeTitle()
         } else if authorization.isUnknownToStandardRekeyed {
             title = makeUnknownAccountToStandardAccountRekeyedAccountTypeTitle()
+        } else if authorization.isJointAccountRekeyed {
+            title = makeJointAccountRekeyedAccountTypeTitle()
         } else {
             title = nil
         }
@@ -120,6 +124,8 @@ extension RekeyedAccountTypeInformationViewModel {
             description = makeUnknownAccountToLedgerAccountRekeyedAccountTypeDescription()
         } else if authorization.isUnknownToStandardRekeyed {
             description = makeUnknownAccountToStandardAccountRekeyedAccountTypeDescription()
+        } else if authorization.isJointAccountRekeyed {
+            description = makeJointAccountToJointAccountRekeyedAccountTypeDescription()
         } else {
             description = nil
         }
@@ -235,6 +241,14 @@ extension RekeyedAccountTypeInformationViewModel {
             text: String(localized: "standard-to-ledger-rekeyed-account-type-description"),
             highlightedText: String(localized: "title-learn-more")
         )
+    }
+}
+
+extension RekeyedAccountTypeInformationViewModel{
+    private func makeJointAccountRekeyedAccountTypeIcon() -> Image { "icon-joint-to-joint-account-rekeyed-account".uiImage }
+    private func makeJointAccountRekeyedAccountTypeTitle() -> TextProvider { makeTypeTitle(text: String(localized: "title-joint-account-to-joint-account-rekeyed")) }
+    private func makeJointAccountToJointAccountRekeyedAccountTypeDescription() -> TypeDescriptionTextProvider {
+        makeTypeDescription(text: String(localized: "joint-account-to-joint-account-rekeyed-account-type-description"), highlightedText: String(localized: "title-learn-more"))
     }
 }
 

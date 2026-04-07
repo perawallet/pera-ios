@@ -1241,6 +1241,9 @@ final class Router:
                 draft: draft,
                 api: configuration.api
             )
+        case let .rekeyToJointAccountInstructions(sourceAccount):
+            let draft = RekeyToJointAccountInstructionsDraft(sourceAccount: sourceAccount)
+            viewController = RekeyInstructionsScreen(draft: draft, api: configuration.api)
         case let .rekeyConfirmation(sourceAccount, authAccount, newAuthAccount):
             viewController = RekeyConfirmationScreen(
                 sourceAccount: sourceAccount,
@@ -2296,6 +2299,9 @@ final class Router:
                 copyToClipboardController: copyToClipboardController,
                 configuration: configuration
             )
+        case let .rekeyedJointAccountInformation(sourceAccount, authAccount):
+            let copyToClipboardController = ALGCopyToClipboardController(toastPresentationController: appConfiguration.toastPresentationController)
+            viewController = RekeyedJointAccountInformationScreen(sourceAccount: sourceAccount, authAccount: authAccount, copyToClipboardController: copyToClipboardController)
         case .anyToNoAuthRekeyedAccountInformation(let account):
             let copyToClipboardController = ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController

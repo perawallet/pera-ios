@@ -19,6 +19,20 @@ import MacaroonUIKit
 import UIKit
 
 final class ALGActiveLabel: ActiveLabel {
+    
+    // MARK: - Initialisers
+    
+    init() {
+        super.init(frame: .zero)
+        enabledTypes = [.url]
+    }
+    
+    @MainActor required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Autolayout
+    
     override func layoutSubviews() {
         super.layoutSubviews()
 

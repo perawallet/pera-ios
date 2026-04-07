@@ -121,7 +121,7 @@ extension RekeyToStandardAccountInstructionsDraft {
     }
     
     private static func makeRekeyJointAccountToJointAccountBody() -> RekeyInstructionsBodyTextProvider {
-        let text = String(localized: "rekey-joint-account-to-joint-account-instructions-body")
+        let text = String(localized: "rekey-shared-to-shared-account-instructions-body")
         let highlightedText = String(localized: "title-learn-more")
         return Self.makeBody(text: text, highlightedText: highlightedText)
     }
