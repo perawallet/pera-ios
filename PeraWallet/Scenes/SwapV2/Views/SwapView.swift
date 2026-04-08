@@ -27,7 +27,7 @@ enum SwapViewAction {
     case getQuote(for: Double)
     case confirmSwap
     case showSwapConfirmationBanner(success: String?, error: String?)
-    case calculatePeraFee(forAmount: Double, withPercentage: Double)
+    case calculateSwapAmount(forPercentage: String?)
     case selectSwap(assetIn: SwapAsset, assetOut: SwapAsset)
     case openExplorer(transactionGroupId: String, pairing: String)
     case trackAnalytics(event: SwapAnalyticsEvent)
@@ -262,9 +262,8 @@ struct SwapView: View {
     
     private func handlePercentageChange(_ newPercentage: PercentageValue) {
         viewModel.isLoadingPayAmount = true
-        let amount = NSDecimalNumber(decimal: viewModel.selectedAssetIn.asset.decimalAmount).doubleValue
         viewModel.isBalanceNotSufficient = false
-        onAction?(.calculatePeraFee(forAmount: amount, withPercentage: newPercentage.value))
+        onAction?(.calculateSwapAmount(forPercentage: String(newPercentage.value)))
     }
     
     private func handleSlippageChange(_ newSlippage: SlippageValue?) {
