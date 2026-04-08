@@ -28,6 +28,7 @@ struct JointAccountPendingTransactionOverlay: View {
     // MARK: - Properties - UIKit Compatibility
     
     var onDismiss: (() -> Void)?
+    var onCancelTransactionAction: (() -> Void)?
     
     // MARK: - Initialisers
     
@@ -117,6 +118,7 @@ struct JointAccountPendingTransactionOverlay: View {
     
     private func onCancelAction() {
         model.cancelTransaction()
+        onCancelTransactionAction?()
     }
     
     private func onCloseAction() {
