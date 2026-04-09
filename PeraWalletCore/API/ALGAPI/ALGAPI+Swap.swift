@@ -62,6 +62,20 @@ extension ALGAPI {
             .completionHandler(handler)
             .execute()
     }
+    
+    @discardableResult
+    public func calculateSwapAmount(
+        _ draft: PeraSwapAmountDraft,
+        onCompleted handler: @escaping (Response.Result<PeraSwapAmount, HIPAPIError>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobileV1(network))
+            .path(.calculateSwapAmount)
+            .method(.post)
+            .body(draft)
+            .completionHandler(handler)
+            .execute()
+    }
 
     @discardableResult
     public func prepareSwapTransactions(

@@ -7315,6 +7315,8 @@
 		D4563FB92EB0D85300164EF2 /* ASAHoldingsHeaderContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4563FB82EB0D85200164EF2 /* ASAHoldingsHeaderContentView.swift */; };
 		D4563FBA2EB0D85300164EF2 /* ASAHoldingsHeaderContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4563FB82EB0D85200164EF2 /* ASAHoldingsHeaderContentView.swift */; };
 		D4563FBB2EB0D85300164EF2 /* ASAHoldingsHeaderContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4563FB82EB0D85200164EF2 /* ASAHoldingsHeaderContentView.swift */; };
+		D4623E182F8685BF00EE292E /* PeraSwapAmountDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4623E172F8685B500EE292E /* PeraSwapAmountDraft.swift */; };
+		D4625CEA2F868A0900EE292E /* PeraSwapAmount.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4625CE92F868A0400EE292E /* PeraSwapAmount.swift */; };
 		D46303352EA8FAD700AC2FDB /* ASAHoldingsFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46303342EA8FACA00AC2FDB /* ASAHoldingsFragment.swift */; };
 		D46303362EA8FAD700AC2FDB /* ASAHoldingsFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46303342EA8FACA00AC2FDB /* ASAHoldingsFragment.swift */; };
 		D46303372EA8FAD700AC2FDB /* ASAHoldingsFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46303342EA8FACA00AC2FDB /* ASAHoldingsFragment.swift */; };
@@ -9627,6 +9629,8 @@
 		D45FD9B62A92223E00F3ECB0 /* WCSessionConnectionProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionConnectionProfileViewModel.swift; sourceTree = "<group>"; };
 		D45FD9BA2A92224B00F3ECB0 /* WCSessionConnectionProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionConnectionProfileCell.swift; sourceTree = "<group>"; };
 		D4609BBE293F6C6E00F4D0D0 /* OptOutCollectibleAssetListItemCellTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptOutCollectibleAssetListItemCellTheme.swift; sourceTree = "<group>"; };
+		D4623E172F8685B500EE292E /* PeraSwapAmountDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeraSwapAmountDraft.swift; sourceTree = "<group>"; };
+		D4625CE92F868A0400EE292E /* PeraSwapAmount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeraSwapAmount.swift; sourceTree = "<group>"; };
 		D462DED32857435E0092DF5A /* SortCollectibleListLocalDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortCollectibleListLocalDataController.swift; sourceTree = "<group>"; };
 		D462DED7285744980092DF5A /* CollectibleDescendingTitleAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleDescendingTitleAlgorithm.swift; sourceTree = "<group>"; };
 		D462DEDB285744DB0092DF5A /* CollectibleAscendingTitleAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleAscendingTitleAlgorithm.swift; sourceTree = "<group>"; };
@@ -13005,6 +13009,7 @@
 		2B69AB1228BF9B6200A8D65D /* Swap */ = {
 			isa = PBXGroup;
 			children = (
+				D4625CE92F868A0400EE292E /* PeraSwapAmount.swift */,
 				D4A37DB22E8FE3E100969A20 /* PeraSwapV2Fee.swift */,
 				D4772F972E8A86E300B4F262 /* SwapHistory.swift */,
 				D4772F952E8A86CD00B4F262 /* SwapHistoryList.swift */,
@@ -13029,6 +13034,7 @@
 		2B69AB2F28BFCF0B00A8D65D /* Swap */ = {
 			isa = PBXGroup;
 			children = (
+				D4623E172F8685B500EE292E /* PeraSwapAmountDraft.swift */,
 				2B69AB3128BFCF4E00A8D65D /* PeraSwapFeeDraft.swift */,
 				2B69AB3528BFCF6100A8D65D /* SwapQuoteDraft.swift */,
 				D478D93D2B306362008C4A21 /* UpdateSwapQuoteDraft.swift */,
@@ -32263,6 +32269,7 @@
 				591677F62E460AF9002184C2 /* Media.swift in Sources */,
 				591677F72E460AF9002184C2 /* AssetAlertDraft.swift in Sources */,
 				591677F82E460AF9002184C2 /* AssetDecoration.swift in Sources */,
+				D4625CEA2F868A0900EE292E /* PeraSwapAmount.swift in Sources */,
 				D4772F982E8A86EB00B4F262 /* SwapHistory.swift in Sources */,
 				591677F92E460AF9002184C2 /* AccountAssetInformation.swift in Sources */,
 				591677FA2E460AF9002184C2 /* AssetCreator.swift in Sources */,
@@ -32304,6 +32311,7 @@
 				5916781D2E460AF9002184C2 /* ApplicationConfiguration.swift in Sources */,
 				D4DA3EA32F23843100E42F1D /* AccountNameFetchDraft.swift in Sources */,
 				5916781E2E460AF9002184C2 /* SpotBannerListItem.swift in Sources */,
+				D4623E182F8685BF00EE292E /* PeraSwapAmountDraft.swift in Sources */,
 				5916781F2E460AF9002184C2 /* Announcement.swift in Sources */,
 				591678202E460AF9002184C2 /* MoonPaySignedResponse.swift in Sources */,
 				D400583C2EB8BE3F009B7543 /* ALGAPI+Favorites.swift in Sources */,
