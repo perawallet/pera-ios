@@ -18,6 +18,7 @@ import Foundation
 
 enum JointAccountPendingTransactionOverlayConstructor {
     
+    @MainActor
     static func buildScene(legacyBannerController: BannerController?, signRequestID: String, proposerAddress: String, signaturesInfo: [SignRequestInfo], threshold: Int, deadline: Date) -> JointAccountPendingTransactionOverlay {
         let model = JointAccountPendingTransactionOverlayModel(
             accountsService: PeraCoreManager.shared.accounts,
@@ -31,6 +32,7 @@ enum JointAccountPendingTransactionOverlayConstructor {
         return JointAccountPendingTransactionOverlay(model: model)
     }
     
+    @MainActor
     static func buildViewController(signRequestID: String, proposerAddress: String, signaturesInfo: [SignRequestInfo],
                                     threshold: Int, deadline: Date, onDismiss: (() -> Void)? = nil, onCancelTransaction: (() -> Void)? = nil) -> JointAccountPendingTransactionOverlayViewController {
         let view = buildScene(
@@ -44,6 +46,7 @@ enum JointAccountPendingTransactionOverlayConstructor {
         return JointAccountPendingTransactionOverlayViewController(rootView: view, onDismiss: onDismiss, onCancelTransaction: onCancelTransaction)
     }
     
+    @MainActor
     static func buildViewController(signRequestMetadata: SignRequestMetadata, onDismiss: (() -> Void)? = nil, onCancelTransaction: (() -> Void)? = nil) -> JointAccountPendingTransactionOverlayViewController {
         let view = buildScene(
             legacyBannerController: AppDelegate.shared?.appConfiguration.bannerController,

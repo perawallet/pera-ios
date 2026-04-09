@@ -91,10 +91,7 @@ final class JointAccountTransactionRequestSummaryViewController: SwiftUICompatib
     }
     
     private func resolveProposerAddress(from jointAccount: Account) -> String? {
-        let participants = jointAccount.jointAccountParticipants ?? []
-        return participants
-            .compactMap { self.accountsService.account(address: $0)?.address }
-            .first
+        jointAccount.jointAccountParticipants?.first
     }
     
     private func fetchSignRequestMetadata(

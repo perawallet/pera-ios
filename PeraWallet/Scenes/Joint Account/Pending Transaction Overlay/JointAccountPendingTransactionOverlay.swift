@@ -99,7 +99,7 @@ struct JointAccountPendingTransactionOverlay: View {
     @ViewBuilder
     private func buttonsRow() -> some View {
         switch viewModel.transactionState {
-        case .inProgress:
+        case let .inProgress(canCancelTransaction) where canCancelTransaction:
             HStack(spacing: 20.0) {
                 RoundedButton(
                     contentType: viewModel.isCancelProcessStarted ? .spinner : .text("title-cancel"),
@@ -109,7 +109,7 @@ struct JointAccountPendingTransactionOverlay: View {
                 )
                 RoundedButton(contentType: .text("joint-account-pending-transaction-overlay-button-close"), style: .primary, isEnabled: true, onTap: onCloseAction)
             }
-        case .success, .cancelled, .failed:
+        case .success, .cancelled, .failed, .inProgress:
             RoundedButton(contentType: .text("title-close"), style: .secondary, isEnabled: true, onTap: onCloseAction)
         }
     }
