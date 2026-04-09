@@ -1166,8 +1166,8 @@ extension WCMainTransactionScreen {
         onComplete handler: @escaping (Result<[AssetDecoration], Error>) -> Void
     ) {
         if isRejected { return }
-
-        let draft = AssetFetchQuery(ids: ids, includeDeleted: true)
+        guard let deviceId = api?.deviceId else { return }
+        let draft = AssetFetchQuery(deviceID: deviceId, ids: ids, includeDeleted: true)
         let queue = DispatchQueue.global(qos: .userInitiated)
         api!.fetchAssetList(
             draft,

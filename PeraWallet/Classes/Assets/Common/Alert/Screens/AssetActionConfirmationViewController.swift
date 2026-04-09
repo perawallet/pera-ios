@@ -82,11 +82,13 @@ extension AssetActionConfirmationViewController {
             addContext()
             return
         }
+        
+        guard let deviceId = api?.deviceId else { return }
 
         addLoading()
 
         api?.fetchAssetList(
-            AssetFetchQuery(ids: [draft.assetId]),
+            AssetFetchQuery(deviceID: deviceId, ids: [draft.assetId]),
             queue: .main,
             ignoreResponseOnCancelled: false
         ) { [weak self] response in

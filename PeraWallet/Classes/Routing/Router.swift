@@ -3540,9 +3540,11 @@ extension Router {
         }
 
         appConfiguration.loadingController.startLoadingWithMessage(String(localized: "title-loading"))
+        
+        guard let deviceId = appConfiguration.api.deviceId else { return }
 
         appConfiguration.api.fetchAssetList(
-            AssetFetchQuery(ids: [assetID]),
+            AssetFetchQuery(deviceID: deviceId, ids: [assetID]),
             queue: .main,
             ignoreResponseOnCancelled: false
         ) { [weak self] response in

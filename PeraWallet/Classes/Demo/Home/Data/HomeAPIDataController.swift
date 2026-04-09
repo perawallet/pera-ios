@@ -230,12 +230,13 @@ extension HomeAPIDataController {
         let usdcAssetID = ALGAsset.usdcAssetID(api.network)
         guard
             sharedDataController.assetDetailCollection.isEmpty ||
-            sharedDataController.assetDetailCollection.first(where: { $0.id == usdcAssetID }) == nil
+            sharedDataController.assetDetailCollection.first(where: { $0.id == usdcAssetID }) == nil,
+            let deviceId = api.deviceId
         else {
             return
         }
         api.fetchAssetList(
-            AssetFetchQuery(ids: [usdcAssetID]),
+            AssetFetchQuery(deviceID: deviceId, ids: [usdcAssetID]),
             queue: .main,
             ignoreResponseOnCancelled: false
         ) { [weak self] response in

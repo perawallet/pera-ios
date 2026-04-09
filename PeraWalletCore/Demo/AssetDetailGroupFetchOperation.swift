@@ -62,7 +62,7 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
             return
         }
         
-        guard let account = input.account else {
+        guard let account = input.account, let deviceId = api.deviceId else {
             result = .failure(.unexpected(UnexpectedError(responseData: nil, underlyingError: nil)))
             finish()
 
@@ -101,7 +101,7 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
             dispatchGroup.enter()
             
             let endpoint =
-                fetchAssetDetails(withIDs: subNewAssetIDs) { [weak self] result in
+                fetchAssetDetails(withDeviceId: deviceId, andAssetIDs: subNewAssetIDs) { [weak self] result in
                     guard let self = self else {return }
                 
                     self.ongoingEndpoints[order] = nil
@@ -130,7 +130,7 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
         
         if input.cachedAccounts.account(for: account.address) == nil {
             dispatchGroup.enter()
-            let algoEndpoint = fetchAssetDetails(withIDs: [0]) { [weak self] result in
+            let algoEndpoint = fetchAssetDetails(withDeviceId: deviceId, andAssetIDs: [0]) { [weak self] result in
                 guard let self = self else {
                     dispatchGroup.leave()
                     return
@@ -255,10 +255,11 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
 
 extension AssetDetailGroupFetchOperation {
     private func fetchAssetDetails(
-        withIDs ids: [AssetID],
+        withDeviceId deviceId: String,
+        andAssetIDs ids: [AssetID],
         onComplete handler: @escaping (Result<[AssetDecoration], Error>) -> Void
     ) -> EndpointOperatable {
-        let draft = AssetFetchQuery(ids: ids, includeDeleted: true)
+        let draft = AssetFetchQuery(deviceID: deviceId, ids: ids, includeDeleted: true)
         return
             api.fetchAssetList(
                 draft,

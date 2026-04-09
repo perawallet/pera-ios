@@ -17,11 +17,13 @@
 import MagpieCore
 
 public struct AssetFetchQuery: ObjectQuery {
+    let deviceID: String
     let ids: [AssetID]
     var includeDeleted: Bool? = nil
 
     public var queryParams: [APIQueryParam] {
         var params: [APIQueryParam] = []
+        params.append(.init(.device, deviceID))
         params.append(.init(.assetIDs, ids))
 
         if let includeDeleted = includeDeleted {
@@ -31,7 +33,8 @@ public struct AssetFetchQuery: ObjectQuery {
         return params
     }
     
-    public init(ids: [AssetID], includeDeleted: Bool? = nil) {
+    public init(deviceID: String, ids: [AssetID], includeDeleted: Bool? = nil) {
+        self.deviceID = deviceID
         self.ids = ids
         self.includeDeleted = includeDeleted
     }
