@@ -254,7 +254,7 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
         } else if let localAccount = localAccounts.first(where: { $0.address == address }) {
             title = localAccount.titles.primary
             subtitle = localAccount.titles.secondary
-            avatar = .placeholderGroupIconData
+            avatar = .uiImage(localAccount.type.icon)
         } else {
             title = address.shortAddressDisplay
             subtitle = nil

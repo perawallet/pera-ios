@@ -14,6 +14,8 @@
 
 //   PeraAccount.swift
 
+import UIKit
+
 struct PeraAccount: Hashable {
     
     enum AccountType: CaseIterable {
@@ -67,6 +69,17 @@ extension PeraAccount.AccountType {
             String(localized: "common-account-type-name-joint")
         case .invalid:
             String(localized: "common-account-type-name-no-auth")
+        }
+    }
+    
+    var icon: UIImage {
+        switch self {
+        case .algo25: "icon-standard-account".uiImage
+        case .universalWallet: "icon-hd-account".uiImage
+        case .watch: "icon-watch-account".uiImage
+        case .ledger: "icon-ledger-account".uiImage
+        case .joint: "icon-joint-account".uiImage
+        case .invalid: "icon-no-auth-account".uiImage
         }
     }
 }
