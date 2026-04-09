@@ -136,6 +136,10 @@ final class IncomingASAAccountsViewController: BaseViewController {
         }
         
         let onAccept: () -> Void = { [weak self] in
+            guard self?.session?.authenticatedUser?.account(address: jointAccountAddress) == nil else {
+                self?.bannerController?.presentInfoBanner(String(localized: "joint-account-already-exists-message"))
+                return
+            }
             self?.moveToNameAccountScene(jointAccountAddress: jointAccountAddress)
         }
         

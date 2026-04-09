@@ -4241,6 +4241,16 @@
         }
       }
     },
+    "joint-account-already-exists-message" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account already added to your device."
+          }
+        }
+      }
+    },
     "joint-account-confirmation-sheet-dismiss-button-text" : {
       "localizations" : {
         "en" : {

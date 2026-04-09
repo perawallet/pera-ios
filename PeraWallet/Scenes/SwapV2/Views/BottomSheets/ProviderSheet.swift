@@ -32,7 +32,7 @@ struct ProviderSheet: View {
                     onAnalyticsEvent(.swapSelectProviderClose)
                     dismiss()
                 case .apply:
-                    guard viewModel.availableProviders.isNonEmpty else {
+                    guard viewModel.validProviders.isNonEmpty else {
                         dismiss()
                         return
                     }
@@ -47,7 +47,7 @@ struct ProviderSheet: View {
                     .onTapGesture {
                         viewModel.selectedProvider = .auto
                     }
-                ForEach(viewModel.availableProviders, id: \.name) { provider in
+                ForEach(viewModel.validProviders, id: \.name) { provider in
                     ProviderListItem(
                         provider: provider,
                         quotePrimaryValue: viewModel.quotePrimaryValue(for: provider.name),
