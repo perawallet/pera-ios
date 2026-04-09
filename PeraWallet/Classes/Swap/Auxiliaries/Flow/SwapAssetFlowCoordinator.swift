@@ -705,8 +705,9 @@ extension SwapAssetFlowCoordinator {
     }
     
     func fetchAsset(with assetId: AssetID) {
+        guard let deviceId = api.deviceId else { return }
         api.fetchAssetList(
-            AssetFetchQuery(ids: [assetId]),
+            AssetFetchQuery(deviceID: deviceId, ids: [assetId]),
             queue: .main,
             ignoreResponseOnCancelled: false
         ) { [weak self] response in

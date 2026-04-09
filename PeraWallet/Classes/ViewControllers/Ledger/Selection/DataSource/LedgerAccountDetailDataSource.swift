@@ -174,7 +174,9 @@ extension LedgerAccountDetailDataSource {
         assetListItems.append(algoAssetListItem)
 
         guard let assets = account.assets,
-              !assets.isEmpty else {
+              !assets.isEmpty,
+              let deviceId = api.deviceId
+        else {
             return
         }
 
@@ -189,7 +191,7 @@ extension LedgerAccountDetailDataSource {
         }
 
         api.fetchAssetList(
-            AssetFetchQuery(ids: assetsToBeFetched, includeDeleted: true),
+            AssetFetchQuery(deviceID: deviceId, ids: assetsToBeFetched, includeDeleted: true),
             queue: .main,
             ignoreResponseOnCancelled: false
         ) { [weak self] assetResponse in

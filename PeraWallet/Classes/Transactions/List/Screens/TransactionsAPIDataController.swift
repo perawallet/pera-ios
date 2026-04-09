@@ -229,12 +229,12 @@ extension TransactionsAPIDataController {
         /// thus, we should consider this constraint when refactoring the screen.
         let assetIDs = formUniqueAssetIDs(for: transactions)
 
-        if assetIDs.isEmpty {
+        guard assetIDs.isNonEmpty, let deviceId = api.deviceId else {
             handler()
             return
         }
 
-        let draft = AssetFetchQuery(ids: assetIDs, includeDeleted: true)
+        let draft = AssetFetchQuery(deviceID: deviceId, ids: assetIDs, includeDeleted: true)
         api.fetchAssetList(
             draft,
             queue: .main,
