@@ -47,19 +47,13 @@ public final class PeraSwapAmount: ALGEntityModel {
 
 extension PeraSwapAmount {
     public struct APIModel: ALGAPIModel {
-        var amount: String?
-        var peraFee: String?
-        var peraFeeAsset: AssetDecoration.APIModel?
-        var peraFeeAmountInFeeAsset: String?
-        var peraFeeAssetId: UInt64?
+        var amount: String? = nil
+        var peraFee: String? = nil
+        var peraFeeAsset: AssetDecoration.APIModel? = nil
+        var peraFeeAmountInFeeAsset: String? = nil
+        var peraFeeAssetId: UInt64? = nil
 
-        public init() {
-            self.amount = nil
-            self.peraFee = nil
-            self.peraFeeAsset = nil
-            self.peraFeeAmountInFeeAsset = nil
-            self.peraFeeAssetId = nil
-        }
+        public init() {}
 
         private enum CodingKeys:
             String,

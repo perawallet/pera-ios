@@ -650,18 +650,18 @@ final class SwapViewController: BaseViewController {
                     return
                 }
                 
-                guard let swapAmount = response?.amount?.assetAmount(fromFraction: assetIn.decimals) else { return }
+                guard let swapAmount = response?.amount?.assetAmount(fromFraction: assetIn.decimals).doubleValue else { return }
                 
                 if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
                     if assetIn.isAlgo {
-                        sharedViewModel?.payingText = sharedViewModel?.fiatValueText(fromAlgo: swapAmount.doubleValue) ?? .empty
+                        sharedViewModel?.payingText = sharedViewModel?.fiatValueText(fromAlgo: swapAmount) ?? .empty
                     } else {
-                        sharedViewModel?.payingText = sharedViewModel?.fiatValueText(fromAsset: assetIn, with: swapAmount.doubleValue) ?? .empty
+                        sharedViewModel?.payingText = sharedViewModel?.fiatValueText(fromAsset: assetIn, with: swapAmount) ?? .empty
                     }
                     sharedViewModel?.payingTextInSecondaryCurrency = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: swapAmount) ?? .empty
                 } else {
                     sharedViewModel?.payingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: swapAmount) ?? .empty
-                    sharedViewModel?.payingTextInSecondaryCurrency = sharedViewModel?.fiatValueText(fromAlgo: swapAmount.doubleValue) ?? .empty
+                    sharedViewModel?.payingTextInSecondaryCurrency = sharedViewModel?.fiatValueText(fromAlgo: swapAmount) ?? .empty
                 }
                 
                 guard swapAmount > 0 else {
@@ -673,7 +673,7 @@ final class SwapViewController: BaseViewController {
                 
                 sharedViewModel?.isLoadingPayAmount = false
                 sharedViewModel?.isLoadingReceiveAmount = true
-                handleSwapViewCallbacks(with: .getQuote(for: swapAmount.doubleValue))
+                handleSwapViewCallbacks(with: .getQuote(for: swapAmount))
             }
             
             swapAssetFlowCoordinator.calculateSwapAmount(address: address, assetIn: assetIn, assetOut: assetOut, percentage: percentage)
