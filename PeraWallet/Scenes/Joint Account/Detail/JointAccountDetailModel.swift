@@ -112,7 +112,7 @@ final class JointAccountDetailModel: JointAccountDetailModelable {
                 subtitle: account.secondaryDisplayName
             )
         }
-        if let contact = accountsService.isContact(address: address) {
+        if let contact = try? ContactsManager.fetchContact(address: address) {
             return JointAccountDetailViewModel.AccountModel(
                 id: account.address,
                 image: .placeholderUserIconData,

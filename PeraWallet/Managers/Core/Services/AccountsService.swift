@@ -32,7 +32,6 @@ protocol AccountsServiceable {
     @MainActor func localAccount(peraAccount: PeraAccount) -> AccountInformation?
     @MainActor func account(peraAccount: PeraAccount) -> Account?
     @MainActor func account(address: String) -> Account?
-    func isContact(address: String) -> Contact?
 }
 
 final class AccountsService: AccountsServiceable, NetworkConfigureable {
@@ -284,10 +283,6 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
     private func fetchDeviceID() throws(ActionError) -> String {
         guard let deviceID = legacySessionManager.authenticatedUser?.getDeviceId(on: network.legacyNetwork) else { throw .noDeviceID }
         return deviceID
-    }
-    
-    func isContact(address: String) -> Contact? {
-        return try? ContactsManager.fetchContact(address: address)
     }
 }
 
