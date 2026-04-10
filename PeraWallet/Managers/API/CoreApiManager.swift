@@ -57,7 +57,12 @@ final class CoreApiManager {
         return decoder
     }()
     
-    private let jsonEncoder: JSONEncoder = JSONEncoder()
+    private let jsonEncoder: JSONEncoder = {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        return encoder
+    }()
+    
     private let taskManager = CancellableTasksManager()
     
     // MARK: - Initialisers
