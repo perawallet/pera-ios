@@ -246,9 +246,7 @@ final class CreateJointAccountAddAccountModel: CreateJointAccountAddAccountModel
         
         let isUserAccount = accountsService.accounts.value
             .first { $0.address == normalAccount.address }
-            .map { $0.isValid && $0.type != .watch }
-        
-        guard let isUserAccount else { return }
+            .map { $0.isValid && $0.type != .watch } ?? false
         
         viewModel.selectedAccount = AddedAccountData(
             address: normalAccount.address,
