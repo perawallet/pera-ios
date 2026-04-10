@@ -14,8 +14,6 @@
 
 //   PeraAccount.swift
 
-import UIKit
-
 struct PeraAccount: Hashable {
     
     enum AccountType: CaseIterable {
