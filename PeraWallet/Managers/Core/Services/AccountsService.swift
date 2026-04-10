@@ -32,7 +32,6 @@ protocol AccountsServiceable {
     @MainActor func localAccount(peraAccount: PeraAccount) -> AccountInformation?
     @MainActor func account(peraAccount: PeraAccount) -> Account?
     @MainActor func account(address: String) -> Account?
-    func fetchContacts()
     func isContact(address: String) -> Contact?
 }
 
@@ -77,7 +76,6 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
     private lazy var indexerApiManager = IndexerApiManager(network: network)
     private lazy var mobileApiManager = MobileApiManager(network: network)
     private var cancellables = Set<AnyCancellable>()
-    private var contacts: [Contact] = []
     
     // MARK: - Legacy Properties
     
@@ -208,21 +206,6 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
         }
     }
     
-    func fetchContacts() {
-        Contact.fetchAll(entity: Contact.entityName) { response in
-
-            switch response {
-            case let .results(objects: objects):
-                guard let results = objects as? [Contact] else {
-                    return
-                }
-                self.contacts = results
-            default:
-                break
-            }
-        }
-    }
-    
     private func reset() {
         accountsPublisher.value.removeAll()
     }
@@ -304,7 +287,7 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
     }
     
     func isContact(address: String) -> Contact? {
-        return contacts.filter { $0.address == address }.first
+        return try? ContactsManager.fetchContact(address: address)
     }
 }
 
