@@ -48,26 +48,49 @@ final class JointAccountTransactionCoordinator {
         Task {
             do {
                 let result = try await jointAccountTransactionHandler.handleTransaction(jointAccount: jointAccount, type: transactionType, sharedDataController: sharedDataController, transactionController: transactionController)
-                openPendingTransactionOverlay(signRequestMetadata: result.signRequestMetadata, presenter: presenter)
+                openPendingTransactionOverlay(signRequestMetadata: result.signRequestMetadata, presenter: presenter, jointAccount: jointAccount, transactionType: transactionType, sharedDataController: sharedDataController)
             } catch {
                 action = .failure(error: error, transactionController: transactionController)
             }
         }
     }
     
-    private func openPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata?, presenter: UIViewController) {
+    private func openPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata?, presenter: UIViewController,
+                                               jointAccount: Account, transactionType: JointAccountTransactionHandler.TransactionType, sharedDataController: SharedDataController) {
         
         guard let signRequestMetadata else {
             action = .overlayDismissed
             return
         }
         
-        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata) { [weak self] in
+        let onDismiss: (() -> Void)? = { [weak self] in
             self?.action = .overlayDismissed
         }
         
+        let onCancelTransaction: (() -> Void)? = { [weak self] in
+            self?.cancelAssetMonitoring(transactionType: transactionType, jointAccount: jointAccount, sharedDataController: sharedDataController)
+        }
+        
+        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata, onDismiss: onDismiss, onCancelTransaction: onCancelTransaction)
+        
         Task { @MainActor in
             presenter.present(viewController, animated: true)
+        }
+    }
+    
+    private func cancelAssetMonitoring(transactionType: JointAccountTransactionHandler.TransactionType, jointAccount: Account, sharedDataController: SharedDataController) {
+        
+        let monitor = sharedDataController.blockchainUpdatesMonitor
+        
+        switch transactionType {
+        case let .optIn(draft):
+            guard let assetIndex = draft.assetIndex else { return }
+            monitor.cancelMonitoringOptInUpdates(forAssetID: assetIndex, for: jointAccount)
+        case let .optOut(draft):
+            guard let assetIndex = draft.assetIndex else { return }
+            monitor.markOptOutUpdatesForNotification(forAssetID: assetIndex, for: jointAccount)
+        case .rekey, .sendAlgos, .sendAsset:
+            break
         }
     }
 }

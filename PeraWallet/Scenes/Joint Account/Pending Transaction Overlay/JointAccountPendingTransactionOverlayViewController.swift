@@ -19,11 +19,13 @@ import SwiftUI
 final class JointAccountPendingTransactionOverlayViewController: UIHostingController<JointAccountPendingTransactionOverlay> {
     
     var onDismiss: (() -> Void)?
+    var onCancelTransaction: (() -> Void)?
     
     // MARK: - Initialisers
     
-    init(rootView: JointAccountPendingTransactionOverlay, onDismiss: (() -> Void)?) {
+    init(rootView: JointAccountPendingTransactionOverlay, onDismiss: (() -> Void)?, onCancelTransaction: (() -> Void)?) {
         self.onDismiss = onDismiss
+        self.onCancelTransaction = onCancelTransaction
         super.init(rootView: rootView)
         setupController()
         setupCallbacks()
@@ -47,6 +49,10 @@ final class JointAccountPendingTransactionOverlayViewController: UIHostingContro
         rootView.onDismiss = { [weak self] in
             self?.dismissScreen()
             self?.onDismiss?()
+        }
+        
+        rootView.onCancelTransactionAction = { [weak self] in
+            self?.onCancelTransaction?()
         }
     }
 }

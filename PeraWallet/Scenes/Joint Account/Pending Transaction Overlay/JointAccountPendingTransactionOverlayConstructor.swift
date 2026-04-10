@@ -31,7 +31,8 @@ enum JointAccountPendingTransactionOverlayConstructor {
         return JointAccountPendingTransactionOverlay(model: model)
     }
     
-    static func buildViewController(signRequestID: String, proposerAddress: String, signaturesInfo: [SignRequestInfo], threshold: Int, deadline: Date, onDismiss: (() -> Void)? = nil) -> JointAccountPendingTransactionOverlayViewController {
+    static func buildViewController(signRequestID: String, proposerAddress: String, signaturesInfo: [SignRequestInfo],
+                                    threshold: Int, deadline: Date, onDismiss: (() -> Void)? = nil, onCancelTransaction: (() -> Void)? = nil) -> JointAccountPendingTransactionOverlayViewController {
         let view = buildScene(
             legacyBannerController: AppDelegate.shared?.appConfiguration.bannerController,
             signRequestID: signRequestID,
@@ -40,10 +41,10 @@ enum JointAccountPendingTransactionOverlayConstructor {
             threshold: threshold,
             deadline: deadline
         )
-        return JointAccountPendingTransactionOverlayViewController(rootView: view, onDismiss: onDismiss)
+        return JointAccountPendingTransactionOverlayViewController(rootView: view, onDismiss: onDismiss, onCancelTransaction: onCancelTransaction)
     }
     
-    static func buildViewController(signRequestMetadata: SignRequestMetadata, onDismiss: (() -> Void)? = nil) -> JointAccountPendingTransactionOverlayViewController {
+    static func buildViewController(signRequestMetadata: SignRequestMetadata, onDismiss: (() -> Void)? = nil, onCancelTransaction: (() -> Void)? = nil) -> JointAccountPendingTransactionOverlayViewController {
         let view = buildScene(
             legacyBannerController: AppDelegate.shared?.appConfiguration.bannerController,
             signRequestID: signRequestMetadata.signRequestID,
@@ -52,6 +53,6 @@ enum JointAccountPendingTransactionOverlayConstructor {
             threshold: signRequestMetadata.threshold,
             deadline: signRequestMetadata.deadline
         )
-        return JointAccountPendingTransactionOverlayViewController(rootView: view, onDismiss: onDismiss)
+        return JointAccountPendingTransactionOverlayViewController(rootView: view, onDismiss: onDismiss, onCancelTransaction: onCancelTransaction)
     }
 }
