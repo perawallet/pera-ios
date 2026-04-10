@@ -89,6 +89,7 @@ final class JointAccountDetailModel: JointAccountDetailModelable {
     private func fetchData() async {
         do {
             let result = try await accountsService.fetchJointAccountDetail(address: account.address)
+            accountsService.fetchContacts()
             handle(detailResult: result)
         } catch {
             viewModel.error = .unableToFetchData(error: error)

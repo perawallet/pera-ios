@@ -43,6 +43,8 @@ final class AccountServiceMock: AccountsServiceable {
     func localAccount(peraAccount: PeraAccount) -> AccountInformation? { nil }
     func account(peraAccount: PeraAccount) -> Account? { nil }
     func account(address: String) -> Account? { nil }
+    func fetchContacts() {}
+    func isContact(address: String) -> Contact? { nil }
 }
 
 // MARK: - Mocks

@@ -32,6 +32,7 @@ protocol AccountsServiceable {
     @MainActor func localAccount(peraAccount: PeraAccount) -> AccountInformation?
     @MainActor func account(peraAccount: PeraAccount) -> Account?
     @MainActor func account(address: String) -> Account?
+    func fetchContacts()
     func isContact(address: String) -> Contact?
 }
 
@@ -89,7 +90,6 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
         self.legacySharedDataController = legacySharedDataController
         accountDataProvider = AccountDataProvider(legacySessionManager: legacySessionManager, legacyFeatureFlagService: legacyFeatureFlagService)
         setupCallbacks(blockchainService: services.blockchain)
-        fetchContacts()
     }
     
     // MARK: - Setups
@@ -208,7 +208,7 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
         }
     }
     
-    private func fetchContacts() {
+    func fetchContacts() {
         Contact.fetchAll(entity: Contact.entityName) { response in
 
             switch response {
