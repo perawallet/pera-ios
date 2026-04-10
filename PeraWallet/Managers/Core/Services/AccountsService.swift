@@ -32,6 +32,7 @@ protocol AccountsServiceable {
     @MainActor func localAccount(peraAccount: PeraAccount) -> AccountInformation?
     @MainActor func account(peraAccount: PeraAccount) -> Account?
     @MainActor func account(address: String) -> Account?
+    func isContact(address: String) -> Contact?
 }
 
 final class AccountsService: AccountsServiceable, NetworkConfigureable {
@@ -75,6 +76,7 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
     private lazy var indexerApiManager = IndexerApiManager(network: network)
     private lazy var mobileApiManager = MobileApiManager(network: network)
     private var cancellables = Set<AnyCancellable>()
+    private var contacts: [Contact] = []
     
     // MARK: - Legacy Properties
     
@@ -87,6 +89,7 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
         self.legacySharedDataController = legacySharedDataController
         accountDataProvider = AccountDataProvider(legacySessionManager: legacySessionManager, legacyFeatureFlagService: legacyFeatureFlagService)
         setupCallbacks(blockchainService: services.blockchain)
+        fetchContacts()
     }
     
     // MARK: - Setups
@@ -205,6 +208,21 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
         }
     }
     
+    private func fetchContacts() {
+        Contact.fetchAll(entity: Contact.entityName) { response in
+
+            switch response {
+            case let .results(objects: objects):
+                guard let results = objects as? [Contact] else {
+                    return
+                }
+                self.contacts = results
+            default:
+                break
+            }
+        }
+    }
+    
     private func reset() {
         accountsPublisher.value.removeAll()
     }
@@ -283,6 +301,10 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
     private func fetchDeviceID() throws(ActionError) -> String {
         guard let deviceID = legacySessionManager.authenticatedUser?.getDeviceId(on: network.legacyNetwork) else { throw .noDeviceID }
         return deviceID
+    }
+    
+    func isContact(address: String) -> Contact? {
+        return contacts.filter { $0.address == address }.first
     }
 }
 
