@@ -55,4 +55,10 @@ final class JointAccountPendingTransactionOverlayViewController: UIHostingContro
             self?.onCancelTransaction?()
         }
     }
+    
+    // MARK: - Actions
+    
+    func cancelTransaction() {
+        rootView.cancelTransaction()
+    }
 }

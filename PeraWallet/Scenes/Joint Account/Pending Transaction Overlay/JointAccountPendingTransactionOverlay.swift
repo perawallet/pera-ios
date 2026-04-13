@@ -114,10 +114,15 @@ struct JointAccountPendingTransactionOverlay: View {
         }
     }
     
+    // MARK: - Actions - UIKit Compatibility
+    
+    func cancelTransaction() {
+        model.cancelTransaction()
+    }
+    
     // MARK: - Actions
     
     private func onCancelAction() {
-        model.cancelTransaction()
         onCancelTransactionAction?()
     }
     
