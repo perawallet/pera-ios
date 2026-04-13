@@ -204,8 +204,9 @@ final class InboxService: InboxServiceable, NetworkConfigureable {
             .filter { $0.type != .watch }
             .map(\.address)
         
-        let pendingJointAccountAddresses = jointAccountImportRequestsPublisher.value
-            .map(\.address)
+        let pendingJointAccountAddresses = legacyFeatureFlagService.isEnabled(.jointAccountEnabled)
+                ? jointAccountImportRequestsPublisher.value.map(\.address)
+                : []
         
         cachedAddresses = Array(Set(accountAddresses + pendingJointAccountAddresses))
     }
