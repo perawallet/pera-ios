@@ -75,7 +75,7 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
     private let pollingService = PollingService(timeInterval: .seconds(6))
     private let legacyBannerController: BannerController?
     private let proposerAddress: String
-    private let isProposer: Bool
+    private let isCancelTransactionAvailable: Bool
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - Properties - JointAccountPendingTransactionOverlayViewModelable
@@ -85,23 +85,22 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
     // MARK: - Initialisers
     
     @MainActor
-    init(accountsService: AccountsServiceable, legacyBannerController: BannerController?, signRequestID: String, proposerAddress: String, signaturesInfo: [SignRequestInfo], threshold: Int, deadline: Date) {
+    init(accountsService: AccountsServiceable, legacyBannerController: BannerController?, signRequestID: String, proposerAddress: String, signaturesInfo: [SignRequestInfo], threshold: Int, deadline: Date, isCancelTransactionAvailable: Bool) {
         
         self.accountsService = accountsService
         self.legacyBannerController = legacyBannerController
         self.signRequestID = signRequestID
         self.proposerAddress = proposerAddress
+        self.isCancelTransactionAvailable = isCancelTransactionAvailable
         
         let participants = signaturesInfo.map(\.address)
         let localAccounts = accountsService.accounts.value.filter { participants.contains($0.address) }
-        
-        isProposer = localAccounts.contains { $0.address == proposerAddress && $0.type.canAuthorize }
         
         let accountsModels = signaturesInfo
             .sorted { $0.address < $1.address }
             .map { accountModel(address: $0.address, signRequestStatus: $0.status, localAccounts: localAccounts) }
         
-        viewModel.transactionState = .inProgress(canCancelTransaction: isProposer)
+        viewModel.transactionState = .inProgress(canCancelTransaction: isCancelTransactionAvailable)
         viewModel.threshold = threshold
         viewModel.deadline = deadline
         
@@ -204,7 +203,7 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
         if let status = result.status {
             switch status {
             case .pending, .ready, .submitting:
-                viewModel.transactionState = .inProgress(canCancelTransaction: isProposer)
+                viewModel.transactionState = .inProgress(canCancelTransaction: isCancelTransactionAvailable)
                 isTransactionInProgress = true
             case .confirmed:
                 viewModel.transactionState = .success

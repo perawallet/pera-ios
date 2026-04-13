@@ -72,7 +72,12 @@ final class JointAccountTransactionCoordinator {
         }
         
         Task { @MainActor in
-            let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata, onDismiss: onDismiss, onCancelTransaction: onCancelTransaction)
+            let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(
+                signRequestMetadata: signRequestMetadata,
+                isCancelTransactionAvailable: true,
+                onDismiss: onDismiss,
+                onCancelTransaction: onCancelTransaction
+            )
             presenter.present(viewController, animated: true)
         }
     }
