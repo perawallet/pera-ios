@@ -29,6 +29,7 @@ final class JointAccountTransactionCoordinator {
     
     @Published private(set) var action: Action?
     private let jointAccountTransactionHandler: JointAccountTransactionHandler
+    private var bottomSheetTransition: BottomSheetTransition?
     
     // MARK: - Initialisers
     
@@ -63,12 +64,15 @@ final class JointAccountTransactionCoordinator {
             return
         }
         
+        var confirmationDialogPresenter: JointAccountPendingTransactionOverlayViewController?
+        
         let onDismiss: (() -> Void)? = { [weak self] in
             self?.action = .overlayDismissed
         }
         
         let onCancelTransaction: (() -> Void)? = { [weak self] in
-            self?.cancelAssetMonitoring(transactionType: transactionType, jointAccount: jointAccount, sharedDataController: sharedDataController)
+            guard let confirmationDialogPresenter else { return }
+            self?.openTransactionCancellationDialog(jointAccount: jointAccount, transactionType: transactionType, presenter: confirmationDialogPresenter, sharedDataController: sharedDataController)
         }
         
         Task { @MainActor in
@@ -78,8 +82,30 @@ final class JointAccountTransactionCoordinator {
                 onDismiss: onDismiss,
                 onCancelTransaction: onCancelTransaction
             )
+            confirmationDialogPresenter = viewController
             presenter.present(viewController, animated: true)
         }
+    }
+    
+    private func openTransactionCancellationDialog(jointAccount: Account, transactionType: JointAccountTransactionHandler.TransactionType,
+                                                   presenter: JointAccountPendingTransactionOverlayViewController, sharedDataController: SharedDataController) {
+        
+        let configurator = BottomWarningViewConfigurator(
+            image: .iconIncomingAsaError,
+            title: String(localized: "shared-account-cancel-transaction-confirmation-title"),
+            description: .plain(String(localized: "shared-account-cancel-transaction-confirmation-description")),
+            primaryActionButtonTitle: String(localized: "shared-account-cancel-transaction-confirmation-primary-button-title"),
+            secondaryActionButtonTitle: String(localized: "shared-account-cancel-transaction-confirmation-secondary-button-title"),
+            primaryAction: { [weak self] in self?.cancelTransaction(transactionType: transactionType, jointAccount: jointAccount, overlay: presenter, sharedDataController: sharedDataController) }
+        )
+        
+        bottomSheetTransition = BottomSheetTransition(presentingViewController: presenter)
+        bottomSheetTransition?.perform(.bottomWarning(configurator: configurator), by: .presentWithoutNavigationController)
+    }
+    
+    private func cancelTransaction(transactionType: JointAccountTransactionHandler.TransactionType, jointAccount: Account, overlay: JointAccountPendingTransactionOverlayViewController, sharedDataController: SharedDataController) {
+        overlay.cancelTransaction()
+        cancelAssetMonitoring(transactionType: transactionType, jointAccount: jointAccount, sharedDataController: sharedDataController)
     }
     
     private func cancelAssetMonitoring(transactionType: JointAccountTransactionHandler.TransactionType, jointAccount: Account, sharedDataController: SharedDataController) {
