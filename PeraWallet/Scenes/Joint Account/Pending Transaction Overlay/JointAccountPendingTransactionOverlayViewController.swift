@@ -20,10 +20,11 @@ final class JointAccountPendingTransactionOverlayViewController: UIHostingContro
     
     var onDismiss: (() -> Void)?
     var onCancelTransaction: (() -> Void)?
+    var onJointAccountAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?
     
     // MARK: - Initialisers
     
-    init(rootView: JointAccountPendingTransactionOverlay, onDismiss: (() -> Void)?, onCancelTransaction: (() -> Void)?) {
+    init(rootView: JointAccountPendingTransactionOverlay, onDismiss: (() -> Void)?, onCancelTransaction: (() -> Void)?, onJointAccountAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?) {
         self.onDismiss = onDismiss
         self.onCancelTransaction = onCancelTransaction
         super.init(rootView: rootView)
@@ -54,6 +55,8 @@ final class JointAccountPendingTransactionOverlayViewController: UIHostingContro
         rootView.onCancelTransactionAction = { [weak self] in
             self?.onCancelTransaction?()
         }
+        
+        rootView.onJointAccountAnalyticsCall = onJointAccountAnalyticsCall
     }
     
     // MARK: - Actions

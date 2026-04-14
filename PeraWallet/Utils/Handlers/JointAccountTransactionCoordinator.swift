@@ -80,7 +80,8 @@ final class JointAccountTransactionCoordinator {
                 signRequestMetadata: signRequestMetadata,
                 isCancelTransactionAvailable: true,
                 onDismiss: onDismiss,
-                onCancelTransaction: onCancelTransaction
+                onCancelTransaction: onCancelTransaction,
+                onJointAccountAnalyticsCall: nil
             )
             confirmationDialogPresenter = viewController
             presenter.present(viewController, animated: true)

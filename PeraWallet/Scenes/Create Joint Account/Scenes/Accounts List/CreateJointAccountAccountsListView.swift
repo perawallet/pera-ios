@@ -41,6 +41,7 @@ struct CreateJointAccountAccountsListView: View {
     private var onDismissRequest: (() -> Void)?
     private var onLearnMoreTap: (() -> Void)?
     private var onScanQRTap: (() -> Void)?
+    private var onAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?
     
     // MARK: - Initialiser
     
@@ -50,7 +51,8 @@ struct CreateJointAccountAccountsListView: View {
         navigationPath: Binding<NavigationPath>,
         onDismissRequest: (() -> Void)?,
         onLearnMoreTap: (() -> Void)?,
-        onScanQRTap: (() -> Void)?
+        onScanQRTap: (() -> Void)?,
+        onAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?
     ) {
         self.model = model
         _navigationPath = navigationPath
@@ -58,6 +60,7 @@ struct CreateJointAccountAccountsListView: View {
         self.onDismissRequest = onDismissRequest
         self.onLearnMoreTap = onLearnMoreTap
         self.onScanQRTap = onScanQRTap
+        self.onAnalyticsCall = onAnalyticsCall
         viewModel = model.viewModel
     }
     
@@ -129,6 +132,8 @@ struct CreateJointAccountAccountsListView: View {
                 model.requestData()
             } onLearnMoreTap: {
                 onLearnMoreTap?()
+            } onAnalyticsCall: { event in
+                onAnalyticsCall?(event)
             }
         }
     }
@@ -152,17 +157,21 @@ struct CreateJointAccountAccountsListView: View {
                 image: viewModel.image,
                 address: viewModel.address,
                 navigationPath: $navigationPath,
-                onRemoveAddressButtonTap: { removeRequest(identifier: viewModel.id) },
+                onRemoveAddressButtonTap: {
+                    onAnalyticsCall?(.removeAddress)
+                    removeRequest(identifier: viewModel.id)
+                },
                 onDataUpdate: { model.update(identifier: viewModel.id, account: $0) }
             )
         case let .selectThreshold(participantAddresses):
-            CreateJointAccountSetThresholdConstructor.buildScene(participantAddresses: participantAddresses, navigationPath: $navigationPath, onDismissRequest: onDismissRequest)
+            CreateJointAccountSetThresholdConstructor.buildScene(participantAddresses: participantAddresses, navigationPath: $navigationPath, onDismissRequest: onDismissRequest, onAnalyticsCall: onAnalyticsCall)
         }
     }
     
     // MARK: - Views Actions
     
     private func onAddAccountButtonAction() {
+        onAnalyticsCall?(.addAccount)
         moveTo(option: .addAccount)
     }
     
@@ -171,6 +180,7 @@ struct CreateJointAccountAccountsListView: View {
             removeRequest(identifier: viewModel.id)
             return
         }
+        onAnalyticsCall?(.editAccount)
         moveTo(option: .editAccount(model: viewModel))
     }
     

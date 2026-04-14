@@ -7335,6 +7335,7 @@
 		D4653A102EB2210A00573F81 /* ASADetailViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4653A0F2EB2210800573F81 /* ASADetailViewControllerTheme.swift */; };
 		D4653A112EB2210A00573F81 /* ASADetailViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4653A0F2EB2210800573F81 /* ASADetailViewControllerTheme.swift */; };
 		D4653A122EB2210A00573F81 /* ASADetailViewControllerTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4653A0F2EB2210800573F81 /* ASADetailViewControllerTheme.swift */; };
+		D465CCE02F8E22D500C2EF46 /* JointAccountEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D465CCDF2F8E22C600C2EF46 /* JointAccountEvent.swift */; };
 		D46AF69A2E8D656100C417EF /* SwapV2SelectAccountEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46AF6992E8D655B00C417EF /* SwapV2SelectAccountEvent.swift */; };
 		D46AF69C2E8D671800C417EF /* SwapV2SelectAssetEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46AF69B2E8D671300C417EF /* SwapV2SelectAssetEvent.swift */; };
 		D46AF69E2E8D6BCE00C417EF /* SwapV2HistoryEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46AF69D2E8D6BC000C417EF /* SwapV2HistoryEvent.swift */; };
@@ -9647,6 +9648,7 @@
 		D4653A0F2EB2210800573F81 /* ASADetailViewControllerTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASADetailViewControllerTheme.swift; sourceTree = "<group>"; };
 		D465C7EB299A35A800733A29 /* BidaliPaymentParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidaliPaymentParameters.swift; sourceTree = "<group>"; };
 		D465C7EF299A35C200733A29 /* BidaliOpenURLParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidaliOpenURLParameters.swift; sourceTree = "<group>"; };
+		D465CCDF2F8E22C600C2EF46 /* JointAccountEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointAccountEvent.swift; sourceTree = "<group>"; };
 		D46AC87426E8DEB8008CDE68 /* AccountRecoverViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRecoverViewTheme.swift; sourceTree = "<group>"; };
 		D46AC87826E8E416008CDE68 /* RecoverInputViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverInputViewTheme.swift; sourceTree = "<group>"; };
 		D46AC87C26E913D7008CDE68 /* AccountRecoverViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountRecoverViewController+Theme.swift"; sourceTree = "<group>"; };
@@ -14574,6 +14576,7 @@
 				2B05A666251E23D7008A8791 /* ChangeCurrencyEvent.swift */,
 				2BD2E6B525A5E1A400C918AB /* ChangeNotificationFilterEvent.swift */,
 				D45B94C62D75B8BF00DF6BB5 /* BuyCryptoEvent.swift */,
+				D465CCDF2F8E22C600C2EF46 /* JointAccountEvent.swift */,
 				2B9F063A24B5E48A006880F0 /* RegisterAccountEvent.swift */,
 				2B2AACA8250A6D6600B8C5C5 /* RekeyAccountEvent.swift */,
 				2BE4D053259371CC005F5764 /* ShowAssetDetailEvent.swift */,
@@ -32334,6 +32337,7 @@
 				5916782F2E460AF9002184C2 /* LedgerTroubleshootOption.swift in Sources */,
 				591678302E460AF9002184C2 /* NameServiceAPIModel.swift in Sources */,
 				591678312E460AF9002184C2 /* Node.swift in Sources */,
+				D465CCE02F8E22D500C2EF46 /* JointAccountEvent.swift in Sources */,
 				591678322E460AF9002184C2 /* AlgorandNode.swift in Sources */,
 				591678332E460AF9002184C2 /* AlgorandNotification.swift in Sources */,
 				591678342E460AF9002184C2 /* AlgorandNotificationDetail.swift in Sources */,

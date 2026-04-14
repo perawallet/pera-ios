@@ -21,6 +21,7 @@ protocol CreateJointAccountNameAccountModelable {
     @MainActor var viewModel: CreateJointAccountNameAccountViewModel { get }
     @MainActor func createJointAccount()
     var isAccountDuplicate: Bool { get }
+    var isLoadedFromInbox: Bool { get }
 }
 
 final class CreateJointAccountNameAccountModel: CreateJointAccountNameAccountModelable {
@@ -37,6 +38,7 @@ final class CreateJointAccountNameAccountModel: CreateJointAccountNameAccountMod
     private var cancellables: Set<AnyCancellable> = []
     
     var isAccountDuplicate: Bool { accountService.hasJointAccount(with: participantAddresses) }
+    var isLoadedFromInbox: Bool = false
     
     // MARK: - Initialisers
     

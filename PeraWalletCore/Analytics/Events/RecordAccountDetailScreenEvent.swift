@@ -45,6 +45,9 @@ extension RecordAccountDetailScreenEvent {
         case tapFund
         case tapSwap
         case tapChart
+        case tapJointAccountDetail
+        case tapJointAccountRekey
+        case tapJointAccountExport
 
         public var rawValue: ALGAnalyticsEventName {
             switch self {
@@ -76,6 +79,12 @@ extension RecordAccountDetailScreenEvent {
                 return .tapSwapInAccountDetail
             case .tapChart:
                 return .tapChartInAccountDetail
+            case .tapJointAccountDetail:
+                return .tapJointAccountDetail
+            case .tapJointAccountRekey:
+                return .tapJointAccountRekey
+            case .tapJointAccountExport:
+                return .tapJointAccountExport
             }
         }
     }

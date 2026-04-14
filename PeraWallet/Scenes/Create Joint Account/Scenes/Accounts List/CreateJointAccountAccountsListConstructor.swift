@@ -24,7 +24,8 @@ enum CreateJointAccountAccountsListConstructor {
         scannedAddress: Binding<String>,
         onDismissRequest: (() -> Void)?,
         onLearnMoreTap: (() -> Void)?,
-        onScanQRTap: (() -> Void)?
+        onScanQRTap: (() -> Void)?,
+        onAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?
     ) -> CreateJointAccountAccountsListView {
         return CreateJointAccountAccountsListView(
             model: model,
@@ -32,7 +33,8 @@ enum CreateJointAccountAccountsListConstructor {
             navigationPath: navigationPath,
             onDismissRequest: onDismissRequest,
             onLearnMoreTap: onLearnMoreTap,
-            onScanQRTap: onScanQRTap
+            onScanQRTap: onScanQRTap,
+            onAnalyticsCall: onAnalyticsCall
         )
     }
 }
