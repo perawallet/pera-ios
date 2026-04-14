@@ -186,7 +186,7 @@ final class IncomingASAAccountsViewController: BaseViewController {
     }
     
     private func showJointAccountPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata) {
-        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata)
+        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata, isCancelTransactionAvailable: false)
         present(viewController, animated: true)
     }
     

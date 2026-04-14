@@ -71,9 +71,13 @@ final class JointAccountTransactionCoordinator {
             self?.cancelAssetMonitoring(transactionType: transactionType, jointAccount: jointAccount, sharedDataController: sharedDataController)
         }
         
-        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata, onDismiss: onDismiss, onCancelTransaction: onCancelTransaction)
-        
         Task { @MainActor in
+            let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(
+                signRequestMetadata: signRequestMetadata,
+                isCancelTransactionAvailable: true,
+                onDismiss: onDismiss,
+                onCancelTransaction: onCancelTransaction
+            )
             presenter.present(viewController, animated: true)
         }
     }
