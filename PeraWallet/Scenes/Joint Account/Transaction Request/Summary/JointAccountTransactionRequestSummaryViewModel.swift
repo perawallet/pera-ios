@@ -30,6 +30,7 @@ protocol JointAccountTransactionRequestSummaryModelable {
 final class JointAccountTransactionRequestSummaryViewModel: ObservableObject {
     
     enum Action {
+        case requestConnectionWithLedger(transactionController: TransactionController)
         case presentTransactionDetails(account: Account, transaction: TransactionItem)
         case presentSigningStatus(account: Account, transaction: TransactionItem)
         case copyAddress(address: String)
@@ -197,6 +198,12 @@ final class JointAccountTransactionRequestSummaryModel: JointAccountTransactionR
             
             if isConfirmed {
                 for account in participantAccounts() {
+
+                    if account.hasLedgerDetail() {
+                        transactionController.enforceLedgerConnection = true
+                        viewModel.action = .requestConnectionWithLedger(transactionController: transactionController)
+                    }
+                    
                     let signatures = await signatures(signerAccount: account, transactions: signRequest.transactionLists)
                     responses.append(.signed(address: account.address, signatures: signatures))
                 }

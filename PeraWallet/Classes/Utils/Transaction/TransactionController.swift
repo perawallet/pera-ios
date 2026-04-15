@@ -47,6 +47,7 @@ final class TransactionController {
             .filter { $0.requiresLedgerConnection() }
     }
     
+    var enforceLedgerConnection: Bool = false
     var ledgerTansactionCount: Int { ledgerAccounts.count }
 
     private lazy var ledgerTransactionOperation = LedgerTransactionOperation(
@@ -65,7 +66,7 @@ final class TransactionController {
     )
 
     private var requiresLedgerConnection: Bool {
-        return senderAccountForLedger != nil
+        return senderAccountForLedger != nil || enforceLedgerConnection
     }
     
     private var params: TransactionParams?

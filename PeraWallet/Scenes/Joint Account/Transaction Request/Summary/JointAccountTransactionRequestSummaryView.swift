@@ -34,6 +34,7 @@ struct JointAccountTransactionRequestSummaryView: View {
     var onShowSigningStatus: ((_ transaction: TransactionItem) -> Void)?
     var onShowError: ((any Error) -> Void)?
     var onAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?
+    var onRequestConnectionWithLedger: ((_ transactionController: TransactionController) -> Void)?
     
     // MARK: - Initialisers
     
@@ -224,6 +225,8 @@ struct JointAccountTransactionRequestSummaryView: View {
             onShowSigningStatus?(transaction)
         case let .copyAddress(address):
             onCopy?(address)
+        case let .requestConnectionWithLedger(transactionController):
+            onRequestConnectionWithLedger?(transactionController)
         case .success:
             onDismiss?()
         }
