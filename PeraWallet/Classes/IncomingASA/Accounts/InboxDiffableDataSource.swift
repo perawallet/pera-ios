@@ -14,6 +14,7 @@
 
 //   InboxDiffableDataSource.swift
 
+import SwiftUI
 import UIKit
 import pera_wallet_core
 
