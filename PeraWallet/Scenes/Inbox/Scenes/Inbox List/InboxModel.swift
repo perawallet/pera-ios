@@ -161,11 +161,12 @@ final class InboxModel: InboxModelable {
     // MARK: - Handlers
     
     private func jointAccountImportRequestViewModel(model: MultiSigAccountObject) -> InboxViewModel.JointAccountImportRequestModel? {
-        
+
         let title: AttributedString
-        
+        let displayName = displayName(for: model.address)
+
         do {
-            title = try AttributedString(localizedMarkdown: "inbox-joint-account-import-request-title-\(model.address.shortAddressDisplay)")
+            title = try AttributedString(localizedMarkdown: "inbox-joint-account-import-request-title-\(displayName)")
         } catch {
             viewModel.errorMessage = .unableToParseImportRequest
             return nil
@@ -178,11 +179,12 @@ final class InboxModel: InboxModelable {
     }
     
     private func jointAccountSignRequestViewModel(model: SignRequestObject) -> InboxViewModel.JointAccountSignRequestModel? {
-        
+
         let title: AttributedString
-        
+        let displayName = displayName(for: model.jointAccount.address)
+
         do {
-            title = try AttributedString(localizedMarkdown: "inbox-joint-account-sign-transaction-request-title-\(model.jointAccount.address.shortAddressDisplay)")
+            title = try AttributedString(localizedMarkdown: "inbox-joint-account-sign-transaction-request-title-\(displayName)")
         } catch {
             viewModel.errorMessage = .unableToParseSendRequest
             return nil
@@ -247,7 +249,30 @@ final class InboxModel: InboxModelable {
     }
     
     // MARK: - Helpers
-    
+
+    private func displayName(for address: String) -> String {
+        let shortAddress = address.shortAddressDisplay
+
+        // First check local account primary title (mirrors Android: customName / NFD).
+        if let account = accountsService.accounts.value.first(where: { $0.address == address }) {
+            let primary = account.titles.primary
+            if !primary.isEmpty, primary != shortAddress {
+                return primary
+            }
+        }
+
+        // Then check saved contacts.
+        if let contact = try? ContactsManager.fetchContact(address: address),
+           let contactData = ContactDataProvider.data(contact: contact),
+           !contactData.title.isEmpty,
+           contactData.title != shortAddress {
+            return contactData.title
+        }
+
+        // Fallback to the shortened address.
+        return shortAddress
+    }
+
     private func state(signRequestStatus: SignRequestObject.Status) -> InboxViewModel.SignRequestState {
         switch signRequestStatus {
         case .pending, .ready, .submitting, .confirmed:
