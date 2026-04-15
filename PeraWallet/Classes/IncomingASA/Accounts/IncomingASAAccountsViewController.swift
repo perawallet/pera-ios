@@ -47,6 +47,14 @@ final class IncomingASAAccountsViewController: BaseViewController {
     })
     private lazy var transitionToMinimumBalanceInfo = BottomSheetTransition(presentingViewController: self)
 
+    private lazy var noContentView: NoContentView = {
+        let view = NoContentView()
+        view.customize(NoContentViewCommonTheme())
+        view.bindData(InboxNoContentViewModel())
+        view.isHidden = true
+        return view
+    }()
+
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = AccountAssetListLayout.build(backgroundColor: .clear)
         let collectionView = UICollectionView(
@@ -112,6 +120,7 @@ final class IncomingASAAccountsViewController: BaseViewController {
         snapshot.appendSections([0])
         snapshot.appendItems(rows)
         listDataSource.apply(snapshot)
+        noContentView.isHidden = !rows.isEmpty
     }
     
     private func handle(action: InboxViewModel.Action) {
@@ -298,6 +307,14 @@ extension IncomingASAAccountsViewController {
     
     private func addUI() {
         addList()
+        addNoContent()
+    }
+
+    private func addNoContent() {
+        view.addSubview(noContentView)
+        noContentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
 
     private func addList() {
