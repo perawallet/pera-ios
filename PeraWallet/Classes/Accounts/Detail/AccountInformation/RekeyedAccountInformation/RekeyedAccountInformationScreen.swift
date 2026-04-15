@@ -164,11 +164,22 @@ extension RekeyedAccountInformationScreen {
             $0.trailing == 0
         }
 
-        let options = [
-            makeRekeyToLedgerAccountItem(),
-            makeRekeyToStandardAccountItem(),
-            makeRescanRekeyedAccountsItem()
-        ]
+        // Match Android: DefaultAccountStatusAccountActionProcessor.kt:22-41
+        // emits only the Rekey-to-Shared-Account row (alongside Rescan) for
+        // joint accounts; standard accounts get the Ledger + Standard rows.
+        let options: [AccountInformationOptionItem]
+        if sourceAccount.isJointAccount {
+            options = [
+                makeRekeyToJointAccountItem(),
+                makeRescanRekeyedAccountsItem()
+            ]
+        } else {
+            options = [
+                makeRekeyToLedgerAccountItem(),
+                makeRekeyToStandardAccountItem(),
+                makeRescanRekeyedAccountsItem()
+            ]
+        }
         options.forEach(optionsView.addOption)
     }
 }
@@ -187,7 +198,14 @@ extension RekeyedAccountInformationScreen {
             self.eventHandler?(.performRekeyToStandard)
         }
     }
-    
+
+    private func makeRekeyToJointAccountItem() -> AccountInformationOptionItem {
+        return AccountInformationOptionItem(viewModel: .rekeyToJointAccount) {
+            [unowned self] in
+            self.eventHandler?(.performRekeyToJointAccount)
+        }
+    }
+
     private func makeRescanRekeyedAccountsItem() -> AccountInformationOptionItem {
         AccountInformationOptionItem(viewModel: .rescanRekeyedAccounts) { [weak self] in
             self?.eventHandler?(.performRescanRekeyedAccounts)
@@ -222,6 +240,7 @@ extension RekeyedAccountInformationScreen {
     enum Event {
         case performRekeyToLedger
         case performRekeyToStandard
+        case performRekeyToJointAccount
         case performUndoRekey
         case performRescanRekeyedAccounts
         case performImportConnectedAccounts

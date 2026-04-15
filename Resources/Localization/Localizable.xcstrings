@@ -7104,6 +7104,26 @@
         }
       }
     },
+    "rekeyed-account-type-joint-to-joint-description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your account is rekeyed to another shared account. Transactions for this account will be authorized by the other account."
+          }
+        }
+      }
+    },
+    "rekeyed-account-type-joint-to-joint-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rekeyed (Shared Account to Shared Account)"
+          }
+        }
+      }
+    },
     "remove-auth-account-rekeyed-accounts-error-title" : {
       "localizations" : {
         "en" : {
