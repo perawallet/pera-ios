@@ -54,7 +54,7 @@ struct JointAccountInviteInboxRow: View {
                 Spacer()
             }
             HStack {
-                Text(timestamp, formatter: relativeDateFormatter)
+                RelativeDateTextView(formatter: relativeDateFormatter, date: timestamp)
                     .font(.DMSans.regular.size(13.0))
                     .foregroundStyle(Color.Text.grayLighter)
                 Spacer()
