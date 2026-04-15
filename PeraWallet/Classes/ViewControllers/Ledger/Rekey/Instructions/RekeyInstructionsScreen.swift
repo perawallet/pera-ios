@@ -226,6 +226,8 @@ extension RekeyInstructionsScreen {
     }
 
     private func addBody() {
+        guard draft.body != nil else { return }
+
         bodyView.customizeAppearance(theme.body)
 
         contentView.addSubview(bodyView)
@@ -243,7 +245,11 @@ extension RekeyInstructionsScreen {
 
         contentView.addSubview(instructionsTitleView)
         instructionsTitleView.snp.makeConstraints {
-            $0.top == bodyView.snp.bottom + theme.spacingBetweenBodyAndInstructionsTitle
+            if draft.body == nil {
+                $0.top == titleView.snp.bottom + theme.spacingBetweenBodyAndInstructionsTitle
+            } else {
+                $0.top == bodyView.snp.bottom + theme.spacingBetweenBodyAndInstructionsTitle
+            }
             $0.leading == theme.instructionsHorizontalEdgeInsets.leading
             $0.trailing == theme.instructionsHorizontalEdgeInsets.trailing
         }
@@ -302,7 +308,7 @@ extension RekeyInstructionsScreen {
     }
 
     private func bindBody() {
-        let body = draft.body
+        guard let body = draft.body else { return }
         if let highlightedText = body.highlightedText {
             let hyperlink: ALGActiveType = .word(highlightedText.text)
             bodyView.attachHyperlink(
