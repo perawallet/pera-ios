@@ -138,7 +138,7 @@ final class JointAccountTransactionRequestSummaryViewController: SwiftUICompatib
     }
     
     private func showJointAccountPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata) {
-        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata, isCancelTransactionAvailable: false)
+        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata, isCancelTransactionAvailable: false, onJointAccountAnalyticsCall: nil)
         present(viewController, animated: true)
     }
     

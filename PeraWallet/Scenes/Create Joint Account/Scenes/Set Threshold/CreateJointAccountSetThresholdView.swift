@@ -31,13 +31,15 @@ struct CreateJointAccountSetThresholdView: View {
     // MARK: - UIKit Compatibility
     
     private var onDismissRequest: (() -> Void)?
+    private var onAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?
     
     // MARK: - Initialisers
     
-    init(model: CreateJointAccountSetThresholdModelable, navigationPath: Binding<NavigationPath>, onDismissRequest: (() -> Void)?) {
+    init(model: CreateJointAccountSetThresholdModelable, navigationPath: Binding<NavigationPath>, onDismissRequest: (() -> Void)?, onAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?) {
         self.model = model
         self._navigationPath = navigationPath
         self.onDismissRequest = onDismissRequest
+        self.onAnalyticsCall = onAnalyticsCall
         viewModel = model.viewModel
     }
     
@@ -103,13 +105,14 @@ struct CreateJointAccountSetThresholdView: View {
     private func scene(navigationOption: NavigationOption) -> some View {
         switch navigationOption {
         case let .nameAccount(participantAddresses, threshold):
-            CreateJointAccountNameAccountConstructor.buildScene(participantAddresses: participantAddresses, threshold: threshold, navigationPath: $navigationPath, onDismissRequest: onDismissRequest)
+            CreateJointAccountNameAccountConstructor.buildScene(participantAddresses: participantAddresses, threshold: threshold, navigationPath: $navigationPath, onDismissRequest: onDismissRequest, onAnalyticsCall: onAnalyticsCall)
         }
     }
     
     // MARK: - Actions
     
     private func onContinueButtonAction() {
+        onAnalyticsCall?(.thresholdContinue)
         model.requestData()
     }
     

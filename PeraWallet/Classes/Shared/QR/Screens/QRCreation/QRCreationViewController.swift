@@ -104,18 +104,21 @@ extension QRCreationViewController: QRCreationViewDelegate {
         }
 
         let address = draft.address
-        analytics.track(.showQRShare(address: address))
+        if draft.mode == .exportJointAccount {
+            analytics.track(.jointAccount(type: .shareUrl))
+        } else {
+            analytics.track(.showQRShare(address: address))
+        }
         navigationController?.present(activityViewController, animated: true, completion: nil)
     }
     
     func qrCreationViewDidCopy(_ qrCreationView: QRCreationView) {
-        
         let address = draft.address
-        analytics.track(.showQRCopy(address: address))
-        
         if draft.mode == .exportJointAccount, let deepLink = draft.deepLink {
+            analytics.track(.jointAccount(type: .copyUrl))
             copyToClipboardController.copyURL(deepLink)
         } else {
+            analytics.track(.showQRCopy(address: address))
             copyToClipboardController.copyAddress(address)
         }
     }

@@ -27,12 +27,14 @@ struct CreateJointAccountNameAccountView: View {
     // MARK: - UIKit Compatibility
     
     private var onDismissRequest: (() -> Void)?
+    private var onAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?
     
     // MARK: - Initialisers
     
-    init(model: CreateJointAccountNameAccountModelable, onDismissRequest: (() -> Void)?) {
+    init(model: CreateJointAccountNameAccountModelable, onDismissRequest: (() -> Void)?, onAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?) {
         self.model = model
         self.onDismissRequest = onDismissRequest
+        self.onAnalyticsCall = onAnalyticsCall
         viewModel = model.viewModel
     }
     
@@ -76,11 +78,21 @@ struct CreateJointAccountNameAccountView: View {
                 onDismissRequest?()
             }
         }
+        .onChange(of: nameTextFieldFocusState) { isFocused in
+            if isFocused {
+                onAnalyticsCall?(.nameAccount)
+            }
+        }
     }
     
     // MARK: - Actions
     
     private func onFinishButtonTapAction() {
+        if model.isLoadedFromInbox {
+            onAnalyticsCall?(.addAccountContinueFromInbox)
+        } else {
+            onAnalyticsCall?(.addAccountContinue)
+        }
         model.createJointAccount()
     }
 }

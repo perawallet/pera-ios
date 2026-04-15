@@ -238,6 +238,7 @@ extension AccountDetailViewController {
             case .transactionOption:
                 self.openAccountActionsMenu()
             case .jointAccountDetail:
+                self.analytics.track(.recordAccountDetailScreen(type: .tapJointAccountDetail))
                 self.openJointAccountDetail()
             }
         }
@@ -702,6 +703,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
     
     func optionsViewControllerDidOpenExportJointAccount(_ optionsViewController: OptionsViewController) {
+        analytics.track(.recordAccountDetailScreen(type: .tapJointAccountExport))
         let address = accountHandle.value.address
         let deepLink = "perawallet://joint-account-import?address=\(address)"
         let draft = QRCreationDraft(address: "", mode: .exportJointAccount, title: String(localized: "export-share-deeplink-url-section-title"), deepLink: deepLink)
@@ -709,6 +711,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
     
     func optionsViewControllerDidRekeyingToJointAccount(_ optionsViewController: OptionsViewController) {
+        analytics.track(.recordAccountDetailScreen(type: .tapJointAccountRekey))
         rekeyToStandardAccountFlowCoordinator.launch(accountHandle.value)
     }
 }

@@ -29,6 +29,7 @@ struct JointAccountPendingTransactionOverlay: View {
     
     var onDismiss: (() -> Void)?
     var onCancelTransactionAction: (() -> Void)?
+    var onJointAccountAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?
     
     // MARK: - Initialisers
     
@@ -123,10 +124,12 @@ struct JointAccountPendingTransactionOverlay: View {
     // MARK: - Actions
     
     private func onCancelAction() {
+        onJointAccountAnalyticsCall?(.cancelTransaction)
         onCancelTransactionAction?()
     }
     
     private func onCloseAction() {
+        onJointAccountAnalyticsCall?(.closeForNow)
         isVisible = false
         model.stopPolling()
         onDismiss?()
