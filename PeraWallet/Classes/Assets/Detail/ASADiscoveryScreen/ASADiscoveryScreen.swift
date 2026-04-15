@@ -546,6 +546,9 @@ extension ASADiscoveryScreen {
             dismiss(animated: true)
         case let .failure(error, _):
             handle(error: error)
+        case .transactionConfirmed:
+            loadingController?.stopLoading()
+            dismiss(animated: true)
         }
     }
 }

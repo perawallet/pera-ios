@@ -340,6 +340,8 @@ extension AssetAdditionViewController {
             dismissScreen()
         case let .failure(error, _):
             handle(error: error)
+        case .transactionConfirmed:
+            dismissScreen()
         }
     }
 }
