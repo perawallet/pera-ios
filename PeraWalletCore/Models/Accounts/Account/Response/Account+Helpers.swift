@@ -212,6 +212,15 @@ extension Account {
             return "icon-watch-account".uiImage
         }
 
+        // Match Android: GetAccountOriginalStateIconDrawablePreviewUseCase.kt
+        // (line 109, 121-130) maps both Joint and JointAccountRekeyed
+        // registration types to the JOINT icon — clean people glyph, not the
+        // shield-with-exclamation no-auth fallback. Without this branch the
+        // Undo Rekey screen renders the no-auth icon for the post-undo target.
+        if isJointAccount {
+            return "icon-joint-account".uiImage
+        }
+
         return "icon-no-auth-account".uiImage
     }
     
