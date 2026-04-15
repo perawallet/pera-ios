@@ -232,21 +232,26 @@ struct ALGBarButtonItem: BarButtonItem {
         case .account(let account):
             let authorization = account.authorization
 
-            if authorization.isRekeyedToLedger {
+            // Match Android: joint accounts (plain or rekeyed) never render a
+            // rekeyed-shield badge in the navbar; the JA detail toolbar omits
+            // the end container entirely (JointAccountDetailScreen.kt:95-107).
+            let isJointAccount = authorization == .jointAccount || authorization.isJointAccountRekeyed
+
+            if !isJointAccount, authorization.isRekeyedToLedger {
                 return ImageContent(
                     normal: "icon-shield-16".templateImage,
                     tintColor: Colors.Wallet.wallet3Icon.uiColor
                 )
             }
 
-            if authorization.isRekeyedToStandard {
+            if !isJointAccount, authorization.isRekeyedToStandard {
                 return ImageContent(
                     normal: "icon-shield-16".templateImage,
                     tintColor: Colors.Wallet.wallet4Icon.uiColor
                 )
             }
 
-            if authorization.isNoAuth {
+            if !isJointAccount, authorization.isNoAuth {
                 return ImageContent(
                     normal: "icon-shield-16".templateImage,
                     tintColor: Colors.Helpers.negative.uiColor
