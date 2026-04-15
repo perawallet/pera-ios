@@ -58,8 +58,15 @@ extension UndoRekeyConfirmationSheet {
         sourceAccount: Account,
         authAccount: Account
     ) -> UISheetBodyTextProvider {
-        let sourceAccountName = sourceAccount.primaryDisplayName
-        let authAccountName =  authAccount.primaryDisplayName
+        // Match Android (PreviousRekeyUndoneConfirmationBottomSheet.kt:66-84,
+        // AnnotatedString with no markdown parsing): account names like
+        // "Shared Account #1" must render in a single body color. The body
+        // label is an ALGActiveLabel whose default enabledTypes include
+        // `.hashtag`, so the trailing "#1" / "#2" would be auto-colored as
+        // hashtags. Insert a zero-width space between `#` and the digit to
+        // break the `#\w+` hashtag regex; the ZWSP renders invisibly.
+        let sourceAccountName = Self.disarmingHashtags(in: sourceAccount.primaryDisplayName)
+        let authAccountName = Self.disarmingHashtags(in: authAccount.primaryDisplayName)
         let text = String(format: String(localized: "overwrite-undo-rekey-confirmation-body"), authAccountName, sourceAccountName)
         let attributedBody = NSMutableAttributedString(
             attributedString: text.bodyRegular(alignment: .center)
@@ -98,6 +105,16 @@ extension UndoRekeyConfirmationSheet {
         )
 
         return uiSheetBody
+    }
+
+    /// Inserts a zero-width space (U+200B) between `#` and any following word
+    /// character so ActiveLabel's hashtag regex (`#\w+`) does not match.
+    private static func disarmingHashtags(in name: String) -> String {
+        return name.replacingOccurrences(
+            of: "#(?=\\w)",
+            with: "#\u{200B}",
+            options: .regularExpression
+        )
     }
 
     private func makeConfirmAction() -> UISheetAction {
