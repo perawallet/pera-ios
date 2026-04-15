@@ -29,12 +29,6 @@ final class AccountQuickActionsCell:
         }
     }
     
-    var showFundButton: Bool = false {
-        didSet {
-            contextView.showFundButton = showFundButton
-        }
-    }
-    
     var isJointAccount: Bool = false {
         didSet {
             contextView.isJointAccount = isJointAccount

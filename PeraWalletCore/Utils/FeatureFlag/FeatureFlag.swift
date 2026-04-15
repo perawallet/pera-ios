@@ -21,9 +21,7 @@ public enum FeatureFlag: String, CaseIterable {
     case liquidAuthEnabled = "enable_liquid_auth"
     case liquidConnectEnabled = "enable_liquid_connect"
     case ledgerDeflexFilterEnabled = "enable_ledger_deflex_filter"
-    case webviewV2Enabled = "enable_webview_v2"
     case jointAccountEnabled = "enable_joint_account"
-    case xoSwapEnabled = "enable_xo_swap"
     case enableImmersve = "enable_immersve"
 
     var defaultValue: RemoteConfigValue {
@@ -32,10 +30,8 @@ public enum FeatureFlag: String, CaseIterable {
         case .liquidAuthEnabled: .bool(false)
         case .liquidConnectEnabled: .bool(false)
         case .ledgerDeflexFilterEnabled: .bool(false)
-        case .webviewV2Enabled: .bool(false)
-        case .jointAccountEnabled: .bool(false)
-        case .xoSwapEnabled: .bool(false)
-        case .enableImmersve: .bool(false)
+        case .jointAccountEnabled: .bool(true)
+        case .enableImmersve: .bool(true)
         }
     }
     
@@ -47,9 +43,7 @@ public enum FeatureFlag: String, CaseIterable {
         case .liquidAuthEnabled: "Enable Liquid Auth"
         case .liquidConnectEnabled: "Enable Liquid Connect"
         case .ledgerDeflexFilterEnabled: "Enable Ledger Deflex Filter"
-        case .webviewV2Enabled: .empty
         case .jointAccountEnabled: "Enable Shared Account"
-        case .xoSwapEnabled: "Enable XO Swap"
         }
     }
     

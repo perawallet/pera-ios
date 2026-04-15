@@ -33,7 +33,6 @@ final class AccountQuickActionsView:
     private lazy var contentView = HStackView()
     private let contentBackgroundView = UIView()
     private lazy var swapActionView = makeActionView()
-    private lazy var buyActionView =  makeActionView()
     private lazy var fundActionView =  makeActionView()
     private lazy var requestsActionView = makeActionView()
     private lazy var moreActionView = makeActionView()
@@ -154,7 +153,6 @@ extension AccountQuickActionsView {
         
         addSwapAction(theme)
         addFundAction(theme)
-        addBuyAction(theme)
         addRequestsAction(theme)
         addMoreAction(theme)
         
@@ -174,22 +172,6 @@ extension AccountQuickActionsView {
         startPublishing(
             event: .swap,
             for: swapActionView
-        )
-    }
-
-    private func addBuyAction(_ theme: AccountQuickActionsViewTheme) {
-        buyActionView.customizeAppearance(theme.buyAction)
-        buyActionView.sizeToFit()
-        customizeAction(
-            buyActionView,
-            theme
-        )
-
-        contentView.addArrangedSubview(buyActionView)
-
-        startPublishing(
-            event: .buy,
-            for: buyActionView
         )
     }
     
