@@ -234,13 +234,20 @@ extension Account {
         if authorization.isWatch {
             return "icon-watch-account"
         }
-        if authorization == .jointAccount {
+        // Match Android (GetAccountIconDrawablePreviewUseCase / the joint branch
+        // in GetAccountOriginalStateIconDrawablePreviewUseCase.kt:121-130):
+        // any joint account — rekeyed or not — renders the clean joint-account
+        // glyph. Keying on `isJointAccount` (participants present) instead of
+        // the narrow `.jointAccount` authorization prevents a rekeyed joint
+        // account from falling through to the warning-shield
+        // `icon-any-to-standard-rekeyed-account` asset below.
+        if isJointAccount {
             return "icon-joint-account"
         }
         if authorization.isLedger {
             return "icon-ledger-account"
         }
-        if authorization.isRekeyedToStandard || authorization.isJointAccountRekeyed {
+        if authorization.isRekeyedToStandard {
             return "icon-any-to-standard-rekeyed-account"
         }
         if authorization.isRekeyedToLedger {
