@@ -20,13 +20,15 @@ final class JointAccountPendingTransactionOverlayViewController: UIHostingContro
     
     var onDismiss: (() -> Void)?
     var onCancelTransaction: (() -> Void)?
+    var onTransactionConfirmed: (() -> Void)?
     var onJointAccountAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?
-    
+
     // MARK: - Initialisers
-    
-    init(rootView: JointAccountPendingTransactionOverlay, onDismiss: (() -> Void)?, onCancelTransaction: (() -> Void)?, onJointAccountAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?) {
+
+    init(rootView: JointAccountPendingTransactionOverlay, onDismiss: (() -> Void)?, onCancelTransaction: (() -> Void)?, onTransactionConfirmed: (() -> Void)? = nil, onJointAccountAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?) {
         self.onDismiss = onDismiss
         self.onCancelTransaction = onCancelTransaction
+        self.onTransactionConfirmed = onTransactionConfirmed
         super.init(rootView: rootView)
         setupController()
         setupCallbacks()
@@ -46,16 +48,20 @@ final class JointAccountPendingTransactionOverlayViewController: UIHostingContro
     }
     
     private func setupCallbacks() {
-        
+
         rootView.onDismiss = { [weak self] in
             self?.dismissScreen()
             self?.onDismiss?()
         }
-        
+
         rootView.onCancelTransactionAction = { [weak self] in
             self?.onCancelTransaction?()
         }
-        
+
+        rootView.onTransactionConfirmed = { [weak self] in
+            self?.onTransactionConfirmed?()
+        }
+
         rootView.onJointAccountAnalyticsCall = onJointAccountAnalyticsCall
     }
     

@@ -139,6 +139,15 @@ final class UndoRekeyScreen:
        case .connectionWithLedgerNeeded:
           openLedgerConnection()
        case .overlayDismissed:
+           // Match Android (UndoRekeyConfirmationViewModel.kt:93-94): success
+           // is gated on the polled sign-request reaching `.confirmed`, not on
+           // the user dismissing the pending-signatures overlay. "Close for
+           // now" lands here while signatures are still pending — don't
+           // present the success screen, just dismiss back to the rekeyed
+           // account detail. Local rekey state must NOT be saved either, as
+           // the on-chain undo hasn't happened yet.
+           finishWithoutCompletion()
+       case .transactionConfirmed:
            finishWithSuccess()
        case let .failure(error, _):
            finish(error: error)
@@ -397,6 +406,11 @@ extension UndoRekeyScreen {
         saveRekeyedAccountDetails()
         eventHandler?(.didUndoRekey)
     }
+
+    private func finishWithoutCompletion() {
+        loadingController.stopLoading()
+        dismiss(animated: true)
+    }
     
     private func finish(error: Error) {
         
@@ -424,6 +438,15 @@ extension UndoRekeyScreen {
 extension UndoRekeyScreen {
     
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
+        // Joint accounts: local composition is only the first step. The real
+        // success signal arrives via `JointAccountTransactionCoordinator`'s
+        // `.transactionConfirmed` action when the polled sign-request reaches
+        // `.confirmed` on-chain. Calling `finishWithSuccess()` here would
+        // present the "Rekey successfully undone" screen the moment the local
+        // multisig contribution is signed — long before the other signers
+        // have signed and the transaction has been submitted.
+        if sourceAccount.isJointAccount { return }
+
         finishWithSuccess()
     }
 

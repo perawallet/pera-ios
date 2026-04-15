@@ -26,10 +26,13 @@ struct JointAccountPendingTransactionOverlay: View {
     @State private var isVisible: Bool = false
     
     // MARK: - Properties - UIKit Compatibility
-    
+
     var onDismiss: (() -> Void)?
     var onCancelTransactionAction: (() -> Void)?
+    var onTransactionConfirmed: (() -> Void)?
     var onJointAccountAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?
+
+    @State private var hasNotifiedTransactionConfirmation: Bool = false
     
     // MARK: - Initialisers
     
@@ -46,6 +49,18 @@ struct JointAccountPendingTransactionOverlay: View {
             isVisible: $isVisible,
             onDismissAction: { onDismiss?() }
         )
+        .onReceive(viewModel.$transactionState) { newState in
+            // Notify upstream (e.g. UndoRekeyScreen) only the first time the
+            // backend-polled transaction reaches `.success`. Required because
+            // the joint-account flow signs locally well before the on-chain
+            // submit/confirm completes — UndoRekeyScreen must not advance to
+            // its success screen until this confirmation actually fires.
+            guard !hasNotifiedTransactionConfirmation else { return }
+            if case .success = newState {
+                hasNotifiedTransactionConfirmation = true
+                onTransactionConfirmed?()
+            }
+        }
     }
     
     @ViewBuilder
