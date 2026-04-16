@@ -111,8 +111,10 @@ final class HomeAPIDataController:
     
     func hasJointAccountRequests(for account: Account) -> Bool {
         guard account.isJointAccount else { return false }
-        return inboxService.jointAccountImportRequests.value.contains { $0.address == account.address } ||
-            inboxService.jointAccountSignRequests.value.contains { $0.jointAccount.address == account.address }
+            
+        let addresses = [account.address] + (account.jointAccountParticipants ?? [])
+        return inboxService.jointAccountImportRequests.value.contains { addresses.contains($0.address) } ||
+                inboxService.jointAccountSignRequests.value.contains { addresses.contains($0.jointAccount.address) }
     }
 }
 
