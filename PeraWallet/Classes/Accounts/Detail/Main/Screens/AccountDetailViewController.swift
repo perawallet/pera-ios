@@ -75,6 +75,7 @@ final class AccountDetailViewController: PageContainer {
         presentingScreen: self,
         sharedDataController: sharedDataController
     )
+    private lazy var rekeyToJointAccountFlowCoordinator = RekeyToJointAccountFlowCoordinator(presenter: self, sharedDataController: sharedDataController)
     private lazy var rekeyToLedgerAccountFlowCoordinator = RekeyToLedgerAccountFlowCoordinator(
         presentingScreen: self,
         sharedDataController: sharedDataController
@@ -712,7 +713,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     
     func optionsViewControllerDidRekeyingToJointAccount(_ optionsViewController: OptionsViewController) {
         analytics.track(.recordAccountDetailScreen(type: .tapJointAccountRekey))
-        rekeyToStandardAccountFlowCoordinator.launch(accountHandle.value)
+        rekeyToJointAccountFlowCoordinator.launchFlow(sourceAccount: accountHandle.value)
     }
 }
 

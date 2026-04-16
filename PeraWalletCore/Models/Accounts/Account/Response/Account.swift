@@ -713,6 +713,10 @@ extension AccountAuthorization {
         return self == .unknownToNoAuthInLocalRekeyed
     }
     
+    public var isJointAccount: Bool {
+        self == .jointAccount || self == .jointAccountRekeyed
+    }
+    
     public var isJointAccountRekeyed: Bool {
         self == .jointAccountRekeyed
     }
