@@ -339,7 +339,7 @@ extension HomeAPIDataController {
             
             guard let self else { return nil }
             
-            let accounts = self.sharedDataController.sortedAccounts()
+            let accounts = self.sharedDataController.sortedAccountsForDisplay()
             let currency = self.sharedDataController.currency
             let isAmountHidden = ObservableUserDefaults.shared.isPrivacyModeEnabled
             

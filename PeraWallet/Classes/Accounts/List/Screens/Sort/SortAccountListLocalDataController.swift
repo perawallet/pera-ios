@@ -180,7 +180,7 @@ extension SortAccountListLocalDataController {
         /// <note>
         /// Cache items once
         if reorderedAccounts.isEmpty {
-            reorderedAccounts = sharedDataController.sortedAccounts()
+            reorderedAccounts = sharedDataController.sortedAccountsForDisplay()
             reorderedAccountItems = reorderedAccounts.map {
                 let draft = AccountOrderingDraft(account: $0.value)
                 let viewModel = AccountListItemViewModel(draft)

@@ -115,6 +115,22 @@ extension SharedDataController {
     }
 }
 
+extension SharedDataController {
+    /// Returns `sortedAccounts()` with joint accounts filtered out when the
+    /// joint-account feature flag is off. Centralizing the filter here means
+    /// every user-facing account list (home, sort, select-account, backup,
+    /// swap, buy/sell, ...) sees the same "flag off → nothing joint" view
+    /// without each call site having to pull in `FeatureFlagServicing`.
+    public func sortedAccountsForDisplay() -> [AccountHandle] {
+        let accounts = sortedAccounts()
+        guard let featureFlagService = CoreAppConfiguration.shared?.featureFlagService,
+              !featureFlagService.isEnabled(.jointAccountEnabled) else {
+            return accounts
+        }
+        return accounts.filter { !$0.value.isJointAccount }
+    }
+}
+
 /// <todo>
 /// Can this approach move to 'Macaroon' library???
 ///
