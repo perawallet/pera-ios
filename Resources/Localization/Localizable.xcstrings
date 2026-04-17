@@ -4008,7 +4008,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Asset Transfer Requests"
+            "value" : "Inbox"
           }
         }
       }
@@ -6555,7 +6555,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Asset Inbox"
+            "value" : "Inbox"
           }
         }
       }
@@ -7507,7 +7507,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Send to Asset Inbox"
+            "value" : "Send to Inbox"
           }
         }
       }
