@@ -104,6 +104,14 @@ final class JointAccountDetailModel: JointAccountDetailModelable {
     
     @MainActor
     private func makeAccountModel(from address: String) -> JointAccountDetailViewModel.AccountModel {
+        if let enrichedAccount = accountsService.accounts.value.first(where: { $0.address == address }) {
+            return JointAccountDetailViewModel.AccountModel(
+                id: enrichedAccount.address,
+                image: .icon(data: AccountIconProvider.iconData(account: enrichedAccount)),
+                title: enrichedAccount.titles.primary,
+                subtitle: enrichedAccount.titles.secondary
+            )
+        }
         if let account = accountsService.account(address: address) {
             return JointAccountDetailViewModel.AccountModel(
                 id: account.address,
@@ -114,7 +122,7 @@ final class JointAccountDetailModel: JointAccountDetailModelable {
         }
         if let contact = try? ContactsManager.fetchContact(address: address) {
             return JointAccountDetailViewModel.AccountModel(
-                id: account.address,
+                id: address,
                 image: .placeholderUserIconData,
                 title: contact.name ?? address.shortAddressDisplay,
                 subtitle: address.shortAddressDisplay

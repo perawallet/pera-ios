@@ -3299,6 +3299,26 @@
         }
       }
     },
+    "create-joint-account-shared-account-not-allowed" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shared accounts cannot be added to a new shared account"
+          }
+        }
+      }
+    },
+    "create-joint-account-unable-to-verify-participant" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not verify participant. Please try again."
+          }
+        }
+      }
+    },
     "create-joint-account-button-remove" : {
       "localizations" : {
         "en" : {

@@ -87,6 +87,11 @@ final class MobileApiManager {
         let request = JointAccountDetailRequest(address: address)
         return try await perform(v1Request: request)
     }
+
+    func checkIsJointAccount(addresses: [String]) async throws(CoreApiManager.ApiError) -> [IsJointAccountResponse] {
+        let request = IsJointAccountRequest(accountAddresses: addresses)
+        return try await perform(v1Request: request)
+    }
     
     // MARK: - Actions
     

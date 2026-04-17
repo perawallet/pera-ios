@@ -41,12 +41,12 @@ struct RoundedMenuRow: View {
                         .foregroundStyle(Color.Text.main)
                     if isNewBadgeVisible {
                         Text("common-badge-new")
-                            .font(.DMSans.medium.size(11.0))
-                            .foregroundStyle(Color.Wallet.wallet4Icon)
-                            .padding(.vertical, 4.0)
-                            .padding(.horizontal, 10.0)
-                            .background(Color.Wallet.wallet4)
-                            .clipShape(Capsule())
+                            .font(.DMSans.bold.size(11.0))
+                            .foregroundStyle(Color.Helpers.positive)
+                            .padding(.vertical, 1.0)
+                            .padding(.horizontal, 5.0)
+                            .background(Color.Helpers.positiveLighter)
+                            .cornerRadius(8.0)
                     }
                 }
                 .frame(height: 28.0)
