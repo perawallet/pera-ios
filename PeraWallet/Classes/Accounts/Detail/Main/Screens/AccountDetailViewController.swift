@@ -706,7 +706,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     func optionsViewControllerDidOpenExportJointAccount(_ optionsViewController: OptionsViewController) {
         analytics.track(.recordAccountDetailScreen(type: .tapJointAccountExport))
         let address = accountHandle.value.address
-        let deepLink = "perawallet://joint-account-import?address=\(address)"
+        let deepLink = "perawallet://app/joint-account-import/?address=\(address)"
         let draft = QRCreationDraft(address: "", mode: .exportJointAccount, title: String(localized: "export-share-deeplink-url-section-title"), deepLink: deepLink)
         open(.qrGenerator(title: String(localized: "export-share-deeplink-title"), draft: draft, isTrackable: true), by: .present)
     }
