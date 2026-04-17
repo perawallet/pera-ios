@@ -185,7 +185,7 @@ extension WCSessionConnectionLocalDataController {
             sharedDataController
                 .sortedAccounts()
                 .filter(filterAlgorithm.getFormula)
-                .filter { !$0.value.isJointAccount}
+                .filter { !$0.value.isJointAccount }
 
         sessionAccountsHeaderViewModel = .init(isSingle: accounts.isSingular)
 
