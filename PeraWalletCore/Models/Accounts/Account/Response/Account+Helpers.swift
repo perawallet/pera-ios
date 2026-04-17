@@ -211,12 +211,11 @@ extension Account {
         if authorization.isWatch {
             return "icon-watch-account".uiImage
         }
+        
+        if authorization.isJointAccount {
+            return "icon-joint-account".uiImage
+        }
 
-        // Match Android: GetAccountOriginalStateIconDrawablePreviewUseCase.kt
-        // (line 109, 121-130) maps both Joint and JointAccountRekeyed
-        // registration types to the JOINT icon — clean people glyph, not the
-        // shield-with-exclamation no-auth fallback. Without this branch the
-        // Undo Rekey screen renders the no-auth icon for the post-undo target.
         if isJointAccount {
             return "icon-joint-account".uiImage
         }
@@ -234,14 +233,10 @@ extension Account {
         if authorization.isWatch {
             return "icon-watch-account"
         }
-        // Match Android (GetAccountIconDrawablePreviewUseCase / the joint branch
-        // in GetAccountOriginalStateIconDrawablePreviewUseCase.kt:121-130):
-        // any joint account — rekeyed or not — renders the clean joint-account
-        // glyph. Keying on `isJointAccount` (participants present) instead of
-        // the narrow `.jointAccount` authorization prevents a rekeyed joint
-        // account from falling through to the warning-shield
-        // `icon-any-to-standard-rekeyed-account` asset below.
-        if isJointAccount {
+        if authorization == .jointAccountRekeyed {
+            return "icon-joint-to-joint-account-rekeyed-account"
+        }
+        if isJointAccount || authorization.isJointAccount {
             return "icon-joint-account"
         }
         if authorization.isLedger {

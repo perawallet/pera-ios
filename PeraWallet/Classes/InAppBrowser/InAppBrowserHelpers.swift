@@ -199,6 +199,9 @@ extension InAppBrowserScreen {
         var addressesInfo = [[String: String]]()
         session?.authenticatedUser?.accounts.forEach { accountInformation in
             let account = Account(localAccount: accountInformation)
+            if account.isJointAccount || account.authorization.isJointAccountRekeyed {
+                return
+            }
             let name = account.primaryDisplayName
             let address = account.address
             let type = account.authType

@@ -213,11 +213,6 @@ final class InboxService: InboxServiceable, NetworkConfigureable {
     
     private func handle(inboxResponse: InboxCreateResponse) {
 
-        // Match Android (InboxViewModel.kt:86-90, HasInboxItemsForAddressUseCase.kt:27-29):
-        // when the joint-account flag is off, downstream surfaces (home pill,
-        // inbox list, badge counts) must see *empty* publishers — not stale
-        // values from when the flag was previously on. Force-clear in the
-        // disabled branch so a flag flip from on→off propagates immediately.
         if legacyFeatureFlagService.isEnabled(.jointAccountEnabled) {
             jointAccountImportRequestsPublisher.value = inboxResponse.jointAccountImportRequests.sorted { $0.creationDatetime > $1.creationDatetime }
             jointAccountSignRequestsPublisher.value = inboxResponse.jointAccountSignRequests.sorted { $0.creationDatetime > $1.creationDatetime }

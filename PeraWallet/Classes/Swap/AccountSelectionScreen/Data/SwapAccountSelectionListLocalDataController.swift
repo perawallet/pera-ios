@@ -74,7 +74,7 @@ extension SwapAccountSelectionListLocalDataController {
             let filterAlgorithm = AuthorizedAccountListFilterAlgorithm()
             let filteredAccounts = sortedAccounts
                 .filter(filterAlgorithm.getFormula)
-                .filter { $0.value.authorization != .jointAccount }
+                .filter { !$0.value.authorization.isJointAccount }
 
             self.accounts = filteredAccounts
 

@@ -26,6 +26,7 @@ final class JointAccountTransactionRequestSummaryHostingViewController: UIHostin
     var onShowSigningStatus: (( _ transaction: TransactionItem) -> Void)?
     var onCopy: ((_ address: String) -> Void)?
     var onShowError: ((Error) -> Void)?
+    var onRequestConnectionWithLedger: ((_ transactionController: TransactionController) -> Void)?
 
     // MARK: - Initialisers
     
@@ -36,6 +37,7 @@ final class JointAccountTransactionRequestSummaryHostingViewController: UIHostin
         rootView.onShowSigningStatus = { [weak self] in self?.onShowSigningStatus?($0) }
         rootView.onCopy = { [weak self] in self?.onCopy?($0) }
         rootView.onShowError = { [weak self] in self?.onShowError?($0) }
+        rootView.onRequestConnectionWithLedger = { [weak self] in self?.onRequestConnectionWithLedger?($0) }
     }
     
     @available(*, unavailable)

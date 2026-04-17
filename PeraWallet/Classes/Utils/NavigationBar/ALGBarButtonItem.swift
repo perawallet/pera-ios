@@ -41,6 +41,10 @@ struct ALGBarButtonItem: BarButtonItem {
             if authorization.isRekeyedToStandard {
                 return Colors.Wallet.wallet4.uiColor
             }
+            
+            if authorization.isJointAccountRekeyed {
+                return .Wallet.wallet1Icon
+            }
 
             return nil
         default:
@@ -120,6 +124,14 @@ struct ALGBarButtonItem: BarButtonItem {
                 return BarButtonItemTitleContent(
                     text: String(localized: "title-rekeyed"),
                     textColor: Colors.Wallet.wallet4Icon.uiColor,
+                    font: Typography.captionMedium()
+                )
+            }
+            
+            if authorization.isJointAccountRekeyed {
+                return BarButtonItemTitleContent(
+                    text: String(localized: "title-rekeyed"),
+                    textColor: .Wallet.wallet1,
                     font: Typography.captionMedium()
                 )
             }
@@ -232,9 +244,6 @@ struct ALGBarButtonItem: BarButtonItem {
         case .account(let account):
             let authorization = account.authorization
 
-            // Match Android: joint accounts (plain or rekeyed) never render a
-            // rekeyed-shield badge in the navbar; the JA detail toolbar omits
-            // the end container entirely (JointAccountDetailScreen.kt:95-107).
             let isJointAccount = authorization == .jointAccount || authorization.isJointAccountRekeyed
 
             if !isJointAccount, authorization.isRekeyedToLedger {
@@ -249,6 +258,11 @@ struct ALGBarButtonItem: BarButtonItem {
                     normal: "icon-shield-16".templateImage,
                     tintColor: Colors.Wallet.wallet4Icon.uiColor
                 )
+            }
+            
+            if authorization.isJointAccountRekeyed {
+                guard let image = UIImage(named: "icon-rekeyed")?.convert(to: CGSize(width: 16.0, height: 16.0))?.templateImage else { return nil }
+                return ImageContent(normal: image, tintColor: .Wallet.wallet1)
             }
 
             if !isJointAccount, authorization.isNoAuth {

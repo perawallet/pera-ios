@@ -58,13 +58,6 @@ extension UndoRekeyConfirmationSheet {
         sourceAccount: Account,
         authAccount: Account
     ) -> UISheetBodyTextProvider {
-        // Match Android (PreviousRekeyUndoneConfirmationBottomSheet.kt:66-84,
-        // AnnotatedString with no markdown parsing): account names like
-        // "Shared Account #1" must render in a single body color. The body
-        // label is an ALGActiveLabel whose default enabledTypes include
-        // `.hashtag`, so the trailing "#1" / "#2" would be auto-colored as
-        // hashtags. Insert a zero-width space between `#` and the digit to
-        // break the `#\w+` hashtag regex; the ZWSP renders invisibly.
         let sourceAccountName = Self.disarmingHashtags(in: sourceAccount.primaryDisplayName)
         let authAccountName = Self.disarmingHashtags(in: authAccount.primaryDisplayName)
         let text = String(format: String(localized: "overwrite-undo-rekey-confirmation-body"), authAccountName, sourceAccountName)

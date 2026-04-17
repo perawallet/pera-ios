@@ -96,7 +96,6 @@ extension RekeyToStandardAccountInstructionsDraft {
         }
 
         if sourceAccount.isJointAccount {
-            // Match Android: no description for joint→joint flow.
             return nil
         }
 
@@ -117,6 +116,12 @@ extension RekeyToStandardAccountInstructionsDraft {
 
     private static func makeRekeyRekeyedAccountToStandardAccountBody() -> RekeyInstructionsBodyTextProvider {
         let text = String(localized: "rekey-rekeyed-to-standard-account-instructions-body")
+        let highlightedText = String(localized: "title-learn-more")
+        return Self.makeBody(text: text, highlightedText: highlightedText)
+    }
+
+    private static func makeRekeyJointAccountToJointAccountBody() -> RekeyInstructionsBodyTextProvider {
+        let text = String(localized: "rekey-shared-to-shared-account-instructions-body")
         let highlightedText = String(localized: "title-learn-more")
         return Self.makeBody(text: text, highlightedText: highlightedText)
     }

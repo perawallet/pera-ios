@@ -44,9 +44,9 @@ struct RoundedMenuRow: View {
                             .font(.DMSans.medium.size(11.0))
                             .foregroundStyle(Color.Wallet.wallet4Icon)
                             .padding(.vertical, 4.0)
-                            .padding(.horizontal, 8.0)
+                            .padding(.horizontal, 10.0)
                             .background(Color.Wallet.wallet4)
-                            .cornerRadius(8.0)
+                            .clipShape(Capsule())
                     }
                 }
                 .frame(height: 28.0)

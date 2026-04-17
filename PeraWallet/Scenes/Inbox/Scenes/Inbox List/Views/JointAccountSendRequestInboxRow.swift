@@ -33,7 +33,7 @@ struct JointAccountSendRequestInboxRow: View {
     let signedTransactionsText: String
     let deadline: Date
     
-    private let relativeDateFormatter = DefaultRelativeDateTimeFormatter(unitsStyle: .full, isNagativeValuesAllowed: true, additionalTextOption: .default)
+    private let relativeDateFormatter = DefaultRelativeDateTimeFormatter(unitsStyle: .abbreviated, isNagativeValuesAllowed: true, additionalTextOption: .default)
     
     // MARK: - Body
     
@@ -49,6 +49,8 @@ struct JointAccountSendRequestInboxRow: View {
                     Text(text)
                         .font(.DMSans.medium.size(13.0))
                         .foregroundStyle(stateViewModel.tint)
+                        .lineLimit(2)
+                        .truncationMode(.tail)
                         .padding(.trailing, 8.0)
                 }
                 Circle()

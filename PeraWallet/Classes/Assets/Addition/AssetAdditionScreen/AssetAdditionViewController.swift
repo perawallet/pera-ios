@@ -338,7 +338,9 @@ extension AssetAdditionViewController {
             openLedgerConnection(transactionController)
         case .overlayDismissed:
             dismissScreen()
-        case let .failure(error, _):
+        case let .failure(error, transactionController):
+            cancelMonitoringOptInUpdates(for: transactionController)
+            loadingController?.stopLoading()
             handle(error: error)
         case .transactionConfirmed:
             dismissScreen()

@@ -115,6 +115,14 @@ final class HomeAPIDataController:
 
         publish(.deliverInboxActionLabel(label))
     }
+    
+    func hasJointAccountRequests(for account: Account) -> Bool {
+        guard account.isJointAccount else { return false }
+            
+        let addresses = [account.address] + (account.jointAccountParticipants ?? [])
+        return inboxService.jointAccountImportRequests.value.contains { addresses.contains($0.address) } ||
+                inboxService.jointAccountSignRequests.value.contains { addresses.contains($0.jointAccount.address) }
+    }
 }
 
 extension HomeAPIDataController {

@@ -164,9 +164,6 @@ extension RekeyedAccountInformationScreen {
             $0.trailing == 0
         }
 
-        // Match Android: DefaultAccountStatusAccountActionProcessor.kt:22-41
-        // emits only the Rekey-to-Shared-Account row (alongside Rescan) for
-        // joint accounts; standard accounts get the Ledger + Standard rows.
         let options: [AccountInformationOptionItem]
         if sourceAccount.isJointAccount {
             options = [

@@ -72,6 +72,11 @@ extension AccountInformationFlowCoordinator {
             return
         }
 
+        if authorization.isJointAccountRekeyed, let authAccount = sharedDataController.authAccount(of: sourceAccount) {
+            openAccountInformationForRekeyedJointAccount(sourceAccount: sourceAccount, authAccount: authAccount.value)
+            return
+        }
+        
         if authorization.isRekeyed,
            let authAccount = sharedDataController.authAccount(of: sourceAccount) {
             openAccountInformationForRekeyedAccount(
@@ -166,6 +171,24 @@ extension AccountInformationFlowCoordinator {
             case .performImportConnectedAccounts:
                 self.openImportConnectedAccounts(account: sourceAccount)
             }
+        }
+    }
+    
+    private func openAccountInformationForRekeyedJointAccount(sourceAccount: Account, authAccount: Account) {
+        
+        let screen = transitionToAccountInformation.perform(.rekeyedJointAccountInformation(sourceAccount: sourceAccount, authAccount: authAccount), by: .presentWithoutNavigationController)
+        guard let screen = screen as? RekeyedJointAccountInformationScreen else { return }
+        
+        screen.onUndoRekeyAction = { [weak self] in
+            self?.openUndoRekey(sourceAccount)
+        }
+
+        screen.onRekeyToJointAccountAction = { [weak self] in
+            self?.openRekeyToStandardAccount(sourceAccount)
+        }
+
+        screen.onRescanRekeyedAccountsAction = { [weak self] in
+            self?.openRescanRekeyedAccounts(accounts: [sourceAccount])
         }
     }
 

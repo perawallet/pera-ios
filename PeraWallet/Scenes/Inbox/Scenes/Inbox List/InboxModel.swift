@@ -257,7 +257,6 @@ final class InboxModel: InboxModelable {
     private func displayName(for address: String) -> String {
         let shortAddress = address.shortAddressDisplay
 
-        // First check local account primary title (mirrors Android: customName / NFD).
         if let account = accountsService.accounts.value.first(where: { $0.address == address }) {
             let primary = account.titles.primary
             if !primary.isEmpty, primary != shortAddress {
@@ -277,11 +276,6 @@ final class InboxModel: InboxModelable {
         return shortAddress
     }
 
-    // Mirrors Android (SignatureRequestInboxItemMapper.kt:103-140): each backend
-    // status maps to its own visible state so the row label reflects on-chain
-    // progress accurately. Collapsing four "in-progress" statuses into a single
-    // "Pending transaction" was hiding the "fully signed but submitting"
-    // case (the "2 of 2 signed but Pending" anomaly).
     private func state(signRequest: SignRequestObject) -> InboxViewModel.SignRequestState {
         switch signRequest.status {
         case .pending: return .pending

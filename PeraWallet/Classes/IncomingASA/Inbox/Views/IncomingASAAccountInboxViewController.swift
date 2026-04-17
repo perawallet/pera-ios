@@ -53,6 +53,14 @@ final class IncomingASAAccountInboxViewController:
         return collectionView
     }()
 
+    private lazy var noContentView: NoContentView = {
+        let view = NoContentView()
+        view.customize(NoContentViewCommonTheme())
+        view.bindData(InboxNoContentViewModel())
+        view.isHidden = true
+        return view
+    }()
+
     private let dataController: IncomingASAAccountInboxDataController
     private let copyToClipboardController: CopyToClipboardController
 
@@ -85,6 +93,7 @@ final class IncomingASAAccountInboxViewController:
                     updates.snapshot,
                     animatingDifferences: true
                 )
+                self.updateNoContentVisibility(snapshot: updates.snapshot)
             case .didReceiveError(let error):
                 self.bannerController?.presentErrorBanner(
                     title: String(localized: "title-error"),
@@ -174,6 +183,24 @@ extension IncomingASAAccountInboxViewController {
     
     private func addUI() {
         addList()
+        addNoContent()
+    }
+
+    private func addNoContent() {
+        view.addSubview(noContentView)
+        noContentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+
+    private func updateNoContentVisibility(
+        snapshot: NSDiffableDataSourceSnapshot<IncomingASASection, IncomingASAItem>
+    ) {
+        let items = snapshot.itemIdentifiers
+        let hasLoading = items.contains { if case .assetLoading = $0 { return true }; return false }
+        let hasAsset = items.contains { if case .asset = $0 { return true }; return false }
+        let isEmpty = !hasLoading && !hasAsset
+        noContentView.isHidden = !isEmpty
     }
 
     private func addList() {

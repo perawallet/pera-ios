@@ -139,16 +139,9 @@ final class UndoRekeyScreen:
        case .connectionWithLedgerNeeded:
           openLedgerConnection()
        case .overlayDismissed:
-           // Match Android (UndoRekeyConfirmationViewModel.kt:93-94): success
-           // is gated on the polled sign-request reaching `.confirmed`, not on
-           // the user dismissing the pending-signatures overlay. "Close for
-           // now" lands here while signatures are still pending — don't
-           // present the success screen, just dismiss back to the rekeyed
-           // account detail. Local rekey state must NOT be saved either, as
-           // the on-chain undo hasn't happened yet.
-           finishWithoutCompletion()
+           finish(event: .dismissedSharedAccountPreviewOverlay)
        case .transactionConfirmed:
-           finishWithSuccess()
+           finish(event: .didUndoRekey)
        case let .failure(error, _):
            finish(error: error)
        }
@@ -400,11 +393,11 @@ extension UndoRekeyScreen {
         }
     }
     
-    private func finishWithSuccess() {
+    private func finish(event: Event) {
         loadingController.stopLoading()
         analytics.track(.rekeyAccount())
         saveRekeyedAccountDetails()
-        eventHandler?(.didUndoRekey)
+        eventHandler?(event)
     }
 
     private func finishWithoutCompletion() {
@@ -441,13 +434,10 @@ extension UndoRekeyScreen {
         // Joint accounts: local composition is only the first step. The real
         // success signal arrives via `JointAccountTransactionCoordinator`'s
         // `.transactionConfirmed` action when the polled sign-request reaches
-        // `.confirmed` on-chain. Calling `finishWithSuccess()` here would
-        // present the "Rekey successfully undone" screen the moment the local
-        // multisig contribution is signed — long before the other signers
-        // have signed and the transaction has been submitted.
+        // `.confirmed` on-chain.
         if sourceAccount.isJointAccount { return }
 
-        finishWithSuccess()
+        finish(event: .didUndoRekey)
     }
 
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
@@ -634,5 +624,6 @@ extension UndoRekeyScreen {
 extension UndoRekeyScreen {
     enum Event {
         case didUndoRekey
+        case dismissedSharedAccountPreviewOverlay
     }
 }

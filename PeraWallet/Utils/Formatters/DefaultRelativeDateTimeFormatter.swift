@@ -52,8 +52,6 @@ final class DefaultRelativeDateTimeFormatter: RelativeDateTimeFormatter {
 
         let adjustedDate = adjustedDate(date: date)
 
-        // Match Android: collapse anything < 60 seconds into "Just Now"
-        // (Android DateUtils.kt:118 / R.string.just_now).
         if abs(adjustedDate.timeIntervalSinceNow) < 60 {
             return String(localized: "time-ago-just-now")
         }

@@ -544,7 +544,9 @@ extension ASADiscoveryScreen {
         case .overlayDismissed:
             loadingController?.stopLoading()
             dismiss(animated: true)
-        case let .failure(error, _):
+        case let .failure(error, transactionController):
+            cancelMonitoringOptInOutUpdates(for: transactionController)
+            loadingController?.stopLoading()
             handle(error: error)
         case .transactionConfirmed:
             loadingController?.stopLoading()

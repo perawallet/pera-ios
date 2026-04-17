@@ -1105,11 +1105,14 @@ extension HomeViewController {
             case .didBackUp:
                 self.dataController.reload()
             }
-        }        
-        let requestCount = self.incomingASAsRequestList?.results
+        }
+        
+        let asaRequestCount = self.incomingASAsRequestList?.results
             .first { $0.address == account.value.address }?.requestCount ?? 0
+        let jointAccountRequestsCount = dataController.hasJointAccountRequests(for: account.value) ? 1 : 0
+        
         open(
-            .accountDetail(accountHandle: account, eventHandler: eventHandler, incomingASAsRequestsCount: requestCount),
+            .accountDetail(accountHandle: account, eventHandler: eventHandler, incomingASAsRequestsCount: asaRequestCount + jointAccountRequestsCount),
             by: .push
         )
     }

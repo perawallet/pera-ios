@@ -59,9 +59,6 @@ private extension InboxViewModel.SignRequestState {
         case .confirmed:
             return JointAccountSendRequestInboxRow.StateViewModel(text: "inbox.joint-account-send-request.state.confirmed", icon: .Icons.check, tint: .Helpers.positive)
         case let .failed(reason):
-            // Mirror Android (SignatureRequestInboxItemMapper.kt:109-113):
-            // prefer the backend-supplied human-readable reason when present,
-            // otherwise fall back to the generic "Failed transaction" label.
             let text: LocalizedStringKey
             if let trimmed = reason?.trimmingCharacters(in: .whitespacesAndNewlines), !trimmed.isEmpty {
                 text = LocalizedStringKey(trimmed)
