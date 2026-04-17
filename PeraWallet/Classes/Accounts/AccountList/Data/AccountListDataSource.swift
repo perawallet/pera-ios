@@ -33,7 +33,7 @@ final class AccountListDataSource: NSObject {
 
         super.init()
         
-        let userAccounts = sharedDataController.sortedAccounts()
+        let userAccounts = sharedDataController.sortedAccountsForDisplay()
 
         switch mode {
         case let .contact(assetDetail):

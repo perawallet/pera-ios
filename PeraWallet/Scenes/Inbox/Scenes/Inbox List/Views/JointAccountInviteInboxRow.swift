@@ -30,7 +30,7 @@ struct JointAccountInviteInboxRow: View {
     let timestamp: Date
     let onDetailsButtonTap: (() -> Void)
     
-    private let relativeDateFormatter = DefaultRelativeDateTimeFormatter(unitsStyle: .full, isNagativeValuesAllowed: true, additionalTextOption: .default)
+    private let relativeDateFormatter = DefaultRelativeDateTimeFormatter(unitsStyle: .abbreviated, isNagativeValuesAllowed: true, additionalTextOption: .default)
     
     // MARK: - Body
     
@@ -54,7 +54,7 @@ struct JointAccountInviteInboxRow: View {
                 Spacer()
             }
             HStack {
-                Text(timestamp, formatter: relativeDateFormatter)
+                RelativeDateTextView(formatter: relativeDateFormatter, date: timestamp)
                     .font(.DMSans.regular.size(13.0))
                     .foregroundStyle(Color.Text.grayLighter)
                 Spacer()

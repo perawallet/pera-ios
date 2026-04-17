@@ -244,14 +244,16 @@ struct ALGBarButtonItem: BarButtonItem {
         case .account(let account):
             let authorization = account.authorization
 
-            if authorization.isRekeyedToLedger {
+            let isJointAccount = authorization == .jointAccount || authorization.isJointAccountRekeyed
+
+            if !isJointAccount, authorization.isRekeyedToLedger {
                 return ImageContent(
                     normal: "icon-shield-16".templateImage,
                     tintColor: Colors.Wallet.wallet3Icon.uiColor
                 )
             }
 
-            if authorization.isRekeyedToStandard {
+            if !isJointAccount, authorization.isRekeyedToStandard {
                 return ImageContent(
                     normal: "icon-shield-16".templateImage,
                     tintColor: Colors.Wallet.wallet4Icon.uiColor
@@ -259,11 +261,11 @@ struct ALGBarButtonItem: BarButtonItem {
             }
             
             if authorization.isJointAccountRekeyed {
-                guard let image = UIImage.Icons.userSearch.convert(to: CGSize(width: 16.0, height: 16.0))?.templateImage else { return nil }
+                guard let image = UIImage(named: "icon-rekeyed")?.convert(to: CGSize(width: 16.0, height: 16.0))?.templateImage else { return nil }
                 return ImageContent(normal: image, tintColor: .Wallet.wallet1)
             }
 
-            if authorization.isNoAuth {
+            if !isJointAccount, authorization.isNoAuth {
                 return ImageContent(
                     normal: "icon-shield-16".templateImage,
                     tintColor: Colors.Helpers.negative.uiColor

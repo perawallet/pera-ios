@@ -160,6 +160,10 @@ extension AccountInformationFlowCoordinator {
                 self.openRekeyToLedgerAccount(sourceAccount)
             case .performRekeyToStandard:
                 self.openRekeyToStandardAccount(sourceAccount)
+            case .performRekeyToJointAccount:
+                // Match AccountDetailViewController.optionsViewControllerDidRekeyingToJointAccount
+                // (line ~715): rekey-to-joint reuses the rekey-to-standard flow.
+                self.openRekeyToStandardAccount(sourceAccount)
             case .performUndoRekey:
                 self.openUndoRekey(sourceAccount)
             case .performRescanRekeyedAccounts:
@@ -178,7 +182,11 @@ extension AccountInformationFlowCoordinator {
         screen.onUndoRekeyAction = { [weak self] in
             self?.openUndoRekey(sourceAccount)
         }
-        
+
+        screen.onRekeyToJointAccountAction = { [weak self] in
+            self?.openRekeyToStandardAccount(sourceAccount)
+        }
+
         screen.onRescanRekeyedAccountsAction = { [weak self] in
             self?.openRescanRekeyedAccounts(accounts: [sourceAccount])
         }

@@ -43,10 +43,13 @@ private extension BrowserAuthorizedAddressEventHandler {
     func makeEncodedAccountDetails(_ isAuthorizedAccountsOnly: Bool) -> String? {
         let sortedAccounts = sharedDataController.sortedAccounts(by: AccountDescendingTotalPortfolioValueAlgorithm(currency: sharedDataController.currency))
         let accounts = sortedAccounts.filter { account in
+            if account.value.authorization.isJointAccount {
+                return false
+            }
             if isAuthorizedAccountsOnly {
                 return !account.value.authorization.isLedger && account.value.authorization.isAuthorized
             }
-            
+
             return true
         }
         

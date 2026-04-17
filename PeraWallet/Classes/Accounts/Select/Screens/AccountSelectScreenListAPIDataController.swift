@@ -145,7 +145,7 @@ extension AccountSelectScreenListAPIDataController {
     }
 
     private func deliverContentSnapshot() {
-        self._accounts = sharedDataController.sortedAccounts()
+        self._accounts = sharedDataController.sortedAccountsForDisplay()
 
         self.filterAccounts()
 

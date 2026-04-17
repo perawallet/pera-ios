@@ -228,14 +228,16 @@ private extension BLEConnectionManager {
         let characteristicUuid = characteristic.uuid
         return characteristicUuid.isEqual(BLEConnectionManager.Keys.NanoX.readCharacteristicUuid) ||
             characteristicUuid.isEqual(BLEConnectionManager.Keys.Stax.readCharacteristicUuid) ||
-            characteristicUuid.isEqual(BLEConnectionManager.Keys.Flex.readCharacteristicUuid)
+            characteristicUuid.isEqual(BLEConnectionManager.Keys.Flex.readCharacteristicUuid) ||
+            characteristicUuid.isEqual(BLEConnectionManager.Keys.NanoGen5.readCharacteristicUuid)
     }
 
     public func isMatchingWithTheWriteCharacteristic(_ characteristic: CBCharacteristic) -> Bool {
         let characteristicUuid = characteristic.uuid
         return characteristicUuid.isEqual(BLEConnectionManager.Keys.NanoX.writeCharacteristicUuid) ||
             characteristicUuid.isEqual(BLEConnectionManager.Keys.Stax.writeCharacteristicUuid) ||
-            characteristicUuid.isEqual(BLEConnectionManager.Keys.Flex.writeCharacteristicUuid)
+            characteristicUuid.isEqual(BLEConnectionManager.Keys.Flex.writeCharacteristicUuid) ||
+            characteristicUuid.isEqual(BLEConnectionManager.Keys.NanoGen5.writeCharacteristicUuid)
     }
 }
 
@@ -291,9 +293,19 @@ private extension BLEConnectionManager {
             fileprivate static let writeCharacteristicUuid = CBUUID(string: writeCharacteristicValue)
             fileprivate static let readCharacteristicUuid = CBUUID(string: readCharacteristicValue)
         }
-        
+
+        enum NanoGen5 {
+            private static let serviceUuidValue = "13d63400-2c97-8004-0000-4c6564676572"
+            private static let writeCharacteristicValue = "13d63400-2c97-8004-0002-4c6564676572"
+            private static let readCharacteristicValue = "13d63400-2c97-8004-0001-4c6564676572"
+
+            fileprivate static let serviceUuid = CBUUID(string: serviceUuidValue)
+            fileprivate static let writeCharacteristicUuid = CBUUID(string: writeCharacteristicValue)
+            fileprivate static let readCharacteristicUuid = CBUUID(string: readCharacteristicValue)
+        }
+
         static var allServiceUuids: [CBUUID] {
-            [NanoX.serviceUuid, Stax.serviceUuid, Flex.serviceUuid]
+            [NanoX.serviceUuid, Stax.serviceUuid, Flex.serviceUuid, NanoGen5.serviceUuid]
         }
     }
 }

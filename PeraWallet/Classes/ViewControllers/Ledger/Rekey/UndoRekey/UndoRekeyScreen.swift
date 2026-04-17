@@ -140,6 +140,8 @@ final class UndoRekeyScreen:
           openLedgerConnection()
        case .overlayDismissed:
            finish(event: .dismissedSharedAccountPreviewOverlay)
+       case .transactionConfirmed:
+           finish(event: .didUndoRekey)
        case let .failure(error, _):
            finish(error: error)
        }
@@ -397,6 +399,11 @@ extension UndoRekeyScreen {
         saveRekeyedAccountDetails()
         eventHandler?(event)
     }
+
+    private func finishWithoutCompletion() {
+        loadingController.stopLoading()
+        dismiss(animated: true)
+    }
     
     private func finish(error: Error) {
         
@@ -424,6 +431,12 @@ extension UndoRekeyScreen {
 extension UndoRekeyScreen {
     
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
+        // Joint accounts: local composition is only the first step. The real
+        // success signal arrives via `JointAccountTransactionCoordinator`'s
+        // `.transactionConfirmed` action when the polled sign-request reaches
+        // `.confirmed` on-chain.
+        if sourceAccount.isJointAccount { return }
+
         finish(event: .didUndoRekey)
     }
 

@@ -58,8 +58,8 @@ extension UndoRekeyConfirmationSheet {
         sourceAccount: Account,
         authAccount: Account
     ) -> UISheetBodyTextProvider {
-        let sourceAccountName = sourceAccount.primaryDisplayName
-        let authAccountName =  authAccount.primaryDisplayName
+        let sourceAccountName = Self.disarmingHashtags(in: sourceAccount.primaryDisplayName)
+        let authAccountName = Self.disarmingHashtags(in: authAccount.primaryDisplayName)
         let text = String(format: String(localized: "overwrite-undo-rekey-confirmation-body"), authAccountName, sourceAccountName)
         let attributedBody = NSMutableAttributedString(
             attributedString: text.bodyRegular(alignment: .center)
@@ -98,6 +98,16 @@ extension UndoRekeyConfirmationSheet {
         )
 
         return uiSheetBody
+    }
+
+    /// Inserts a zero-width space (U+200B) between `#` and any following word
+    /// character so ActiveLabel's hashtag regex (`#\w+`) does not match.
+    private static func disarmingHashtags(in name: String) -> String {
+        return name.replacingOccurrences(
+            of: "#(?=\\w)",
+            with: "#\u{200B}",
+            options: .regularExpression
+        )
     }
 
     private func makeConfirmAction() -> UISheetAction {

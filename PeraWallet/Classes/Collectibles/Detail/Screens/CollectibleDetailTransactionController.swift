@@ -51,6 +51,11 @@ final class CollectibleDetailTransactionController {
             eventHandlers.onJointAccountTransactionRequireConnectionWithLedger?()
         case .overlayDismissed:
             eventHandlers.onJointAccountPendingTransactionOverlayDismissed?()
+        case .transactionConfirmed:
+            // Joint sign request confirmed on-chain. Treat the same as the
+            // pending-overlay dismissal for this screen — the blockchain
+            // updates monitor drives the collectible state.
+            eventHandlers.onJointAccountPendingTransactionOverlayDismissed?()
         case let .failure(error, _):
             eventHandlers.onJointAccountTransactionError?(error)
         }

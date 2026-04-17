@@ -146,6 +146,11 @@ final class ManageAssetListViewController:
             openLedgerConnection(transactionController)
         case .overlayDismissed:
             break
+        case .transactionConfirmed:
+            // Joint sign request confirmed on-chain. BlockchainUpdatesMonitor
+            // will refresh the asset-opt-in state for the joint account; the
+            // list will reload through its normal snapshot pipeline.
+            break
         case let .failure(error, _):
             handle(error: error)
         }

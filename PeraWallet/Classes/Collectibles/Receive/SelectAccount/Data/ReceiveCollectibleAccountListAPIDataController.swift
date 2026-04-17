@@ -98,7 +98,7 @@ extension ReceiveCollectibleAccountListAPIDataController {
 
     private func deliverContentSnapshot() {
         let filterAlgorithm = AuthorizedAccountListFilterAlgorithm()
-        let filteredAccounts = sharedDataController.sortedAccounts().filter(filterAlgorithm.getFormula)
+        let filteredAccounts = sharedDataController.sortedAccountsForDisplay().filter(filterAlgorithm.getFormula)
 
         if filteredAccounts.isEmpty {
             deliverNoContentSnapshot()

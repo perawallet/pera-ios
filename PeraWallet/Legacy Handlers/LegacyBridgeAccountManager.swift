@@ -67,7 +67,21 @@ enum LegacyBridgeAccountManager {
     
     static func addLocalAccount(session: Session, sharedDataController: SharedDataController, address: String, name: String, isWatchAccount: Bool, participants: [String]) throws(ManagerError) {
         guard let authenticatedUser = session.authenticatedUser else { throw .unableToCreateLocalAccount }
-        let accountInformation = AccountInformation(address: address, name: name, isWatchAccount: isWatchAccount, preferredOrder: sharedDataController.getPreferredOrderForNewAccount(), isBackedUp: false, jointAccountParticipants: participants)
+        // Joint accounts don't have a seed phrase that lives on this device —
+        // each participant is responsible for backing up their own signer key.
+        // Marking the joint account itself as backed-up at creation time keeps
+        // it out of every "not backed up" warning surface (home critical
+        // banner, row badge, backup-account selection list) without each
+        // surface having to special-case `isJointAccount`.
+        let isJointAccount = !participants.isEmpty
+        let accountInformation = AccountInformation(
+            address: address,
+            name: name,
+            isWatchAccount: isWatchAccount,
+            preferredOrder: sharedDataController.getPreferredOrderForNewAccount(),
+            isBackedUp: isJointAccount,
+            jointAccountParticipants: participants
+        )
         authenticatedUser.addAccount(accountInformation)
     }
     

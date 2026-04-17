@@ -34,7 +34,7 @@ struct RekeyedAccountInformationAccountItemViewModel: ViewModel {
 
 extension RekeyedAccountInformationAccountItemViewModel {
     private mutating func bindSourceAccount(_ sourceAccount: Account) {
-        self.sourceAccount = AccountInformationCopyAccountItemViewModel(sourceAccount)
+        self.sourceAccount = SourceAccountItem(sourceAccount)
     }
 
     private mutating func bindAuthAccount(sourceAccount: Account, authAccount: Account?) {
@@ -43,6 +43,28 @@ extension RekeyedAccountInformationAccountItemViewModel {
         } else {
             let authAddress = sourceAccount.authAddress.someString
             self.authAccount = AccountInformationNoAuthAccountItemViewModel(authAddress)
+        }
+    }
+}
+
+extension RekeyedAccountInformationAccountItemViewModel {
+    /// Source-row view model scoped to the Rekeyed Account overlay.
+    /// Uses `typeImage` (current state) so a joint-rekeyed source renders the
+    /// rekeyed shield asset instead of the underlying joint identity.
+    private struct SourceAccountItem: AccountListItemWithActionViewModel {
+        private(set) var content: AccountListItemViewModel?
+        private(set) var action: ButtonStyle?
+
+        init(_ account: Account) {
+            var viewModel = AccountListItemViewModel(account)
+            viewModel.bindIcon(account.typeImage)
+            content = viewModel
+
+            let icon = "icon-copy-gray-24".templateImage
+            action = [
+                .tintColor(Colors.Text.grayLighter),
+                .icon([ .normal(icon), .highlighted(icon) ])
+            ]
         }
     }
 }

@@ -40,6 +40,8 @@ final class CreateJointAccountAddAccountViewModel: ObservableObject {
     enum ErrorMessage: Error {
         case unableToFetchNFDs(error: Error)
         case unableToFetchContacts(error: Error)
+        case sharedAccountNotAllowed
+        case unableToVerifyParticipant(error: Error)
     }
     
     struct SectionModel: Identifiable {
@@ -68,6 +70,7 @@ final class CreateJointAccountAddAccountViewModel: ObservableObject {
     @Published fileprivate(set) var accountsListSections: [SectionModel] = []
     @Published fileprivate(set) var selectedAccount: AddedAccountData?
     @Published fileprivate(set) var error: ErrorMessage?
+    @Published fileprivate(set) var isValidatingParticipant: Bool = false
 }
 
 protocol CreateJointAccountAddAccountModelable {
@@ -91,6 +94,7 @@ final class CreateJointAccountAddAccountModel: CreateJointAccountAddAccountModel
     private let accountsService: AccountsServiceable
     private let currencyService: CurrencyServiceable
     private let nfdService: NonFungibleDomainServiceable
+    private let legacyBannerController: BannerController?
     
     private let algoCurrencyFormatter: CurrencyFormatter = {
         let formatter = CurrencyFormatter()
@@ -107,10 +111,11 @@ final class CreateJointAccountAddAccountModel: CreateJointAccountAddAccountModel
     
     // MARK: - Initialisers
     
-    init(accountsService: AccountsServiceable, currencyService: CurrencyServiceable, nfdService: NonFungibleDomainServiceable) {
+    init(accountsService: AccountsServiceable, currencyService: CurrencyServiceable, nfdService: NonFungibleDomainServiceable, legacyBannerController: BannerController?) {
         self.accountsService = accountsService
         self.currencyService = currencyService
         self.nfdService = nfdService
+        self.legacyBannerController = legacyBannerController
         setupCallbacks()
     }
     
@@ -243,12 +248,12 @@ final class CreateJointAccountAddAccountModel: CreateJointAccountAddAccountModel
     }
     
     func select(normalAccount: CreateJointAccountAddAccountViewModel.AccountModel) {
-        
+
         let isUserAccount = accountsService.accounts.value
             .first { $0.address == normalAccount.address }
             .map { $0.isValid && $0.type != .watch } ?? false
-        
-        viewModel.selectedAccount = AddedAccountData(
+
+        let selection = AddedAccountData(
             address: normalAccount.address,
             image: normalAccount.image,
             title: normalAccount.title,
@@ -256,16 +261,53 @@ final class CreateJointAccountAddAccountModel: CreateJointAccountAddAccountModel
             isEditable: normalAccount.isContact,
             isUserAccount: isUserAccount
         )
+        validateAndSelect(address: normalAccount.address, selection: selection)
     }
-    
+
     func select(specialAccount: CreateJointAccountAddAccountViewModel.SimplifiedAccountModel) {
-        viewModel.selectedAccount = AddedAccountData(
+        let selection = AddedAccountData(
             address: specialAccount.id,
             image: .placeholderUserIconData,
             title: specialAccount.title,
             subtitle: specialAccount.subtitle,
             isEditable: true,
             isUserAccount: false
+        )
+        validateAndSelect(address: specialAccount.id, selection: selection)
+    }
+
+    private func validateAndSelect(address: String, selection: AddedAccountData) {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            self.viewModel.isValidatingParticipant = true
+            defer { self.viewModel.isValidatingParticipant = false }
+            do {
+                let responses = try await self.accountsService.checkIsJointAccount(addresses: [address])
+                let isSharedAccount = responses.contains { $0.isJointAccount == true }
+                if isSharedAccount {
+                    self.viewModel.error = .sharedAccountNotAllowed
+                    self.showSharedAccountNotAllowedBanner()
+                    return
+                }
+                self.viewModel.selectedAccount = selection
+            } catch {
+                self.viewModel.error = .unableToVerifyParticipant(error: error)
+                self.showUnableToVerifyParticipantBanner()
+            }
+        }
+    }
+
+    private func showSharedAccountNotAllowedBanner() {
+        legacyBannerController?.presentErrorBanner(
+            title: String(localized: "title-error"),
+            message: String(localized: "create-joint-account-shared-account-not-allowed")
+        )
+    }
+
+    private func showUnableToVerifyParticipantBanner() {
+        legacyBannerController?.presentErrorBanner(
+            title: String(localized: "title-error"),
+            message: String(localized: "create-joint-account-unable-to-verify-participant")
         )
     }
     

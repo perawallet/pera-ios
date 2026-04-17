@@ -24,6 +24,7 @@ final class RekeyedJointAccountInformationScreen: MacaroonUIKit.ScrollScreen, Bo
     // MARK: - Properties
     
     var onUndoRekeyAction: (() -> Void)?
+    var onRekeyToJointAccountAction: (() -> Void)?
     var onRescanRekeyedAccountsAction: (() -> Void)?
     
     private let sourceAccount: Account
@@ -149,6 +150,7 @@ final class RekeyedJointAccountInformationScreen: MacaroonUIKit.ScrollScreen, Bo
     }
     
     private func setupOptionsView() {
+        optionsView.addOption(makeRekeyToJointAccountItem())
         optionsView.addOption(makeRescanRekeyedAccountsItem())
     }
     
@@ -170,6 +172,12 @@ final class RekeyedJointAccountInformationScreen: MacaroonUIKit.ScrollScreen, Bo
     
     // MARK: - Helpers
     
+    private func makeRekeyToJointAccountItem() -> AccountInformationOptionItem {
+        AccountInformationOptionItem(viewModel: .rekeyToJointAccount) { [weak self] in
+            self?.onRekeyToJointAccountAction?()
+        }
+    }
+
     private func makeRescanRekeyedAccountsItem() -> AccountInformationOptionItem {
         AccountInformationOptionItem(viewModel: .rescanRekeyedAccounts) { [weak self] in
             self?.onRescanRekeyedAccountsAction?()

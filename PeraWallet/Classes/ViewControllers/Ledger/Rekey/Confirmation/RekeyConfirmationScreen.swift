@@ -140,6 +140,11 @@ final class RekeyConfirmationScreen:
             openLedgerConnection()
         case .overlayDismissed:
             finish(showSuccessMessage: false)
+        case .transactionConfirmed:
+            // Joint sign request for the rekey confirmed on-chain — finish with
+            // the success confirmation. Mirrors the Item 14 undo-rekey gate:
+            // local signing alone isn't enough; we wait for on-chain inclusion.
+            finish(showSuccessMessage: true)
         case let .failure(error, _):
             finish(error: error)
         }

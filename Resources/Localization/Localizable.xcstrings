@@ -568,7 +568,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Enhanced security by requiring multiple approvals—great for shared or high-value accounts."
+            "value" : "Enhanced security by requiring multiple approvals. Great for shared or high-value accounts."
           }
         }
       }
@@ -588,7 +588,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Assign signers and required approvals per transaction."
+            "value" : "Monitor activity and signer actions securely."
           }
         }
       }
@@ -2184,7 +2184,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "If you’re having Ledger Nano X connection issues, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Pera Wallet instructions."
+            "value" : "If you’re having Ledger connection issues, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Pera Wallet instructions."
           }
         }
       }
@@ -3299,6 +3299,26 @@
         }
       }
     },
+    "create-joint-account-shared-account-not-allowed" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shared accounts cannot be added to a new shared account"
+          }
+        }
+      }
+    },
+    "create-joint-account-unable-to-verify-participant" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not verify participant. Please try again."
+          }
+        }
+      }
+    },
     "create-joint-account-button-remove" : {
       "localizations" : {
         "en" : {
@@ -3909,6 +3929,26 @@
         }
       }
     },
+    "inbox-empty-state-subtitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When you have requests or invitations, you can view them here. Tap on the info icon to learn more about this feature."
+          }
+        }
+      }
+    },
+    "inbox-empty-state-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Pending Requests"
+          }
+        }
+      }
+    },
     "inbox-joint-account-import-request-title-%@" : {
       "localizations" : {
         "en" : {
@@ -3961,6 +4001,36 @@
         }
       }
     },
+    "inbox.joint-account-send-request.state.confirmed" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transaction successfully completed"
+          }
+        }
+      }
+    },
+    "inbox.joint-account-send-request.state.declined" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Declined transaction"
+          }
+        }
+      }
+    },
+    "inbox.joint-account-send-request.state.expired" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expired transaction"
+          }
+        }
+      }
+    },
     "inbox.joint-account-send-request.state.failed" : {
       "localizations" : {
         "en" : {
@@ -3979,6 +4049,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pending transaction"
+          }
+        }
+      }
+    },
+    "inbox.joint-account-send-request.state.submitting" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Submitting transaction"
           }
         }
       }
@@ -4883,7 +4963,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Having Ledger Nano X connection issues?"
+            "value" : "Having Ledger connection issues?"
           }
         }
       }
@@ -7098,6 +7178,28 @@
         }
       }
     },
+    "rekeyed-account-type-joint-to-joint-description" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your account is rekeyed to another shared account. Transactions for this account will be authorized by the other account."
+          }
+        }
+      }
+    },
+    "rekeyed-account-type-joint-to-joint-title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rekeyed (Shared Account to Shared Account)"
+          }
+        }
+      }
+    },
     "remove-auth-account-rekeyed-accounts-error-title" : {
       "localizations" : {
         "en" : {
@@ -9046,6 +9148,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "・"
+          }
+        }
+      }
+    },
+    "time-ago-just-now" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Just Now"
           }
         }
       }

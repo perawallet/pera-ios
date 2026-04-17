@@ -33,6 +33,11 @@ where Self == RescanRekeyedAccountsInformationOptionItemViewModel {
     static var rescanRekeyedAccounts: Self { Self() }
 }
 
+extension AccountInformationOptionItemViewModel
+where Self == RekeyToJointAccountInformationOptionItemViewModel {
+    static var rekeyToJointAccount: Self { Self() }
+}
+
 struct RekeyToLedgerAccountInformationOptionItemViewModel: AccountInformationOptionItemViewModel {
     private(set) var icon: Image?
     private(set) var title: EditText?
@@ -71,4 +76,19 @@ struct RescanRekeyedAccountsInformationOptionItemViewModel: AccountInformationOp
     )
     let subtitle: EditText? = nil
     var accessory: Image? = "icon-arrow-24".templateImage
+}
+
+struct RekeyToJointAccountInformationOptionItemViewModel: AccountInformationOptionItemViewModel {
+    private(set) var icon: Image?
+    private(set) var title: EditText?
+    private(set) var subtitle: EditText?
+    private(set) var accessory: Image?
+
+    init() {
+        title = .attributedString(
+            String(localized: "title-rekey-to-joint-account")
+                .bodyRegular(lineBreakMode: .byTruncatingTail)
+        )
+        accessory = "icon-arrow-24".templateImage
+    }
 }

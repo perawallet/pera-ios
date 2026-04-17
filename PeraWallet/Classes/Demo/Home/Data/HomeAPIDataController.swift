@@ -92,20 +92,27 @@ final class HomeAPIDataController:
     }
     
     private func handleInboxButtonLabel(jointAccountImportRequests: [MultiSigAccountObject], jointAccountSignRequests: [SignRequestObject], algorandStandardAssetInboxes: [ASAInboxMeta]) {
-        
+
         let label: String?
         let assetsRequestsCount = algorandStandardAssetInboxes.map(\.requestCount).reduce(0, +)
-        
-        if jointAccountImportRequests.count > 0 {
+        // Defensive belt-and-suspenders — `InboxService` already force-clears
+        // the joint publishers when the flag is off, but treating these as
+        // zero here means a stray emission can't surface the "Sign txn
+        // request" pill to a user who shouldn't see joint-account UI.
+        let isJointAccountEnabled = featureFlagService.isEnabled(.jointAccountEnabled)
+        let visibleJointImportCount = isJointAccountEnabled ? jointAccountImportRequests.count : 0
+        let visibleJointSignCount = isJointAccountEnabled ? jointAccountSignRequests.count : 0
+
+        if visibleJointImportCount > 0 {
             label = String(localized: "home-inbox-button-joint-account-request")
-        } else if jointAccountSignRequests.count > 0 {
+        } else if visibleJointSignCount > 0 {
             label = String(localized: "home-inbox-button-sign-request")
         } else if assetsRequestsCount > 0 {
             label = String(localized: "home-inbox-button-standard-asset-\(assetsRequestsCount)")
         } else {
             label = nil
         }
-        
+
         publish(.deliverInboxActionLabel(label))
     }
     
@@ -340,7 +347,7 @@ extension HomeAPIDataController {
             
             guard let self else { return nil }
             
-            let accounts = self.sharedDataController.sortedAccounts()
+            let accounts = self.sharedDataController.sortedAccountsForDisplay()
             let currency = self.sharedDataController.currency
             let isAmountHidden = ObservableUserDefaults.shared.isPrivacyModeEnabled
             

@@ -71,10 +71,12 @@ extension MoonPayAccountSelectionListLocalDataController {
 
             self.deliverLoadingSnapshot()
 
-            let sortedAccounts = self.sharedDataController.sortedAccounts()
+            let sortedAccounts = self.sharedDataController.sortedAccountsForDisplay()
 
             let filterAlgorithm = AuthorizedAccountListFilterAlgorithm()
-            let filteredAccounts = sortedAccounts.filter(filterAlgorithm.getFormula)
+            let filteredAccounts = sortedAccounts
+                .filter(filterAlgorithm.getFormula)
+                .filter { !$0.value.authorization.isJointAccount }
 
             self.accounts = filteredAccounts
 

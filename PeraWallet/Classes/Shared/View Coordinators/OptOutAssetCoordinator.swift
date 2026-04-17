@@ -56,6 +56,10 @@ final class OptOutAssetCoordinator {
             openLedgerConnection(transactionController: transactionController, account: selectedAccount)
         case .overlayDismissed:
             break
+        case .transactionConfirmed:
+            // Joint sign request confirmed on-chain. BlockchainUpdatesMonitor
+            // will emit the opt-out update; nothing extra to do here.
+            break
         case let .failure(error, _):
             handle(error: error)
         }

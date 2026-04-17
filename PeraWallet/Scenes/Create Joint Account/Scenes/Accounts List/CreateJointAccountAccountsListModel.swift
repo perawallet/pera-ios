@@ -68,7 +68,8 @@ final class CreateJointAccountAccountsListModel: CreateJointAccountAccountsListM
     private lazy var addAccountModel = CreateJointAccountAddAccountModel(
         accountsService: PeraCoreManager.shared.accounts,
         currencyService: PeraCoreManager.shared.currencies,
-        nfdService: PeraCoreManager.shared.nfd
+        nfdService: PeraCoreManager.shared.nfd,
+        legacyBannerController: AppDelegate.shared?.appConfiguration.bannerController
     )
     
     var sharedAddAccountModel: CreateJointAccountAddAccountModelable { addAccountModel }

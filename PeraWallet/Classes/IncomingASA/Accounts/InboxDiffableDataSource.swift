@@ -14,6 +14,7 @@
 
 //   InboxDiffableDataSource.swift
 
+import SwiftUI
 import UIKit
 import pera_wallet_core
 
@@ -48,13 +49,27 @@ final class InboxDiffableDataSource: UICollectionViewDiffableDataSource<Int, Inb
 }
 
 private extension InboxViewModel.SignRequestState {
-    
+
     var viewModel: JointAccountSendRequestInboxRow.StateViewModel {
         switch self {
         case .pending:
-            JointAccountSendRequestInboxRow.StateViewModel(text: "inbox.joint-account-send-request.state.pending", icon: .Icons.hourglass, tint: .Global.Yellow._600)
-        case .failed:
-            JointAccountSendRequestInboxRow.StateViewModel(text: "inbox.joint-account-send-request.state.failed", icon: .Icons.error, tint: .Helpers.negative)
+            return JointAccountSendRequestInboxRow.StateViewModel(text: "inbox.joint-account-send-request.state.pending", icon: .Icons.hourglass, tint: .Global.Yellow._600)
+        case .submitting:
+            return JointAccountSendRequestInboxRow.StateViewModel(text: "inbox.joint-account-send-request.state.submitting", icon: .Icons.hourglass, tint: .Global.Yellow._600)
+        case .confirmed:
+            return JointAccountSendRequestInboxRow.StateViewModel(text: "inbox.joint-account-send-request.state.confirmed", icon: .Icons.check, tint: .Helpers.positive)
+        case let .failed(reason):
+            let text: LocalizedStringKey
+            if let trimmed = reason?.trimmingCharacters(in: .whitespacesAndNewlines), !trimmed.isEmpty {
+                text = LocalizedStringKey(trimmed)
+            } else {
+                text = "inbox.joint-account-send-request.state.failed"
+            }
+            return JointAccountSendRequestInboxRow.StateViewModel(text: text, icon: .Icons.error, tint: .Helpers.negative)
+        case .expired:
+            return JointAccountSendRequestInboxRow.StateViewModel(text: "inbox.joint-account-send-request.state.expired", icon: .Icons.error, tint: .Helpers.negative)
+        case .declined:
+            return JointAccountSendRequestInboxRow.StateViewModel(text: "inbox.joint-account-send-request.state.declined", icon: .Icons.error, tint: .Helpers.negative)
         }
     }
 }

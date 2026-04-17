@@ -87,10 +87,17 @@ public final class AccountInformation: Codable {
         receivesNotification = try container.decodeIfPresent(Bool.self, forKey: .receivesNotification) ?? true
         rekeyDetail = try container.decodeIfPresent(RekeyDetail.self, forKey: .rekeyDetail)
         preferredOrder = try container.decodeIfPresent(Int.self, forKey: .preferredOrder) ?? Self.invalidOrder
-        isBackedUp = try container.decodeIfPresent(Bool.self, forKey: .isBackedUp) ?? true
         hdWalletAddressDetail = try container.decodeIfPresent(HDWalletAddressDetail.self, forKey: .hdWalletAddressDetail)
         jointAccountParticipants = try container.decodeIfPresent([String].self, forKey: .jointAccountParticipants)
         nfDomain = try container.decodeIfPresent(String.self, forKey: .nfDomain)
+        // Joint accounts are never surfaced in backup flows — there is no local
+        // seed to protect, each participant backs up their own signer. Force
+        // `isBackedUp = true` for any joint account, including installs that
+        // predate LegacyBridgeAccountManager.addLocalAccount's creation-time
+        // fix, so existing rows also drop out of every "not backed up" warning.
+        let decodedIsBackedUp = try container.decodeIfPresent(Bool.self, forKey: .isBackedUp) ?? true
+        let isJointAccount = jointAccountParticipants?.isEmpty == false
+        isBackedUp = isJointAccount ? true : decodedIsBackedUp
     }
 }
 

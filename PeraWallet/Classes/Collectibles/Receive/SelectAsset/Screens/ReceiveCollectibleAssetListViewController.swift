@@ -156,6 +156,10 @@ final class ReceiveCollectibleAssetListViewController:
             openLedgerConnection(transactionController)
         case .overlayDismissed:
             break
+        case .transactionConfirmed:
+            // Joint sign request confirmed on-chain. BlockchainUpdatesMonitor
+            // will refresh asset-opt-in state; nothing to do here.
+            break
         case let .failure(error, transactionController):
             handle(error: error, transactionController: transactionController)
         }
