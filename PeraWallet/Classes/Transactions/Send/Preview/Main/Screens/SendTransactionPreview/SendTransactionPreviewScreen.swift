@@ -414,9 +414,6 @@ extension SendTransactionPreviewScreen {
          
          if draft.from.requiresLedgerConnection() {
             openLedgerConnection()
-            
-            transactionController.initializeLedgerTransactionAccount()
-            transactionController.startTimer()
             return
          }
          
@@ -631,6 +628,11 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
       
       loadingController?.stopLoading()
       cancelMonitoringOptOutUpdatesIfNeeded(for: transactionController)
+   }
+   
+   func transactionControllerDidResetLedgerOperationOnSuccess(_ transactionController: TransactionController) {
+      signWithLedgerProcessScreen?.dismissScreen()
+      signWithLedgerProcessScreen = nil
    }
 }
 
