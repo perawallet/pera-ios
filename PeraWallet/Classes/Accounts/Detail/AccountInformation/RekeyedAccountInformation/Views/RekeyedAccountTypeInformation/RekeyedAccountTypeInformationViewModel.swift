@@ -57,7 +57,7 @@ extension RekeyedAccountTypeInformationViewModel {
         } else if authorization.isUnknownToStandardRekeyed {
             icon = makeUnknownAccountToStandardAccountRekeyedAccountTypeIcon()
         } else if authorization.isJointAccountRekeyed {
-            icon = makeJointAccountRekeyedAccountTypeIcon()
+            icon = makeJointAccountToJointAccountRekeyedAccountTypeIcon()
         } else {
             icon = nil
         }
@@ -83,7 +83,7 @@ extension RekeyedAccountTypeInformationViewModel {
         } else if authorization.isUnknownToStandardRekeyed {
             title = makeUnknownAccountToStandardAccountRekeyedAccountTypeTitle()
         } else if authorization.isJointAccountRekeyed {
-            title = makeJointAccountRekeyedAccountTypeTitle()
+            title = makeJointAccountToJointAccountRekeyedAccountTypeTitle()
         } else {
             title = nil
         }
@@ -135,16 +135,10 @@ extension RekeyedAccountTypeInformationViewModel {
 }
 
 extension RekeyedAccountTypeInformationViewModel {
-    private mutating func makeLedgerAccountToLedgerAccountRekeyedAccountTypeIcon() -> Image {
-        return "icon-any-to-ledger-rekeyed-account".uiImage
-    }
-
-    private mutating func makeLedgerAccountToLedgerAccountRekeyedAccountTypeTitle() -> TextProvider {
-        return makeTypeTitle(text: String(localized: "title-ledger-to-ledger-rekeyed"))
-    }
-
+    private mutating func makeLedgerAccountToLedgerAccountRekeyedAccountTypeIcon() -> Image { "icon-any-to-ledger-rekeyed-account".uiImage }
+    private mutating func makeLedgerAccountToLedgerAccountRekeyedAccountTypeTitle() -> TextProvider { makeTypeTitle(text: String(localized: "title-ledger-to-ledger-rekeyed")) }
     private mutating func makeLedgerAccountToLedgerAccountRekeyedAccountTypeDescription() -> TypeDescriptionTextProvider {
-        return makeTypeDescription(
+        makeTypeDescription(
             text:  String(localized: "ledger-to-ledger-rekeyed-account-type-description"),
             highlightedText: String(localized: "title-learn-more")
         )
@@ -152,16 +146,10 @@ extension RekeyedAccountTypeInformationViewModel {
 }
 
 extension RekeyedAccountTypeInformationViewModel {
-    private mutating func makeLedgerAccountToStandardAccountRekeyedAccountTypeIcon() -> Image {
-        return "icon-any-to-standard-rekeyed-account".uiImage
-    }
-
-    private mutating func makeLedgerAccountToStandardAccountRekeyedAccountTypeTitle() -> TextProvider {
-        return makeTypeTitle(text: String(localized: "title-ledger-to-standard-rekeyed"))
-    }
-
+    private mutating func makeLedgerAccountToStandardAccountRekeyedAccountTypeIcon() -> Image { "icon-any-to-standard-rekeyed-account".uiImage }
+    private mutating func makeLedgerAccountToStandardAccountRekeyedAccountTypeTitle() -> TextProvider { makeTypeTitle(text: String(localized: "title-ledger-to-standard-rekeyed")) }
     private mutating func makeLedgerAccountToStandardAccountRekeyedAccountTypeDescription() -> TypeDescriptionTextProvider {
-        return makeTypeDescription(
+        makeTypeDescription(
             text: String(localized: "ledger-to-standard-rekeyed-account-type-description"),
             highlightedText: String(localized: "title-learn-more")
         )
@@ -169,16 +157,10 @@ extension RekeyedAccountTypeInformationViewModel {
 }
 
 extension RekeyedAccountTypeInformationViewModel {
-    private mutating func makeStandardAccountToLedgerAccountRekeyedAccountTypeIcon() -> Image {
-        return "icon-any-to-ledger-rekeyed-account".uiImage
-    }
-
-    private mutating func makeStandardAccountToLedgerAccountRekeyedAccountTypeTitle() -> TextProvider {
-        return makeTypeTitle(text: String(localized: "title-standard-to-ledger-rekeyed"))
-    }
-
+    private mutating func makeStandardAccountToLedgerAccountRekeyedAccountTypeIcon() -> Image { "icon-any-to-ledger-rekeyed-account".uiImage }
+    private mutating func makeStandardAccountToLedgerAccountRekeyedAccountTypeTitle() -> TextProvider { makeTypeTitle(text: String(localized: "title-standard-to-ledger-rekeyed")) }
     private mutating func makeStandardAccountToLedgerAccountRekeyedAccountTypeDescription() -> TypeDescriptionTextProvider {
-        return makeTypeDescription(
+        makeTypeDescription(
             text: String(localized: "standard-to-ledger-rekeyed-account-type-description"),
             highlightedText: String(localized: "title-learn-more")
         )
@@ -186,16 +168,10 @@ extension RekeyedAccountTypeInformationViewModel {
 }
 
 extension RekeyedAccountTypeInformationViewModel {
-    private mutating func makeStandardAccountToStandardAccountRekeyedAccountTypeIcon() -> Image {
-        return "icon-any-to-standard-rekeyed-account".uiImage
-    }
-
-    private mutating func makeStandardAccountToStandardAccountRekeyedAccountTypeTitle() -> TextProvider {
-        return makeTypeTitle(text: String(localized: "title-standard-to-standard-rekeyed"))
-    }
-
+    private mutating func makeStandardAccountToStandardAccountRekeyedAccountTypeIcon() -> Image { "icon-any-to-standard-rekeyed-account".uiImage }
+    private mutating func makeStandardAccountToStandardAccountRekeyedAccountTypeTitle() -> TextProvider { makeTypeTitle(text: String(localized: "title-standard-to-standard-rekeyed")) }
     private mutating func makeStandardAccountToStandardAccountRekeyedAccountTypeDescription() -> TypeDescriptionTextProvider {
-        return makeTypeDescription(
+        makeTypeDescription(
             text: String(localized: "standard-to-standard-rekeyed-account-type-description"),
             highlightedText: String(localized: "title-learn-more")
         )
@@ -203,20 +179,11 @@ extension RekeyedAccountTypeInformationViewModel {
 }
 
 extension RekeyedAccountTypeInformationViewModel {
-    private mutating func makeUnknownAccountToStandardAccountRekeyedAccountTypeIcon() -> Image {
-        return "icon-any-to-standard-rekeyed-account".uiImage
-    }
-
-    private mutating func makeUnknownAccountToStandardAccountRekeyedAccountTypeTitle() -> TextProvider {
-        return makeTypeTitle(text: String(localized: "title-unknown-to-standard-rekeyed"))
-    }
-
-    private mutating func makeUnknownAccountToStandardAccountRekeyedAccountTypeFootnote() -> TextProvider {
-        return makeTypeFootnote(text: String(localized: "no-record-of-original-account-type-footnote"))
-    }
-
+    private mutating func makeUnknownAccountToStandardAccountRekeyedAccountTypeIcon() -> Image { "icon-any-to-standard-rekeyed-account".uiImage }
+    private mutating func makeUnknownAccountToStandardAccountRekeyedAccountTypeTitle() -> TextProvider { makeTypeTitle(text: String(localized: "title-unknown-to-standard-rekeyed")) }
+    private mutating func makeUnknownAccountToStandardAccountRekeyedAccountTypeFootnote() -> TextProvider { makeTypeFootnote(text: String(localized: "no-record-of-original-account-type-footnote")) }
     private mutating func makeUnknownAccountToStandardAccountRekeyedAccountTypeDescription() -> TypeDescriptionTextProvider {
-        return makeTypeDescription(
+        makeTypeDescription(
             text: String(localized: "standard-to-standard-rekeyed-account-type-description"),
             highlightedText: String(localized: "title-learn-more")
         )
@@ -224,20 +191,11 @@ extension RekeyedAccountTypeInformationViewModel {
 }
 
 extension RekeyedAccountTypeInformationViewModel {
-    private mutating func makeUnknownAccountToLedgerAccountRekeyedAccountTypeIcon() -> Image {
-        return "icon-any-to-ledger-rekeyed-account".uiImage
-    }
-
-    private mutating func makeUnknownAccountToLedgerAccountRekeyedAccountTypeTitle() -> TextProvider {
-        return makeTypeTitle(text: String(localized: "title-unknown-to-ledger-rekeyed"))
-    }
-
-    private mutating func makeUnknownAccountToLedgerAccountRekeyedAccountTypeFootnote() -> TextProvider {
-        return makeTypeFootnote(text: String(localized: "no-record-of-original-account-type-footnote"))
-    }
-
+    private mutating func makeUnknownAccountToLedgerAccountRekeyedAccountTypeIcon() -> Image { "icon-any-to-ledger-rekeyed-account".uiImage }
+    private mutating func makeUnknownAccountToLedgerAccountRekeyedAccountTypeTitle() -> TextProvider { makeTypeTitle(text: String(localized: "title-unknown-to-ledger-rekeyed")) }
+    private mutating func makeUnknownAccountToLedgerAccountRekeyedAccountTypeFootnote() -> TextProvider { makeTypeFootnote(text: String(localized: "no-record-of-original-account-type-footnote")) }
     private mutating func makeUnknownAccountToLedgerAccountRekeyedAccountTypeDescription() -> TypeDescriptionTextProvider {
-        return makeTypeDescription(
+        makeTypeDescription(
             text: String(localized: "standard-to-ledger-rekeyed-account-type-description"),
             highlightedText: String(localized: "title-learn-more")
         )
@@ -245,22 +203,21 @@ extension RekeyedAccountTypeInformationViewModel {
 }
 
 extension RekeyedAccountTypeInformationViewModel{
-    private func makeJointAccountRekeyedAccountTypeIcon() -> Image { "icon-joint-to-joint-account-rekeyed-account".uiImage }
-    private func makeJointAccountRekeyedAccountTypeTitle() -> TextProvider { makeTypeTitle(text: String(localized: "title-joint-account-to-joint-account-rekeyed")) }
-    private func makeJointAccountToJointAccountRekeyedAccountTypeDescription() -> TypeDescriptionTextProvider {
-        makeTypeDescription(text: String(localized: "joint-account-to-joint-account-rekeyed-account-type-description"), highlightedText: String(localized: "title-learn-more"))
+    private mutating func makeJointAccountToJointAccountRekeyedAccountTypeIcon() -> Image { "icon-any-to-standard-rekeyed-account".uiImage }
+    private mutating func makeJointAccountToJointAccountRekeyedAccountTypeTitle() -> TextProvider { makeTypeTitle(text: String(localized: "rekeyed-account-type-joint-to-joint-title")) }
+    private mutating func makeJointAccountToJointAccountRekeyedAccountTypeDescription() -> TypeDescriptionTextProvider {
+        makeTypeDescription(
+            text: String(localized: "rekeyed-account-type-joint-to-joint-description"),
+            highlightedText: String(localized: "title-learn-more")
+        )
     }
+    private mutating func makeJointAccountRekeyedAccountTypeIcon() -> Image { "icon-joint-to-joint-account-rekeyed-account".uiImage }
+    private mutating func makeJointAccountRekeyedAccountTypeTitle() -> TextProvider { makeTypeTitle(text: String(localized: "title-joint-account-to-joint-account-rekeyed")) }
 }
 
 extension RekeyedAccountTypeInformationViewModel {
-    private func makeTypeTitle(text: String) -> TextProvider {
-        return text.bodyMedium(lineBreakMode: .byTruncatingTail)
-    }
-
-    private func makeTypeFootnote(text: String) -> TextProvider {
-        return text.footnoteRegular(lineBreakMode: .byTruncatingTail)
-    }
-
+    private func makeTypeTitle(text: String) -> TextProvider { text.bodyMedium(lineBreakMode: .byTruncatingTail) }
+    private func makeTypeFootnote(text: String) -> TextProvider { text.footnoteRegular(lineBreakMode: .byTruncatingTail) }
     private func makeTypeDescription(
         text: String,
         highlightedText: String

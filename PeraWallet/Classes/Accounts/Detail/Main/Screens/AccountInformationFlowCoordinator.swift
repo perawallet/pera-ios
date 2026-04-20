@@ -160,6 +160,8 @@ extension AccountInformationFlowCoordinator {
                 self.openRekeyToLedgerAccount(sourceAccount)
             case .performRekeyToStandard:
                 self.openRekeyToStandardAccount(sourceAccount)
+            case .performRekeyToJointAccount:
+                self.openRekeyToStandardAccount(sourceAccount)
             case .performUndoRekey:
                 self.openUndoRekey(sourceAccount)
             case .performRescanRekeyedAccounts:
