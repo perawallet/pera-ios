@@ -18,9 +18,9 @@ import Foundation
 import MacaroonUIKit
 
 struct InboxNoContentViewModel: NoContentViewModel {
-    private(set) var icon: Image? = nil
-    private(set) var title: TextProvider?
-    private(set) var body: TextProvider?
+    let icon: Image? = nil
+    let title: TextProvider?
+    let body: TextProvider?
 
     init() {
         title = String(localized: "inbox-empty-state-title")
