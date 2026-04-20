@@ -9070,6 +9070,16 @@
         }
       }
     },
+    "time-ago-just-now" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Just Now"
+          }
+        }
+      }
+    },
     "tite-pinging" : {
       "localizations" : {
         "en" : {
