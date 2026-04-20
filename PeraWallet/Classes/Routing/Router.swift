@@ -507,6 +507,7 @@ final class Router:
                 let visibleScreen = findVisibleScreen(over: rootViewController)
                 visibleScreen.open(.inbox, by: .present)
             case let .jointAccountImport(address):
+                guard appConfiguration.featureFlagService.isEnabled(.jointAccountEnabled) else { return }
                 
                 let visibleScreen = findVisibleScreen(over: rootViewController)
                 let transition = BottomSheetTransition(presentingViewController: visibleScreen)

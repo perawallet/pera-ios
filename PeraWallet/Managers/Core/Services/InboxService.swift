@@ -217,6 +217,9 @@ final class InboxService: InboxServiceable, NetworkConfigureable {
             jointAccountImportRequestsPublisher.value = inboxResponse.jointAccountImportRequests.sorted { $0.creationDatetime > $1.creationDatetime }
             jointAccountSignRequestsPublisher.value = inboxResponse.jointAccountSignRequests.sorted { $0.creationDatetime > $1.creationDatetime }
             updateCachedAddresses()
+        } else {
+            jointAccountImportRequestsPublisher.value = []
+            jointAccountSignRequestsPublisher.value = []
         }
         
         algorandStandardAssetInboxesPublisher.value = inboxResponse.asaInboxes
