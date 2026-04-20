@@ -568,7 +568,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Enhanced security by requiring multiple approvals—great for shared or high-value accounts."
+            "value" : "Enhanced security by requiring multiple approvals. Great for shared or high-value accounts."
           }
         }
       }
@@ -588,7 +588,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Assign signers and required approvals per transaction."
+            "value" : "Monitor activity and signer actions securely."
           }
         }
       }
