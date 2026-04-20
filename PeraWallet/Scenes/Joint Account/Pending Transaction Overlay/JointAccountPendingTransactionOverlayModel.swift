@@ -65,6 +65,7 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
         @Published fileprivate(set) var transactionState: TransactionStatus = .inProgress(canCancelTransaction: false)
         @Published fileprivate(set) var accounts: [AccountModel] = []
         @Published fileprivate(set) var isCancelProcessStarted: Bool = false
+        @Published fileprivate(set) var hasProposerAccount: Bool = false
         @Published fileprivate(set) var error: ModelError?
     }
     
@@ -100,6 +101,9 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
             .sorted { $0.address < $1.address }
             .map { accountModel(address: $0.address, signRequestStatus: $0.status, localAccounts: localAccounts) }
         
+        let hasProposerAccount = accountsService.accounts.value.contains(where: { $0.address == proposerAddress })
+        
+        viewModel.hasProposerAccount = hasProposerAccount
         viewModel.transactionState = .inProgress(canCancelTransaction: isCancelTransactionAvailable)
         viewModel.threshold = threshold
         viewModel.deadline = deadline

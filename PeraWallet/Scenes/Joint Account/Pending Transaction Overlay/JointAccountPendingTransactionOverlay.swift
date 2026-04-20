@@ -100,7 +100,7 @@ struct JointAccountPendingTransactionOverlay: View {
     @ViewBuilder
     private func buttonsRow() -> some View {
         switch viewModel.transactionState {
-        case let .inProgress(canCancelTransaction) where canCancelTransaction:
+        case let .inProgress(canCancelTransaction) where canCancelTransaction && viewModel.hasProposerAccount:
             HStack(spacing: 20.0) {
                 RoundedButton(
                     contentType: viewModel.isCancelProcessStarted ? .spinner : .text("title-cancel"),
