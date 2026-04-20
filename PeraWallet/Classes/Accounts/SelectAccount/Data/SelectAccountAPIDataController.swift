@@ -98,7 +98,7 @@ extension SelectAccountAPIDataController {
 
     private func deliverContentSnapshot() {
         let filterAlgorithm = AuthorizedAccountListFilterAlgorithm()
-        let filteredAccounts = sharedDataController.sortedAccounts().filter(filterAlgorithm.getFormula)
+        let filteredAccounts = sharedDataController.sortedAccountsForDisplay().filter(filterAlgorithm.getFormula)
 
         if filteredAccounts.isEmpty {
             deliverNoContentSnapshot()
@@ -115,7 +115,7 @@ extension SelectAccountAPIDataController {
             let currency = self.sharedDataController.currency
             let currencyFormatter = self.currencyFormatter
 
-            self.sharedDataController.sortedAccounts().forEach { accountHandle in
+            self.sharedDataController.sortedAccountsForDisplay().forEach { accountHandle in
                 let isAuthorizedAccount = accountHandle.value.authorization.isAuthorized
                 if !isAuthorizedAccount {
                     return

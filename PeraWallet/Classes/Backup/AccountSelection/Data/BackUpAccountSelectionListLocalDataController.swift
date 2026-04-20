@@ -71,7 +71,7 @@ extension BackUpAccountSelectionListLocalDataController {
 
             self.deliverLoadingSnapshot()
 
-            let sortedAccounts = self.sharedDataController.sortedAccounts()
+            let sortedAccounts = self.sharedDataController.sortedAccountsForDisplay()
 
             let filteredAccounts = sortedAccounts.filter {
                 return !$0.value.isBackedUp
