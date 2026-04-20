@@ -18,23 +18,13 @@ import Foundation
 import MacaroonUIKit
 
 struct InboxNoContentViewModel: NoContentViewModel {
-    private(set) var icon: Image?
+    private(set) var icon: Image? = nil
     private(set) var title: TextProvider?
     private(set) var body: TextProvider?
 
     init() {
-        bindTitle()
-        bindBody()
-    }
-}
-
-extension InboxNoContentViewModel {
-    private mutating func bindTitle() {
         title = String(localized: "inbox-empty-state-title")
             .bodyLargeMedium(alignment: .center)
-    }
-
-    private mutating func bindBody() {
         body = String(localized: "inbox-empty-state-subtitle")
             .bodyRegular(alignment: .center)
     }
