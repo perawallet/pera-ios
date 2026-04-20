@@ -42,9 +42,13 @@ final class InboxViewModel {
         let deadline: Date
     }
     
-    enum SignRequestState {
+    enum SignRequestState: Hashable, Equatable {
         case pending
-        case failed
+        case submitting
+        case confirmed
+        case failed(reason: String?)
+        case expired
+        case declined
     }
     
     struct AlgorandStandardAssetInboxModel: Hashable, Identifiable {
@@ -204,7 +208,7 @@ final class InboxModel: InboxModelable {
         
         let threshold = model.jointAccount.threshold
         let signedTransactionsText = String(localized: "inbox-joint-account-sign-request-signed-transactions-\(signatureCount)-\(threshold)")
-        let state = state(signRequestStatus: model.status)
+        let state = state(signRequest: model)
         let creationDatetime = model.creationDatetime
         
         return InboxViewModel.JointAccountSignRequestModel(id: model.id, isUnread: isUnread, title: title, state: state, creationDatetime: creationDatetime, signedTransactionsText: signedTransactionsText, deadline: model.expectedExpireDatetime)
@@ -270,12 +274,14 @@ final class InboxModel: InboxModelable {
         return shortAddress
     }
     
-    private func state(signRequestStatus: SignRequestObject.Status) -> InboxViewModel.SignRequestState {
-        switch signRequestStatus {
-        case .pending, .ready, .submitting, .confirmed:
-                .pending
-        case .failed, .declined, .expired:
-                .failed
+    private func state(signRequest: SignRequestObject) -> InboxViewModel.SignRequestState {
+        switch signRequest.status {
+        case .pending: return .pending
+        case .ready, .submitting: return .submitting
+        case .confirmed: return .confirmed
+        case .failed: return .failed(reason: signRequest.failReasonDisplay)
+        case .expired: return .expired
+        case .declined: return .declined
         }
     }
     
