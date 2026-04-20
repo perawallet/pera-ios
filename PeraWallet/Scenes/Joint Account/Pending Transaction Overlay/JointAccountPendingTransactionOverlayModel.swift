@@ -101,7 +101,7 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
             .sorted { $0.address < $1.address }
             .map { accountModel(address: $0.address, signRequestStatus: $0.status, localAccounts: localAccounts) }
         
-        let hasProposerAccount = accountsService.accounts.value.contains(where: { $0.address == proposerAddress })
+        viewModel.transactionState = .inProgress(canCancelTransaction: isCancelTransactionAvailable)
         
         viewModel.hasProposerAccount = hasProposerAccount
         viewModel.transactionState = .inProgress(canCancelTransaction: isCancelTransactionAvailable)
