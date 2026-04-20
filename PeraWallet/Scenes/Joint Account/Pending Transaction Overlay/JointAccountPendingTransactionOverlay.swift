@@ -29,6 +29,7 @@ struct JointAccountPendingTransactionOverlay: View {
     
     var onDismiss: (() -> Void)?
     var onCancelTransactionAction: (() -> Void)?
+    var onJointAccountAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?
     
     // MARK: - Initialisers
     
@@ -99,7 +100,7 @@ struct JointAccountPendingTransactionOverlay: View {
     @ViewBuilder
     private func buttonsRow() -> some View {
         switch viewModel.transactionState {
-        case .inProgress:
+        case let .inProgress(canCancelTransaction) where canCancelTransaction:
             HStack(spacing: 20.0) {
                 RoundedButton(
                     contentType: viewModel.isCancelProcessStarted ? .spinner : .text("title-cancel"),
@@ -109,19 +110,26 @@ struct JointAccountPendingTransactionOverlay: View {
                 )
                 RoundedButton(contentType: .text("joint-account-pending-transaction-overlay-button-close"), style: .primary, isEnabled: true, onTap: onCloseAction)
             }
-        case .success, .cancelled, .failed:
+        case .success, .cancelled, .failed, .inProgress:
             RoundedButton(contentType: .text("title-close"), style: .secondary, isEnabled: true, onTap: onCloseAction)
         }
+    }
+    
+    // MARK: - Actions - UIKit Compatibility
+    
+    func cancelTransaction() {
+        model.cancelTransaction()
     }
     
     // MARK: - Actions
     
     private func onCancelAction() {
-        model.cancelTransaction()
+        onJointAccountAnalyticsCall?(.cancelTransaction)
         onCancelTransactionAction?()
     }
     
     private func onCloseAction() {
+        onJointAccountAnalyticsCall?(.closeForNow)
         isVisible = false
         model.stopPolling()
         onDismiss?()

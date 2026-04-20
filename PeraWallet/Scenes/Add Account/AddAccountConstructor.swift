@@ -48,6 +48,41 @@ enum AddAccountConstructor {
             }
         }
         
+        controller.onJointAccountAnalyticsCall = { event in
+            switch event {
+            case .welcomePressed:
+                legacyConfiguration.analytics.track(.jointAccount(type: .welcomePressed))
+            case .addAccount:
+                legacyConfiguration.analytics.track(.jointAccount(type: .addAccount))
+            case .editAccount:
+                legacyConfiguration.analytics.track(.jointAccount(type: .editAccount))
+            case .removeAddress:
+                legacyConfiguration.analytics.track(.jointAccount(type: .removeAddress))
+            case .addAccountContinue:
+                legacyConfiguration.analytics.track(.jointAccount(type: .addAccountContinue))
+            case .addAccountContinueFromInbox:
+                legacyConfiguration.analytics.track(.jointAccount(type: .addAccountContinueFromInbox))
+            case .thresholdContinue:
+                legacyConfiguration.analytics.track(.jointAccount(type: .thresholdContinue))
+            case .nameAccount:
+                legacyConfiguration.analytics.track(.jointAccount(type: .nameAccount))
+            case .infoScreenProceed:
+                legacyConfiguration.analytics.track(.jointAccount(type: .infoScreenProceed))
+            case .infoScreenGoBack:
+                legacyConfiguration.analytics.track(.jointAccount(type: .infoScreenGoBack))
+            case .cancelTransaction:
+                legacyConfiguration.analytics.track(.jointAccount(type: .cancelTransaction))
+            case .confirmTransaction:
+                legacyConfiguration.analytics.track(.jointAccount(type: .confirmTransaction))
+            case .declinePendingTransaction:
+                legacyConfiguration.analytics.track(.jointAccount(type: .declinePendingTransaction))
+            case .closeForNow:
+                legacyConfiguration.analytics.track(.jointAccount(type: .closeForNow))
+            case .closePendingTransaction:
+                legacyConfiguration.analytics.track(.jointAccount(type: .closePendingTransaction))
+            }
+        }
+        
         return compatibilityController
     }
 }

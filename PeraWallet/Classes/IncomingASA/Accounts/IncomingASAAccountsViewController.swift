@@ -37,7 +37,14 @@ final class IncomingASAAccountsViewController: BaseViewController {
 
     private lazy var theme = Theme()
     
-    private lazy var listDataSource: InboxDiffableDataSource = InboxDiffableDataSource(collectionView: listView, onJointAccountInviteInboxRowTap: { [weak self] in self?.model.requestAction(identifier: $0) })
+    private lazy var listDataSource: InboxDiffableDataSource = InboxDiffableDataSource(collectionView: listView, onJointAccountInviteInboxRowTap: { [weak self] action in
+        switch action {
+        case .import:
+            self?.analytics.track(.jointAccount(type: .invitePressed))
+        default: break
+        }
+        self?.model.requestAction(identifier: action)
+    })
     private lazy var transitionToMinimumBalanceInfo = BottomSheetTransition(presentingViewController: self)
 
     private lazy var listView: UICollectionView = {
@@ -125,7 +132,8 @@ final class IncomingASAAccountsViewController: BaseViewController {
     
     private func presentImportJointAccountOverlay(jointAccountAddress: String, subtitle: String, threshold: Int, accountModels: [JointAccountInviteConfirmationOverlayViewModel.AccountModel]) {
         
-        let onIgnore: () -> Void = {
+        let onIgnore: () -> Void = { [weak self] in
+            self?.analytics.track(.jointAccount(type: .inviteIgnorePressed))
             Task { [weak self] in
                 guard let self else { return }
                 if await model.ignoreJointAccountInvitation(address: jointAccountAddress) {
@@ -140,6 +148,7 @@ final class IncomingASAAccountsViewController: BaseViewController {
                 self?.bannerController?.presentInfoBanner(String(localized: "joint-account-already-exists-message"))
                 return
             }
+            self?.analytics.track(.jointAccount(type: .inviteAddPressed))
             self?.moveToNameAccountScene(jointAccountAddress: jointAccountAddress)
         }
         
@@ -186,7 +195,13 @@ final class IncomingASAAccountsViewController: BaseViewController {
     }
     
     private func showJointAccountPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata) {
-        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata)
+        analytics.track(.jointAccount(type: .showPendingTransaction))
+        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata, isCancelTransactionAvailable: false) { [weak self] event in
+            switch event {
+            case .closePendingTransaction: self?.analytics.track(.jointAccount(type: .closePendingTransaction))
+            default: break
+            }
+        }
         present(viewController, animated: true)
     }
     

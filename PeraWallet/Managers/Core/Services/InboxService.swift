@@ -101,7 +101,13 @@ final class InboxService: InboxServiceable, NetworkConfigureable {
         
         accountService.accounts.publisher
             .removeDuplicates()
-            .sink { [weak self] in self?.handle(accounts: $0) }
+            .sink { [weak self] _ in
+                guard let self else { return }
+                updateCachedAddresses()
+                Task {
+                    await self.fetchInboxRequestNow()
+                }
+            }
             .store(in: &cancellables)
     }
     
@@ -193,15 +199,16 @@ final class InboxService: InboxServiceable, NetworkConfigureable {
     
     // MARK: - Handlers
     
-    private func handle(accounts: Set<PeraAccount>) {
-        
-        cachedAddresses = accounts
+    private func updateCachedAddresses() {
+        let accountAddresses = accountService.accounts.value
             .filter { $0.type != .watch }
             .map(\.address)
         
-        Task {
-            await fetchInboxRequestNow()
-        }
+        let pendingJointAccountAddresses = legacyFeatureFlagService.isEnabled(.jointAccountEnabled)
+                ? jointAccountImportRequestsPublisher.value.map(\.address)
+                : []
+        
+        cachedAddresses = Array(Set(accountAddresses + pendingJointAccountAddresses))
     }
     
     private func handle(inboxResponse: InboxCreateResponse) {
@@ -209,6 +216,7 @@ final class InboxService: InboxServiceable, NetworkConfigureable {
         if legacyFeatureFlagService.isEnabled(.jointAccountEnabled) {
             jointAccountImportRequestsPublisher.value = inboxResponse.jointAccountImportRequests.sorted { $0.creationDatetime > $1.creationDatetime }
             jointAccountSignRequestsPublisher.value = inboxResponse.jointAccountSignRequests.sorted { $0.creationDatetime > $1.creationDatetime }
+            updateCachedAddresses()
         }
         
         algorandStandardAssetInboxesPublisher.value = inboxResponse.asaInboxes

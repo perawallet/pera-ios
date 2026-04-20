@@ -21,9 +21,14 @@ final class JointAccountTransactionRequestSummaryViewController: SwiftUICompatib
     // MARK: - Properties
     
     private let hostingController: JointAccountTransactionRequestSummaryHostingViewController
-    private var copyToClipboardController: CopyToClipboardController?
     private let accountsService: AccountsServiceable
+    private let currencyFormatter = CurrencyFormatter()
+    
+    private var copyToClipboardController: CopyToClipboardController?
+    private var ledgerConnectionScreen: LedgerConnectionScreen?
+    private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
     private var pendingDetailTask: Task<Void, Never>?
+    private lazy var bottomSheetTransition = BottomSheetTransition(presentingViewController: self, interactable: false)
     
     // MARK: - Initialisers
     
@@ -51,6 +56,7 @@ final class JointAccountTransactionRequestSummaryViewController: SwiftUICompatib
         hostingController.onShowSigningStatus = { [weak self] in self?.openSigningStatus(for: $0) }
         hostingController.onCopy = { [weak self] in self?.copyAddressToPastebin(address: $0) }
         hostingController.onShowError = { [weak self] in self?.show(error: $0) }
+        hostingController.onRequestConnectionWithLedger = { [weak self] in self?.showLedgerOverlay(transactionController: $0) }
     }
     
     private func setupLegacyControllers() {
@@ -91,10 +97,7 @@ final class JointAccountTransactionRequestSummaryViewController: SwiftUICompatib
     }
     
     private func resolveProposerAddress(from jointAccount: Account) -> String? {
-        let participants = jointAccount.jointAccountParticipants ?? []
-        return participants
-            .compactMap { self.accountsService.account(address: $0)?.address }
-            .first
+        jointAccount.jointAccountParticipants?.first
     }
     
     private func fetchSignRequestMetadata(
@@ -141,7 +144,7 @@ final class JointAccountTransactionRequestSummaryViewController: SwiftUICompatib
     }
     
     private func showJointAccountPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata) {
-        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata)
+        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata, isCancelTransactionAvailable: false, onJointAccountAnalyticsCall: nil)
         present(viewController, animated: true)
     }
     
@@ -154,5 +157,162 @@ final class JointAccountTransactionRequestSummaryViewController: SwiftUICompatib
         let title = String(localized: "title-error")
         let message = error.localizedDescription
         bannerController?.presentErrorBanner(title: title, message: message)
+    }
+    
+    private func showLedgerOverlay(transactionController: TransactionController) {
+        
+        transactionController.delegate = self
+        
+        let eventHandler: LedgerConnectionScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .performCancel:
+                transactionController.stopBLEScan()
+                transactionController.stopTimer()
+                loadingController?.stopLoading()
+                ledgerConnectionScreen?.dismissScreen()
+                ledgerConnectionScreen = nil
+                dismiss(animated: true)
+            }
+        }
+        
+        ledgerConnectionScreen = bottomSheetTransition.perform(.ledgerConnection(eventHandler: eventHandler), by: .presentWithoutNavigationController)
+    }
+    
+    private func openSignWithLedgerProcess(transactionController: TransactionController, ledgerDeviceName: String) {
+        
+        let draft = SignWithLedgerProcessDraft(ledgerDeviceName: ledgerDeviceName, totalTransactionCount: 1)
+        
+        let eventHandler: SignWithLedgerProcessScreen.EventHandler = { [weak self] in
+            switch $0 {
+            case .performCancelApproval:
+                transactionController.stopBLEScan()
+                transactionController.stopTimer()
+                self?.signWithLedgerProcessScreen?.dismissScreen()
+                self?.signWithLedgerProcessScreen = nil
+                self?.loadingController?.stopLoading()
+                self?.dismiss(animated: true)
+            }
+        }
+        
+        signWithLedgerProcessScreen = bottomSheetTransition.perform(.signWithLedgerProcess(draft: draft, eventHandler: eventHandler), by: .present)
+    }
+    
+    private func openLedgerConnectionIssues() {
+        
+        let configurator = BottomWarningViewConfigurator(
+            image: .iconInfoGreen,
+            title: String(localized: "ledger-pairing-issue-error-title"),
+            description: .plain(String(localized: "ble-error-fail-ble-connection-repairing")),
+            secondaryActionButtonTitle: String(localized: "title-ok"),
+            secondaryAction: { [weak self] in self?.dismiss(animated: true) }
+        )
+
+        bottomSheetTransition.perform(.bottomWarning(configurator: configurator), by: .presentWithoutNavigationController)
+    }
+    
+    private func displayTransactionError(_ transactionError: TransactionError) {
+        
+        switch transactionError {
+        case let .minimumAmount(amount):
+            currencyFormatter.formattingContext = .standalone()
+            currencyFormatter.currency = AlgoLocalCurrency()
+
+            let amountText = currencyFormatter.format(amount.toAlgos)
+
+            bannerController?.presentErrorBanner(
+                title: String(localized: "asset-min-transaction-error-title"),
+                message: String(format: String(localized: "asset-min-transaction-error-message"), amountText.someString)
+            )
+        case let .sdkError(error):
+            bannerController?.presentErrorBanner(
+                title: String(localized: "title-error"),
+                message: error.debugDescription
+            )
+        case .ledgerConnection:
+            ledgerConnectionScreen?.dismiss(animated: true) {
+                self.ledgerConnectionScreen = nil
+
+                self.openLedgerConnectionIssues()
+            }
+        case .optOutFromCreator:
+            bannerController?.presentErrorBanner(
+                title: String(localized: "title-error"),
+                message: String(localized: "asset-creator-opt-out-error-message")
+            )
+        default:
+            break
+        }
+    }
+}
+
+extension JointAccountTransactionRequestSummaryViewController: TransactionControllerDelegate {
+    
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
+
+        loadingController?.stopLoading()
+        
+        switch error {
+        case let .inapp(transactionError):
+            displayTransactionError(transactionError)
+        default:
+            break
+        }
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPTransactionError) {
+
+        loadingController?.stopLoading()
+
+        switch error {
+        case let .network(apiError):
+            bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: apiError.debugDescription)
+        default:
+            bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.localizedDescription)
+        }
+    }
+    
+    func transactionController(_ transactionController: TransactionController, didRequestUserApprovalFrom ledger: String) {
+        
+        ledgerConnectionScreen?.dismiss(animated: true) { [weak self] in
+            self?.ledgerConnectionScreen = nil
+            self?.openSignWithLedgerProcess(transactionController: transactionController, ledgerDeviceName: ledger)
+        }
+        
+    }
+    
+    func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
+        
+        let dispatchGroup = DispatchGroup()
+        
+        if let ledgerConnectionScreen {
+            dispatchGroup.enter()
+            ledgerConnectionScreen.dismissScreen() {
+                self.ledgerConnectionScreen = nil
+                dispatchGroup.leave()
+            }
+        }
+        
+        if let signWithLedgerProcessScreen {
+            dispatchGroup.enter()
+            signWithLedgerProcessScreen.dismissScreen() {
+                dispatchGroup.leave()
+                self.signWithLedgerProcessScreen = nil
+            }
+        }
+
+        loadingController?.stopLoading()
+        
+        dispatchGroup.notify(queue: .main) { [weak self] in
+            self?.dismiss(animated: true)
+        }
+    }
+    
+    func transactionControllerDidResetLedgerOperationOnSuccess(_ transactionController: TransactionController) {
+        signWithLedgerProcessScreen?.dismissScreen()
+        signWithLedgerProcessScreen = nil
+        loadingController?.stopLoading()
     }
 }

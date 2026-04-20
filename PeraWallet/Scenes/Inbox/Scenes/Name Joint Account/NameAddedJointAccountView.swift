@@ -25,10 +25,11 @@ struct NameAddedJointAccountView: View {
     // MARK: - Properties - UIKit Compatibility
     
     var onDismissRequest: (() -> Void)?
+    var onAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?
     
     // MARK: - Body
     
     var body: some View {
-        CreateJointAccountNameAccountView(model: model, onDismissRequest: onDismissRequest)
+        CreateJointAccountNameAccountView(model: model, onDismissRequest: onDismissRequest, onAnalyticsCall: onAnalyticsCall)
     }
 }

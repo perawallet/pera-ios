@@ -139,7 +139,7 @@ final class UndoRekeyScreen:
        case .connectionWithLedgerNeeded:
           openLedgerConnection()
        case .overlayDismissed:
-           finishWithSuccess()
+           finish(event: .dismissedSharedAccountPreviewOverlay)
        case let .failure(error, _):
            finish(error: error)
        }
@@ -391,11 +391,11 @@ extension UndoRekeyScreen {
         }
     }
     
-    private func finishWithSuccess() {
+    private func finish(event: Event) {
         loadingController.stopLoading()
         analytics.track(.rekeyAccount())
         saveRekeyedAccountDetails()
-        eventHandler?(.didUndoRekey)
+        eventHandler?(event)
     }
     
     private func finish(error: Error) {
@@ -424,7 +424,7 @@ extension UndoRekeyScreen {
 extension UndoRekeyScreen {
     
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
-        finishWithSuccess()
+        finish(event: .didUndoRekey)
     }
 
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
@@ -611,5 +611,6 @@ extension UndoRekeyScreen {
 extension UndoRekeyScreen {
     enum Event {
         case didUndoRekey
+        case dismissedSharedAccountPreviewOverlay
     }
 }

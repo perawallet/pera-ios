@@ -24,6 +24,7 @@ final class AddAccountViewController: UIHostingController<AddAccountView> {
     var onDismissRequest: (() -> Void)?
     var onLearnMoreTap: (() -> Void)?
     var onScanQRTap: (() -> Void)?
+    var onJointAccountAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?
     
     // MARK: - Initialisers
     
@@ -33,6 +34,7 @@ final class AddAccountViewController: UIHostingController<AddAccountView> {
         rootView.onDismissRequest = { [weak self] in self?.onDismissRequest?() }
         rootView.onLearnMoreTap = { [weak self] in self?.onLearnMoreTap?() }
         rootView.onScanQRTap = { [weak self] in self?.onScanQRTap?() }
+        rootView.onJointAccountAnalyticsCall = { [weak self] event in self?.onJointAccountAnalyticsCall?(event) }
     }
     
     func onAddressScanned(address: String) {
