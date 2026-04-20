@@ -3909,6 +3909,26 @@
         }
       }
     },
+    "inbox-empty-state-subtitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When you have requests or invitations, you can view them here. Tap on the info icon to learn more about this feature."
+          }
+        }
+      }
+    },
+    "inbox-empty-state-title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Pending Requests"
+          }
+        }
+      }
+    },
     "inbox-joint-account-import-request-title-%@" : {
       "localizations" : {
         "en" : {
