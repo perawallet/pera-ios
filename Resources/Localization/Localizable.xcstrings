@@ -3981,6 +3981,36 @@
         }
       }
     },
+    "inbox.joint-account-send-request.state.confirmed" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transaction successfully completed"
+          }
+        }
+      }
+    },
+    "inbox.joint-account-send-request.state.declined" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Declined transaction"
+          }
+        }
+      }
+    },
+    "inbox.joint-account-send-request.state.expired" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expired transaction"
+          }
+        }
+      }
+    },
     "inbox.joint-account-send-request.state.failed" : {
       "localizations" : {
         "en" : {
@@ -3999,6 +4029,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pending transaction"
+          }
+        }
+      }
+    },
+    "inbox.joint-account-send-request.state.submitting" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Submitting transaction"
           }
         }
       }
