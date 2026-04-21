@@ -243,17 +243,15 @@ struct ALGBarButtonItem: BarButtonItem {
             return nil
         case .account(let account):
             let authorization = account.authorization
-            
-            let isJointAccount = authorization == .jointAccount || authorization.isJointAccountRekeyed
 
-            if !isJointAccount, authorization.isRekeyedToLedger {
+            if authorization.isRekeyedToLedger {
                 return ImageContent(
                     normal: "icon-shield-16".templateImage,
                     tintColor: Colors.Wallet.wallet3Icon.uiColor
                 )
             }
 
-            if !isJointAccount, authorization.isRekeyedToStandard {
+            if authorization.isRekeyedToStandard {
                 return ImageContent(
                     normal: "icon-shield-16".templateImage,
                     tintColor: Colors.Wallet.wallet4Icon.uiColor
@@ -265,7 +263,7 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: image, tintColor: .Wallet.wallet1)
             }
 
-            if !isJointAccount, authorization.isNoAuth {
+            if authorization.isNoAuth {
                 return ImageContent(
                     normal: "icon-shield-16".templateImage,
                     tintColor: Colors.Helpers.negative.uiColor
