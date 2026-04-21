@@ -259,8 +259,10 @@ struct ALGBarButtonItem: BarButtonItem {
             }
             
             if authorization.isJointAccountRekeyed {
-                guard let image = UIImage.Icons.userSearch.convert(to: CGSize(width: 16.0, height: 16.0))?.templateImage else { return nil }
-                return ImageContent(normal: image, tintColor: .Wallet.wallet1)
+                return ImageContent(
+                    normal: "icon-shield-16".templateImage,
+                    tintColor: Colors.Wallet.wallet1.uiColor
+                )
             }
 
             if authorization.isNoAuth {
