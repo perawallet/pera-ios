@@ -243,29 +243,33 @@ struct ALGBarButtonItem: BarButtonItem {
             return nil
         case .account(let account):
             let authorization = account.authorization
+            
+            guard let image = UIImage.iconShield16.convert(to: CGSize(width: 16.0, height: 16.0))?.templateImage else { return nil }
 
             if authorization.isRekeyedToLedger {
                 return ImageContent(
-                    normal: "icon-shield-16".templateImage,
+                    normal: image,
                     tintColor: Colors.Wallet.wallet3Icon.uiColor
                 )
             }
 
             if authorization.isRekeyedToStandard {
                 return ImageContent(
-                    normal: "icon-shield-16".templateImage,
+                    normal: image,
                     tintColor: Colors.Wallet.wallet4Icon.uiColor
                 )
             }
             
             if authorization.isJointAccountRekeyed {
-                guard let image = UIImage.Icons.userSearch.convert(to: CGSize(width: 16.0, height: 16.0))?.templateImage else { return nil }
-                return ImageContent(normal: image, tintColor: .Wallet.wallet1)
+                return ImageContent(
+                    normal: image,
+                    tintColor: Colors.Wallet.wallet1.uiColor
+                )
             }
 
             if authorization.isNoAuth {
                 return ImageContent(
-                    normal: "icon-shield-16".templateImage,
+                    normal: image,
                     tintColor: Colors.Helpers.negative.uiColor
                 )
             }
