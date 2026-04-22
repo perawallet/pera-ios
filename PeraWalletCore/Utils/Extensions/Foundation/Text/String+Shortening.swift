@@ -26,7 +26,7 @@ public extension String {
     }
     
     func disarmingHashtags() -> String {
-        return self.replacingOccurrences(
+        replacingOccurrences(
             of: "#(?=\\w)",
             with: "#\u{200B}",
             options: .regularExpression
