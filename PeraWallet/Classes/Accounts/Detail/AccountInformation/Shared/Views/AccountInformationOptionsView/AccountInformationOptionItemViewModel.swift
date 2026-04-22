@@ -15,6 +15,7 @@
 //   AccountInformationOptionItemViewModel.swift
 
 import MacaroonUIKit
+import UIKit
 
 protocol AccountInformationOptionItemViewModel: ListItemButtonViewModel { }
 
@@ -49,7 +50,7 @@ struct RekeyToLedgerAccountInformationOptionItemViewModel: AccountInformationOpt
             String(localized: "title-rekey-to-ledger-account")
                 .bodyRegular(lineBreakMode: .byTruncatingTail)
         )
-        accessory = "icon-arrow-24".templateImage
+        accessory = UIImage.iconArrow24.templateImage
     }
 }
 
@@ -64,7 +65,7 @@ struct RekeyToStandardAccountInformationOptionItemViewModel: AccountInformationO
             String(localized: "title-rekey-to-standard-account")
                 .bodyRegular(lineBreakMode: .byTruncatingTail)
         )
-        accessory = "icon-arrow-24".templateImage
+        accessory = UIImage.iconArrow24.templateImage
     }
 }
 
@@ -75,7 +76,7 @@ struct RescanRekeyedAccountsInformationOptionItemViewModel: AccountInformationOp
             .bodyRegular(lineBreakMode: .byTruncatingTail)
     )
     let subtitle: EditText? = nil
-    var accessory: Image? = "icon-arrow-24".templateImage
+    var accessory: Image? = UIImage.iconArrow24.templateImage
 }
 
 struct RekeyToJointAccountInformationOptionItemViewModel: AccountInformationOptionItemViewModel {
@@ -89,6 +90,6 @@ struct RekeyToJointAccountInformationOptionItemViewModel: AccountInformationOpti
             String(localized: "title-rekey-to-joint-account")
                 .bodyRegular(lineBreakMode: .byTruncatingTail)
         )
-        accessory = "icon-arrow-24".templateImage
+        accessory = UIImage.iconArrow24.templateImage
     }
 }
