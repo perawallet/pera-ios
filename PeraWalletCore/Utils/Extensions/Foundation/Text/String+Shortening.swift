@@ -24,4 +24,12 @@ public extension String {
         default: return String(prefix(40)) + "..."
         }
     }
+    
+    var disarmingHashtags: String {
+        replacingOccurrences(
+            of: "#(?=\\w)",
+            with: "#\u{200B}",
+            options: .regularExpression
+        )
+    }
 }
