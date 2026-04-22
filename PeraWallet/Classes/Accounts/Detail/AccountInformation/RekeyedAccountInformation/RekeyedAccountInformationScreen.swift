@@ -122,14 +122,13 @@ extension RekeyedAccountInformationScreen {
             $0.trailing == 0
         }
 
-        accountItemView.startObserving(event: .performSourceAccountAction) {
-            [unowned self] in
-            self.copyToClipboardController.copyAddress(self.sourceAccount)
+        accountItemView.startObserving(event: .performSourceAccountAction) { [weak self] in
+            guard let self else { return }
+            copyToClipboardController.copyAddress(sourceAccount)
         }
 
-        accountItemView.startObserving(event: .performAuthAccountAction) {
-            [unowned self] in
-            self.eventHandler?(.performUndoRekey)
+        accountItemView.startObserving(event: .performAuthAccountAction) { [weak self] in
+            self?.eventHandler?(.performUndoRekey)
         }
 
         bindAccountItem()
@@ -145,9 +144,8 @@ extension RekeyedAccountInformationScreen {
             $0.trailing == 0
         }
 
-        accountTypeInformationView.startObserving(event: .performHyperlinkAction) {
-            [unowned self] in
-            self.open(AlgorandWeb.rekey.link)
+        accountTypeInformationView.startObserving(event: .performHyperlinkAction) { [weak self] in
+            self?.open(AlgorandWeb.rekey.link)
         }
 
         bindAccountTypeInformation()
@@ -183,23 +181,20 @@ extension RekeyedAccountInformationScreen {
 
 extension RekeyedAccountInformationScreen {
     private func makeRekeyToLedgerAccountItem() -> AccountInformationOptionItem {
-        return AccountInformationOptionItem(viewModel: .rekeyToLedger) {
-            [unowned self] in
-            self.eventHandler?(.performRekeyToLedger)
+        return AccountInformationOptionItem(viewModel: .rekeyToLedger) { [weak self] in
+            self?.eventHandler?(.performRekeyToLedger)
         }
     }
 
     private func makeRekeyToStandardAccountItem() -> AccountInformationOptionItem {
-        return AccountInformationOptionItem(viewModel: .rekeyToStandard) {
-            [unowned self] in
-            self.eventHandler?(.performRekeyToStandard)
+        return AccountInformationOptionItem(viewModel: .rekeyToStandard) { [weak self] in
+            self?.eventHandler?(.performRekeyToStandard)
         }
     }
     
     private func makeRekeyToJointAccountItem() -> AccountInformationOptionItem {
-        return AccountInformationOptionItem(viewModel: .rekeyToJointAccount) {
-            [unowned self] in
-            self.eventHandler?(.performRekeyToJointAccount)
+        return AccountInformationOptionItem(viewModel: .rekeyToJointAccount) { [weak self] in
+            self?.eventHandler?(.performRekeyToJointAccount)
         }
     }
     
