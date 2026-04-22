@@ -58,8 +58,8 @@ extension UndoRekeyConfirmationSheet {
         sourceAccount: Account,
         authAccount: Account
     ) -> UISheetBodyTextProvider {
-        let sourceAccountName = sourceAccount.primaryDisplayName.disarmingHashtags()
-        let authAccountName =  authAccount.primaryDisplayName.disarmingHashtags()
+        let sourceAccountName = sourceAccount.primaryDisplayName.disarmingHashtags
+        let authAccountName =  authAccount.primaryDisplayName.disarmingHashtags
         let text = String(format: String(localized: "overwrite-undo-rekey-confirmation-body"), authAccountName, sourceAccountName)
         let attributedBody = NSMutableAttributedString(
             attributedString: text.bodyRegular(alignment: .center)
