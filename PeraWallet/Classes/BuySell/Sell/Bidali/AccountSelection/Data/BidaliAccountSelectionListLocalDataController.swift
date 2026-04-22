@@ -71,7 +71,7 @@ extension BidaliAccountSelectionListLocalDataController {
 
             self.deliverLoadingSnapshot()
 
-            let sortedAccounts = self.sharedDataController.sortedAccounts()
+            let sortedAccounts = self.sharedDataController.sortedAccountsForDisplay()
 
             let filterAlgorithm = AuthorizedAccountListFilterAlgorithm()
             let filteredAccounts = sortedAccounts.filter(filterAlgorithm.getFormula)

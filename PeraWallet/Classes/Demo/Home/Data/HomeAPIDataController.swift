@@ -138,7 +138,7 @@ extension HomeAPIDataController {
     }
     
     func fetchSpotBanners() {
-        let accounts = self.sharedDataController.sortedAccounts()
+        let accounts = self.sharedDataController.sortedAccountsForDisplay()
         let shouldDisplayCriticalWarningForNotBackedUpAccounts = shouldDisplayCriticalWarningForNotBackedUpAccounts(accounts)
         spotBannersDataController.loadData(shouldAddBackupBanner: shouldDisplayCriticalWarningForNotBackedUpAccounts)
     }
