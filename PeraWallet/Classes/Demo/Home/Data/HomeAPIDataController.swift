@@ -95,10 +95,13 @@ final class HomeAPIDataController:
         
         let label: String?
         let assetsRequestsCount = algorandStandardAssetInboxes.map(\.requestCount).reduce(0, +)
+        let isJointAccountEnabled = featureFlagService.isEnabled(.jointAccountEnabled)
+        let visibleJointImportCount = isJointAccountEnabled ? jointAccountImportRequests.count : 0
+        let visibleJointSignCount = isJointAccountEnabled ? jointAccountSignRequests.count : 0
         
-        if jointAccountImportRequests.count > 0 {
+        if visibleJointImportCount > 0 {
             label = String(localized: "home-inbox-button-joint-account-request")
-        } else if jointAccountSignRequests.count > 0 {
+        } else if visibleJointSignCount > 0 {
             label = String(localized: "home-inbox-button-sign-request")
         } else if assetsRequestsCount > 0 {
             label = String(localized: "home-inbox-button-standard-asset-\(assetsRequestsCount)")
@@ -135,7 +138,7 @@ extension HomeAPIDataController {
     }
     
     func fetchSpotBanners() {
-        let accounts = self.sharedDataController.sortedAccounts()
+        let accounts = self.sharedDataController.sortedAccountsForDisplay()
         let shouldDisplayCriticalWarningForNotBackedUpAccounts = shouldDisplayCriticalWarningForNotBackedUpAccounts(accounts)
         spotBannersDataController.loadData(shouldAddBackupBanner: shouldDisplayCriticalWarningForNotBackedUpAccounts)
     }
@@ -340,7 +343,7 @@ extension HomeAPIDataController {
             
             guard let self else { return nil }
             
-            let accounts = self.sharedDataController.sortedAccounts()
+            let accounts = self.sharedDataController.sortedAccountsForDisplay()
             let currency = self.sharedDataController.currency
             let isAmountHidden = ObservableUserDefaults.shared.isPrivacyModeEnabled
             

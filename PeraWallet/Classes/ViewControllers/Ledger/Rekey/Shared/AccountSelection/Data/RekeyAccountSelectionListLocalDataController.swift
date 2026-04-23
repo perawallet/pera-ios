@@ -83,7 +83,7 @@ extension RekeyAccountSelectionListLocalDataController {
 
             self.deliverLoadingSnapshot()
 
-            let sortedAccounts = self.sharedDataController.sortedAccounts()
+            let sortedAccounts = self.sharedDataController.sortedAccountsForDisplay()
 
             let filteredAccounts = sortedAccounts.filter {
                 let rawAccount = $0.value
