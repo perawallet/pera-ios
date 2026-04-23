@@ -304,22 +304,6 @@ final class IncomingASAAccountsViewController: BaseViewController {
         overlay.cancelTransaction()
     }
     
-    private func cancelAssetMonitoring(transactionType: JointAccountTransactionHandler.TransactionType, jointAccount: Account, sharedDataController: SharedDataController) {
-        
-        let monitor = sharedDataController.blockchainUpdatesMonitor
-        
-        switch transactionType {
-        case let .optIn(draft):
-            guard let assetIndex = draft.assetIndex else { return }
-            monitor.cancelMonitoringOptInUpdates(forAssetID: assetIndex, for: jointAccount)
-        case let .optOut(draft):
-            guard let assetIndex = draft.assetIndex else { return }
-            monitor.markOptOutUpdatesForNotification(forAssetID: assetIndex, for: jointAccount)
-        case .rekey, .sendAlgos, .sendAsset:
-            break
-        }
-    }
-    
     // MARK: - Deinitializer
     
     deinit {
