@@ -72,6 +72,7 @@ final class IncomingASAAccountsViewController: BaseViewController {
     private var positionYForVisibleAccountActionsMenuAction: CGFloat?
     private var cancellables = Set<AnyCancellable>()
     private var bottomSheetTransition: BottomSheetTransition?
+    private var pendingTransactionOverlay: JointAccountPendingTransactionOverlayViewController?
         
     init(model: InboxModelable, legacyConfiguration: ViewControllerConfiguration) {
         self.model = model
@@ -213,15 +214,26 @@ final class IncomingASAAccountsViewController: BaseViewController {
     private func showJointAccountPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata, jointAccount: Account, isCancelTransactionAvailable: Bool) {
         analytics.track(.jointAccount(type: .showPendingTransaction))
         
-        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata, isCancelTransactionAvailable: isCancelTransactionAvailable) { [weak self] in
-            self?.analytics.track(.jointAccount(type: .closePendingTransaction))
-        } onCancelTransaction: { [weak self] in
-            self?.analytics.track(.jointAccount(type: .cancelTransaction))
-            // TODO: add transactionType to finish the cancellation dialog
-//            openTransactionCancellationDialog(jointAccount: jointAccount, transactionType: <#T##JointAccountTransactionHandler.TransactionType#>, presenter: viewController, sharedDataController: self?.sharedDataController)
-        }
-
-        present(viewController, animated: true)
+        pendingTransactionOverlay = JointAccountPendingTransactionOverlayConstructor.buildViewController(
+            signRequestMetadata: signRequestMetadata,
+            isCancelTransactionAvailable: isCancelTransactionAvailable,
+            onDismiss: { [weak self] in
+                self?.analytics.track(.jointAccount(type: .closePendingTransaction))
+                self?.pendingTransactionOverlay = nil
+            },
+            onCancelTransaction: { [weak self] in
+                guard let self, let pendingTransactionOverlay else { return }
+                analytics.track(.jointAccount(type: .cancelTransaction))
+                openTransactionCancellationDialog(
+                    jointAccount: jointAccount,
+                    presenter: pendingTransactionOverlay,
+                    sharedDataController: sharedDataController
+                )
+            }
+        )
+        
+        guard let pendingTransactionOverlay else { return }
+        present(pendingTransactionOverlay, animated: true)
     }
     
     private func buildSignaturesInfo(
@@ -273,8 +285,7 @@ final class IncomingASAAccountsViewController: BaseViewController {
         )
     }
     
-    private func openTransactionCancellationDialog(jointAccount: Account, transactionType: JointAccountTransactionHandler.TransactionType,
-                                                   presenter: JointAccountPendingTransactionOverlayViewController, sharedDataController: SharedDataController) {
+    private func openTransactionCancellationDialog(jointAccount: Account, presenter: JointAccountPendingTransactionOverlayViewController, sharedDataController: SharedDataController) {
         
         let configurator = BottomWarningViewConfigurator(
             image: .iconIncomingAsaError,
@@ -282,16 +293,15 @@ final class IncomingASAAccountsViewController: BaseViewController {
             description: .plain(String(localized: "shared-account-cancel-transaction-confirmation-description")),
             primaryActionButtonTitle: String(localized: "shared-account-cancel-transaction-confirmation-primary-button-title"),
             secondaryActionButtonTitle: String(localized: "shared-account-cancel-transaction-confirmation-secondary-button-title"),
-            primaryAction: { [weak self] in self?.cancelTransaction(transactionType: transactionType, jointAccount: jointAccount, overlay: presenter, sharedDataController: sharedDataController) }
+            primaryAction: { [weak self] in self?.cancelTransaction(jointAccount: jointAccount, overlay: presenter, sharedDataController: sharedDataController) }
         )
         
         bottomSheetTransition = BottomSheetTransition(presentingViewController: presenter)
         bottomSheetTransition?.perform(.bottomWarning(configurator: configurator), by: .presentWithoutNavigationController)
     }
     
-    private func cancelTransaction(transactionType: JointAccountTransactionHandler.TransactionType, jointAccount: Account, overlay: JointAccountPendingTransactionOverlayViewController, sharedDataController: SharedDataController) {
+    private func cancelTransaction(jointAccount: Account, overlay: JointAccountPendingTransactionOverlayViewController, sharedDataController: SharedDataController) {
         overlay.cancelTransaction()
-        cancelAssetMonitoring(transactionType: transactionType, jointAccount: jointAccount, sharedDataController: sharedDataController)
     }
     
     private func cancelAssetMonitoring(transactionType: JointAccountTransactionHandler.TransactionType, jointAccount: Account, sharedDataController: SharedDataController) {
