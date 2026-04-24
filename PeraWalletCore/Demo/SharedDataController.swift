@@ -113,13 +113,13 @@ extension SharedDataController {
     }
     
     public func sortedAccountsForDisplay() -> [AccountHandle] {
-            let accounts = sortedAccounts()
-            guard let featureFlagService = CoreAppConfiguration.shared?.featureFlagService,
-                  !featureFlagService.isEnabled(.jointAccountEnabled) else {
-                return accounts
-            }
-            return accounts.filter { !$0.value.isJointAccount }
+        let accounts = sortedAccounts()
+        guard let featureFlagService = CoreAppConfiguration.shared?.featureFlagService,
+              !featureFlagService.isEnabled(.jointAccountEnabled) else {
+            return accounts
         }
+        return accounts.filter { !$0.value.isJointAccount }
+    }
 }
 
 /// <todo>

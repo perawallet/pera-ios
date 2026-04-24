@@ -43,6 +43,7 @@ enum AppEndpoint: String, CaseIterable {
     case accountDetail = "account-detail"
     case webImport = "web-import"
     case swap = "swap"
+    case jointAccountImport = "joint-account-import"
     
     /// Parse QR text from app endpoint format
     func parseQRText(from url: URL) -> QRText? {
@@ -93,6 +94,8 @@ enum AppEndpoint: String, CaseIterable {
             return parseWebImportEndpoint(queryParams: queryParams)
         case .swap:
             return parseSwapEndpoint(queryParams: queryParams)
+        case .jointAccountImport:
+            return parseJointAccountImportEndpoint(url: url)
         }
     }
     
@@ -410,6 +413,11 @@ enum AppEndpoint: String, CaseIterable {
             encryptionKey: encryptionKey,
             action: action
         )
+    }
+    
+    private func parseJointAccountImportEndpoint(url: URL) -> QRText? {
+        guard url.queryParameters?["address"] != nil else { return nil }
+        return QRText(mode: .exportJointAccount, deepLink: url.absoluteString)
     }
 }
 

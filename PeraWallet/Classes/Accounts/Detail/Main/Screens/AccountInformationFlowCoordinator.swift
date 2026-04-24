@@ -37,6 +37,11 @@ final class AccountInformationFlowCoordinator  {
         presentingScreen: presentingScreen,
         sharedDataController: sharedDataController
     )
+    
+    private lazy var rekeyToJointAccountFlowCoordinator = RekeyToJointAccountFlowCoordinator(
+        presenter: presentingScreen,
+        sharedDataController: sharedDataController
+    )
 
     init(
         presentingScreen: BaseViewController,
@@ -161,7 +166,7 @@ extension AccountInformationFlowCoordinator {
             case .performRekeyToStandard:
                 self.openRekeyToStandardAccount(sourceAccount)
             case .performRekeyToJointAccount:
-                self.openRekeyToStandardAccount(sourceAccount)
+                self.openRekeyToJointAccount(sourceAccount)
             case .performUndoRekey:
                 self.openUndoRekey(sourceAccount)
             case .performRescanRekeyedAccounts:
@@ -179,6 +184,10 @@ extension AccountInformationFlowCoordinator {
         
         screen.onUndoRekeyAction = { [weak self] in
             self?.openUndoRekey(sourceAccount)
+        }
+        
+        screen.onRekeyToJointAccountAction = { [weak self] in
+            self?.openRekeyToJointAccount(sourceAccount)
         }
         
         screen.onRescanRekeyedAccountsAction = { [weak self] in
@@ -201,6 +210,14 @@ extension AccountInformationFlowCoordinator {
             .noAuthAccountInformation(account: sourceAccount),
             by: .presentWithoutNavigationController
         )
+    }
+    
+    private func openRekeyToJointAccount(_ sourceAccount: Account) {
+        presentingScreen.dismiss(animated: true) {
+            [weak self] in
+            guard let self else { return }
+            rekeyToJointAccountFlowCoordinator.launchFlow(sourceAccount: sourceAccount)
+        }
     }
 }
 

@@ -131,6 +131,7 @@ struct CreateJointAccountAddAccountView: View {
     private func handle(selectedAccount: AddedAccountData?) {
         guard let selectedAccount else { return }
         onSelectedAddress(selectedAccount)
+        guard !navigationPath.isEmpty else { return }
         navigationPath.removeLast()
     }
 }
