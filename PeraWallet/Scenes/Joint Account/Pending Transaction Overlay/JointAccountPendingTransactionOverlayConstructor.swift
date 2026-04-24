@@ -49,7 +49,7 @@ enum JointAccountPendingTransactionOverlayConstructor {
     }
     
     @MainActor
-    static func buildViewController(signRequestMetadata: SignRequestMetadata, isCancelTransactionAvailable: Bool, onDismiss: (() -> Void)? = nil, onCancelTransaction: (() -> Void)? = nil, onJointAccountAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?) -> JointAccountPendingTransactionOverlayViewController {
+    static func buildViewController(signRequestMetadata: SignRequestMetadata, isCancelTransactionAvailable: Bool, onDismiss: (() -> Void)? = nil, onCancelTransaction: (() -> Void)? = nil, onJointAccountAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)? = nil) -> JointAccountPendingTransactionOverlayViewController {
         let view = buildScene(
             legacyBannerController: AppDelegate.shared?.appConfiguration.bannerController,
             signRequestID: signRequestMetadata.signRequestID,
