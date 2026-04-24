@@ -204,7 +204,7 @@ extension RekeyedAccountTypeInformationViewModel {
 }
 
 extension RekeyedAccountTypeInformationViewModel{
-    private mutating func makeJointAccountToJointAccountRekeyedAccountTypeIcon() -> Image { UIImage.iconAnyToStandardRekeyedAccount }
+    private mutating func makeJointAccountToJointAccountRekeyedAccountTypeIcon() -> Image { UIImage.iconJointToJointAccountRekeyedAccount }
     private mutating func makeJointAccountToJointAccountRekeyedAccountTypeTitle() -> TextProvider { makeTypeTitle(text: String(localized: "rekeyed-account-type-joint-to-joint-title")) }
     private mutating func makeJointAccountToJointAccountRekeyedAccountTypeDescription() -> TypeDescriptionTextProvider {
         makeTypeDescription(
@@ -212,8 +212,6 @@ extension RekeyedAccountTypeInformationViewModel{
             highlightedText: String(localized: "title-learn-more")
         )
     }
-    private mutating func makeJointAccountRekeyedAccountTypeIcon() -> Image { UIImage.iconJointToJointAccountRekeyedAccount }
-    private mutating func makeJointAccountRekeyedAccountTypeTitle() -> TextProvider { makeTypeTitle(text: String(localized: "title-joint-account-to-joint-account-rekeyed")) }
 }
 
 extension RekeyedAccountTypeInformationViewModel {

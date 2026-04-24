@@ -143,6 +143,7 @@ final class AccountPortfolioView:
         
         let isJointAccount = viewModel?.isJointAccount ?? false
         jointAccountButton.isHidden = !isJointAccount
+        jointAccountButton.isUserInteractionEnabled = isJointAccount
         badgeText.text = viewModel?.jointAccountBadgeText
         jointAccountViewHeightConstraint?.update(offset: isJointAccount ? 28 : 0)
         valueViewTopConstraint?.update(offset: isJointAccount ? 12 : 0)
