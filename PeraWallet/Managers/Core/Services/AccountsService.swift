@@ -23,6 +23,7 @@ protocol AccountsServiceable {
     var error: AnyPublisher<AccountsService.ServiceError, Never> { get }
     
     func createJointAccount(participants: [String], threshold: Int, name: String) async throws(AccountsService.ActionError)
+    func syncJointAccountsAfterNetworkSwitch() async
     func createJointAccountSignTransactionRequest(jointAccountAddress: String, proposerAddress: String, rawTransactionLists: [[String]], responses: [JointAccountSignRequestResponse]) async throws(AccountsService.ActionError) -> ProposeSignResponse
     func hasJointAccount(with participantAddresses: [String]) -> Bool
     func signJointAccountTransaction(signRequestId: String, responses: [AccountsService.JointAccountSignResponse]) async throws(AccountsService.ActionError)
@@ -99,6 +100,7 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
     
     private func updateManagers(network: CoreApiManager.BaseURL.Network) {
         indexerApiManager.network = network
+        mobileApiManager.network = network
         reset()
     }
     
@@ -119,6 +121,30 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
         return jointAccounts?.contains(where: { accountInformation in
             accountInformation.jointAccountParticipants?.sorted() == participantAddresses.sorted()
         }) ?? false
+    }
+    
+    func syncJointAccountsAfterNetworkSwitch() async {
+        guard let deviceID = try? fetchDeviceID() else { return }
+        let jointAccounts = legacySessionManager.authenticatedUser?.accounts.filter { $0.type == .joint } ?? []
+        guard !jointAccounts.isEmpty else { return }
+
+        await withTaskGroup(of: Void.self) { group in
+            for account in jointAccounts {
+                // Skip legacy accounts that pre-date persisting threshold /
+                // version locally. Falling back to defaults would derive a
+                // different address than the stored one, registering a stale
+                // account on the new network.
+                guard
+                    let participants = account.jointAccountParticipants,
+                    let threshold = account.jointAccountThreshold,
+                    let version = account.jointAccountVersion
+                else { continue }
+
+                group.addTask { [mobileApiManager] in
+                    _ = try? await mobileApiManager.createJointAccount(participants: participants, threshold: threshold, version: version, deviceID: deviceID)
+                }
+            }
+        }
     }
     
     func createJointAccountSignTransactionRequest(jointAccountAddress: String, proposerAddress: String, rawTransactionLists: [[String]], responses: [JointAccountSignRequestResponse]) async throws(ActionError) -> ProposeSignResponse {

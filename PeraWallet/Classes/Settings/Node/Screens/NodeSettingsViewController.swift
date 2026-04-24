@@ -151,6 +151,7 @@ extension NodeSettingsViewController {
         loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
         
         let oldNetwork = selectedNetwork
+        api?.setupNetworkBase(node.network)
         
         pushNotificationController.sendDeviceDetails {
             [weak self] error in
@@ -158,28 +159,30 @@ extension NodeSettingsViewController {
             
             self.loadingController?.stopLoading()
             
-            guard let error = error else {
-                self.api?.setupNetworkBase(node.network)
-                self.pushNotificationController.unregisterDevice(from: oldNetwork)
-                change()
-                
-                self.session?.authenticatedUser?.setDefaultNode(node)
-                self.sharedDataController.resetPolling()
-                
-                completion(node.network)
-                
+            if let error {
+                self.api?.setupNetworkBase(oldNetwork)
+                self.sharedDataController.startPolling()
+
+                self.bannerController?.presentErrorBanner(
+                    title: String(localized: "title-error"),
+                    message: error.prettyDescription
+                )
+
+                completion(oldNetwork)
                 return
             }
             
-            self.api?.setupNetworkBase(oldNetwork)
-            self.sharedDataController.startPolling()
+            self.pushNotificationController.unregisterDevice(from: oldNetwork)
+            change()
 
-            self.bannerController?.presentErrorBanner(
-                title: String(localized: "title-error"),
-                message: error.prettyDescription
-            )
-            
-            completion(oldNetwork)
+            self.session?.authenticatedUser?.setDefaultNode(node)
+            self.sharedDataController.resetPolling()
+
+            completion(node.network)
+
+            Task {
+                await PeraCoreManager.shared.accounts.syncJointAccountsAfterNetworkSwitch()
+            }
         }
     }
     

@@ -31,6 +31,8 @@ public final class AccountInformation: Codable {
     public var isBackedUp: Bool
     public var hdWalletAddressDetail: HDWalletAddressDetail?
     public let jointAccountParticipants: [String]?
+    public let jointAccountThreshold: Int?
+    public let jointAccountVersion: Int?
     public var nfDomain: String?
 
     static let invalidOrder = -1
@@ -56,7 +58,9 @@ public final class AccountInformation: Codable {
         preferredOrder: Int? = nil,
         isBackedUp: Bool,
         hdWalletAddressDetail: HDWalletAddressDetail? = nil,
-        jointAccountParticipants: [String]? = nil
+        jointAccountParticipants: [String]? = nil,
+        jointAccountThreshold: Int? = nil,
+        jointAccountVersion: Int? = nil
     ) {
         self.address = address
         self.name = name
@@ -76,6 +80,8 @@ public final class AccountInformation: Codable {
         self.isBackedUp = isBackedUp
         self.hdWalletAddressDetail = hdWalletAddressDetail
         self.jointAccountParticipants = jointAccountParticipants
+        self.jointAccountThreshold = jointAccountThreshold
+        self.jointAccountVersion = jointAccountVersion
     }
     
     public required init(from decoder: Decoder) throws {
@@ -90,7 +96,11 @@ public final class AccountInformation: Codable {
         isBackedUp = try container.decodeIfPresent(Bool.self, forKey: .isBackedUp) ?? true
         hdWalletAddressDetail = try container.decodeIfPresent(HDWalletAddressDetail.self, forKey: .hdWalletAddressDetail)
         jointAccountParticipants = try container.decodeIfPresent([String].self, forKey: .jointAccountParticipants)
+        jointAccountThreshold = try container.decodeIfPresent(Int.self, forKey: .jointAccountThreshold)
+        jointAccountVersion = try container.decodeIfPresent(Int.self, forKey: .jointAccountVersion)
         nfDomain = try container.decodeIfPresent(String.self, forKey: .nfDomain)
+        let decodedIsBackedUp = try container.decodeIfPresent(Bool.self, forKey: .isBackedUp) ?? true
+        isBackedUp = jointAccountParticipants?.isEmpty == false ? true : decodedIsBackedUp
     }
 }
 
@@ -148,6 +158,8 @@ extension AccountInformation {
         case isBackedUp = "isBackedUp"
         case hdWalletAddressDetail = "hdWalletAddressDetail"
         case jointAccountParticipants
+        case jointAccountThreshold
+        case jointAccountVersion
         case nfDomain
         
         public static func == (lhs: CodingKeys, rhs: CodingKeys) -> Bool {
