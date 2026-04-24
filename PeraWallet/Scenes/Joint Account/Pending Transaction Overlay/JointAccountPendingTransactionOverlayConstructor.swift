@@ -17,9 +17,9 @@
 import Foundation
 
 enum JointAccountPendingTransactionOverlayConstructor {
-    
+
     @MainActor
-    static func buildScene(legacyBannerController: BannerController?, signRequestID: String, proposerAddress: String, signaturesInfo: [SignRequestInfo], threshold: Int, deadline: Date, isCancelTransactionAvailable: Bool) -> JointAccountPendingTransactionOverlay {
+    static func buildScene(legacyBannerController: BannerController?, signRequestID: String, proposerAddress: String, signaturesInfo: [SignRequestInfo], threshold: Int, deadline: Date) -> JointAccountPendingTransactionOverlay {
         let model = JointAccountPendingTransactionOverlayModel(
             accountsService: PeraCoreManager.shared.accounts,
             legacyBannerController: legacyBannerController,
@@ -27,38 +27,21 @@ enum JointAccountPendingTransactionOverlayConstructor {
             proposerAddress: proposerAddress,
             signaturesInfo: signaturesInfo,
             threshold: threshold,
-            deadline: deadline,
-            isCancelTransactionAvailable: isCancelTransactionAvailable
+            deadline: deadline
         )
         return JointAccountPendingTransactionOverlay(model: model)
     }
-    
+
     @MainActor
-    static func buildViewController(signRequestID: String, proposerAddress: String, signaturesInfo: [SignRequestInfo], threshold: Int,
-                                    deadline: Date, isCancelTransactionAvailable: Bool, onDismiss: (() -> Void)? = nil, onCancelTransaction: (() -> Void)? = nil) -> JointAccountPendingTransactionOverlayViewController {
-        let view = buildScene(
-            legacyBannerController: AppDelegate.shared?.appConfiguration.bannerController,
-            signRequestID: signRequestID,
-            proposerAddress: proposerAddress,
-            signaturesInfo: signaturesInfo,
-            threshold: threshold,
-            deadline: deadline,
-            isCancelTransactionAvailable: isCancelTransactionAvailable
-        )
-        return JointAccountPendingTransactionOverlayViewController(rootView: view, onDismiss: onDismiss, onCancelTransaction: onCancelTransaction, onJointAccountAnalyticsCall: nil)
-    }
-    
-    @MainActor
-    static func buildViewController(signRequestMetadata: SignRequestMetadata, isCancelTransactionAvailable: Bool, onDismiss: (() -> Void)? = nil, onCancelTransaction: (() -> Void)? = nil, onJointAccountAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)? = nil) -> JointAccountPendingTransactionOverlayViewController {
+    static func buildViewController(signRequestMetadata: SignRequestMetadata, onDismiss: (() -> Void)? = nil, onCancelTransaction: (() -> Void)? = nil, onTransactionConfirmed: (() -> Void)? = nil, onJointAccountAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)? = nil) -> JointAccountPendingTransactionOverlayViewController {
         let view = buildScene(
             legacyBannerController: AppDelegate.shared?.appConfiguration.bannerController,
             signRequestID: signRequestMetadata.signRequestID,
             proposerAddress: signRequestMetadata.proposerAddress,
             signaturesInfo: signRequestMetadata.signaturesInfo,
             threshold: signRequestMetadata.threshold,
-            deadline: signRequestMetadata.deadline,
-            isCancelTransactionAvailable: isCancelTransactionAvailable
+            deadline: signRequestMetadata.deadline
         )
-        return JointAccountPendingTransactionOverlayViewController(rootView: view, onDismiss: onDismiss, onCancelTransaction: onCancelTransaction, onJointAccountAnalyticsCall: onJointAccountAnalyticsCall)
+        return JointAccountPendingTransactionOverlayViewController(rootView: view, onDismiss: onDismiss, onCancelTransaction: onCancelTransaction, onTransactionConfirmed: onTransactionConfirmed, onJointAccountAnalyticsCall: onJointAccountAnalyticsCall)
     }
 }

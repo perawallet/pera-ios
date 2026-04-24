@@ -17,30 +17,41 @@
 import Combine
 
 final class NameAddedJointAccountModel: CreateJointAccountNameAccountModelable {
-    
+
+    /// When set, the naming screen creates the joint account directly via
+    /// `AccountsService.createJointAccount`. Used by the QR-scan / deep-link
+    /// import flow where the joint account is not present in the inbox, so
+    /// the inbox-based accept path would fail with `.addressNotFound`.
+    struct DirectImportData {
+        let participants: [String]
+        let threshold: Int
+    }
+
     // MARK: - Properties
-    
+
     private let jointAccountAddress: String
     private let inboxService: InboxServiceable
     private let accountsService: AccountsServiceable
+    private let directImportData: DirectImportData?
     private var cancellables = Set<AnyCancellable>()
-    
+
     var isAccountDuplicate: Bool = false
     var isLoadedFromInbox: Bool = true
-    
+
     @MainActor private var writableViewModel: CreateJointAccountNameAccountViewModelWritable { viewModel as CreateJointAccountNameAccountViewModelWritable }
-    
+
     // MARK: - Properties - CreateJointAccountNameAccountModelable
-    
+
     @MainActor private(set) var viewModel: CreateJointAccountNameAccountViewModel = CreateJointAccountNameAccountViewModel()
-    
+
     // MARK: - Initialisers
-    
-    init(jointAccountAddress: String, inboxService: InboxServiceable, accountsService: AccountsServiceable) {
+
+    init(jointAccountAddress: String, directImportData: DirectImportData? = nil, inboxService: InboxServiceable, accountsService: AccountsServiceable) {
         self.jointAccountAddress = jointAccountAddress
+        self.directImportData = directImportData
         self.inboxService = inboxService
         self.accountsService = accountsService
-        
+
         Task { @MainActor in
             setupViewModel()
             setupCallbacks()
@@ -67,12 +78,16 @@ final class NameAddedJointAccountModel: CreateJointAccountNameAccountModelable {
     
     @MainActor
     func createJointAccount() {
-        
+
         writableViewModel.update(isWaitingForResponse: true)
-        
+
         Task {
             do {
-                try await inboxService.acceptAccountImportRequest(jointAccountAddress: jointAccountAddress, name: viewModel.name)
+                if let directImportData {
+                    try await accountsService.createJointAccount(participants: directImportData.participants, threshold: directImportData.threshold, name: viewModel.name)
+                } else {
+                    try await inboxService.acceptAccountImportRequest(jointAccountAddress: jointAccountAddress, name: viewModel.name)
+                }
                 viewModel.update(action: .success)
             } catch {
                 viewModel.update(error: .unabletoAcceptTransaction)
@@ -80,5 +95,4 @@ final class NameAddedJointAccountModel: CreateJointAccountNameAccountModelable {
             }
         }
     }
-    
 }

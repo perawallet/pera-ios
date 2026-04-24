@@ -14,6 +14,7 @@
 
 //   InboxDiffableDataSource.swift
 
+import SwiftUI
 import UIKit
 import pera_wallet_core
 import SwiftUI
@@ -49,7 +50,7 @@ final class InboxDiffableDataSource: UICollectionViewDiffableDataSource<Int, Inb
 }
 
 private extension InboxViewModel.SignRequestState {
-    
+
     var viewModel: JointAccountSendRequestInboxRow.StateViewModel {
         switch self {
         case .pending:
@@ -70,7 +71,6 @@ private extension InboxViewModel.SignRequestState {
             return JointAccountSendRequestInboxRow.StateViewModel(text: "inbox.joint-account-send-request.state.expired", icon: .Icons.error, tint: .Helpers.negative)
         case .declined:
             return JointAccountSendRequestInboxRow.StateViewModel(text: "inbox.joint-account-send-request.state.declined", icon: .Icons.error, tint: .Helpers.negative)
-            
         }
     }
 }

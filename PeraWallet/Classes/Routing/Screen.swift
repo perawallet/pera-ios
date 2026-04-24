@@ -449,7 +449,7 @@ indirect enum Screen {
     case passphraseWarning(eventHandler: PassphraseWarningScreen.EventHandler)
     case rekeyTransactionOverlay(variant: RekeySupportOverlayView.Variant, onPrimaryAction: (() -> Void)?)
     case publicWebview(url: URL?)
-    case nameAndAddJointAccount(jointAccountAddress: String, onDismissRequest: ((NameAddedJointAccountHostingController) -> Void)?)
+    case nameAndAddJointAccount(jointAccountAddress: String, directImportData: NameAddedJointAccountModel.DirectImportData? = nil, onDismissRequest: ((NameAddedJointAccountHostingController) -> Void)?)
     case jointAccountDetail(account: Account, accountsService: AccountsServiceable)
 }
 

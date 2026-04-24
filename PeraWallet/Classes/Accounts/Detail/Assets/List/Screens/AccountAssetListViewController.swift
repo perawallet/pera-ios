@@ -64,7 +64,6 @@ final class AccountAssetListViewController:
         return coordinator
     }()
     
-    private lazy var accountActionsMenuActionView = FloatingActionItemButton(hasTitleLabel: false)
     private var positionYForVisibleAccountActionsMenuAction: CGFloat?
 
     private var query: AccountAssetListQuery
@@ -223,20 +222,17 @@ extension AccountAssetListViewController {
     private func addUI() {
         addListBackground()
         addList()
-        addAccountActionsMenuAction()
         updateSafeAreaWhenViewDidLayoutSubviews()
     }
 
     private func updateUIWhenViewDidLayoutSubviews() {
         updateListWhenViewDidLayoutSubviews()
         updateListBackgroundWhenViewDidLayoutSubviews()
-        updateAccountActionsMenuActionWhenViewDidLayoutSubviews()
         updateSafeAreaWhenViewDidLayoutSubviews()
     }
 
     private func updateUIWhenListDidScroll() {
         updateListBackgroundWhenListDidScroll()
-        updateAccountActionsMenuActionWhenListDidScroll()
         updateSafeAreaWhenListDidScroll()
     }
 
@@ -328,36 +324,6 @@ extension AccountAssetListViewController {
 }
 
 extension AccountAssetListViewController {
-    private func addAccountActionsMenuAction() {
-        accountActionsMenuActionView.image = theme.accountActionsMenuActionIcon
-
-        view.addSubview(accountActionsMenuActionView)
-
-        accountActionsMenuActionView.snp.makeConstraints {
-            let safeAreaBottom = view.compactSafeAreaInsets.bottom
-            let bottom = safeAreaBottom + theme.accountActionsMenuActionBottomPadding
-
-            $0.fitToSize(theme.accountActionsMenuActionSize)
-            $0.trailing == theme.accountActionsMenuActionTrailingPadding
-            $0.bottom == bottom + theme.accountActionsMenuActionBottomInset
-        }
-
-        accountActionsMenuActionView.addTouch(
-            target: self,
-            action: #selector(openAccountActionsMenu)
-        )
-
-        updateAccountActionsMenuActionWhenViewDidLayoutSubviews()
-    }
-
-    private func updateAccountActionsMenuActionWhenListDidScroll() {
-        updateAccountActionsMenuActionWhenViewDidLayoutSubviews()
-    }
-
-    private func updateAccountActionsMenuActionWhenViewDidLayoutSubviews() {
-        accountActionsMenuActionView.isHidden = keyboardController.isKeyboardVisible || !canAccessAccountActionsMenu()
-    }
-
     @objc
     private func openAccountActionsMenu() {
         eventHandler?(.transactionOption)
@@ -576,7 +542,7 @@ extension AccountAssetListViewController: UICollectionViewDelegate {
 
                 item.isRequestsBadgeVisible = incomingASAsRequestsCount != 0
                 item.showFundButton = configuration.featureFlagService.isEnabled(.xoSwapEnabled)
-                item.isJointAccount = dataController.account.value.authorization == .jointAccount
+                item.isJointAccount = dataController.account.value.authorization.isJointAccount
                 positionYForVisibleAccountActionsMenuAction = cell.frame.maxY
 
                 item.startObserving(event: .requests) { [weak self] in

@@ -31,6 +31,8 @@ public final class AccountInformation: Codable {
     public var isBackedUp: Bool
     public var hdWalletAddressDetail: HDWalletAddressDetail?
     public let jointAccountParticipants: [String]?
+    public let jointAccountThreshold: Int?
+    public let jointAccountVersion: Int?
     public var nfDomain: String?
 
     static let invalidOrder = -1
@@ -56,11 +58,13 @@ public final class AccountInformation: Codable {
         preferredOrder: Int? = nil,
         isBackedUp: Bool,
         hdWalletAddressDetail: HDWalletAddressDetail? = nil,
-        jointAccountParticipants: [String]? = nil
+        jointAccountParticipants: [String]? = nil,
+        jointAccountThreshold: Int? = nil,
+        jointAccountVersion: Int? = nil
     ) {
         self.address = address
         self.name = name
-        
+
         if isWatchAccount {
             self.type = .watch
         } else if jointAccountParticipants != nil {
@@ -68,7 +72,7 @@ public final class AccountInformation: Codable {
         } else {
             self.type = .standard
         }
-        
+
         self.ledgerDetail = ledgerDetail
         self.receivesNotification = receivesNotification
         self.rekeyDetail = rekeyDetail
@@ -76,6 +80,8 @@ public final class AccountInformation: Codable {
         self.isBackedUp = isBackedUp
         self.hdWalletAddressDetail = hdWalletAddressDetail
         self.jointAccountParticipants = jointAccountParticipants
+        self.jointAccountThreshold = jointAccountThreshold
+        self.jointAccountVersion = jointAccountVersion
     }
     
     public required init(from decoder: Decoder) throws {
@@ -87,10 +93,19 @@ public final class AccountInformation: Codable {
         receivesNotification = try container.decodeIfPresent(Bool.self, forKey: .receivesNotification) ?? true
         rekeyDetail = try container.decodeIfPresent(RekeyDetail.self, forKey: .rekeyDetail)
         preferredOrder = try container.decodeIfPresent(Int.self, forKey: .preferredOrder) ?? Self.invalidOrder
-        isBackedUp = try container.decodeIfPresent(Bool.self, forKey: .isBackedUp) ?? true
         hdWalletAddressDetail = try container.decodeIfPresent(HDWalletAddressDetail.self, forKey: .hdWalletAddressDetail)
         jointAccountParticipants = try container.decodeIfPresent([String].self, forKey: .jointAccountParticipants)
+        jointAccountThreshold = try container.decodeIfPresent(Int.self, forKey: .jointAccountThreshold)
+        jointAccountVersion = try container.decodeIfPresent(Int.self, forKey: .jointAccountVersion)
         nfDomain = try container.decodeIfPresent(String.self, forKey: .nfDomain)
+        // Joint accounts are never surfaced in backup flows — there is no local
+        // seed to protect, each participant backs up their own signer. Force
+        // `isBackedUp = true` for any joint account, including installs that
+        // predate LegacyBridgeAccountManager.addLocalAccount's creation-time
+        // fix, so existing rows also drop out of every "not backed up" warning.
+        let decodedIsBackedUp = try container.decodeIfPresent(Bool.self, forKey: .isBackedUp) ?? true
+        let isJointAccount = jointAccountParticipants?.isEmpty == false
+        isBackedUp = isJointAccount ? true : decodedIsBackedUp
     }
 }
 
@@ -148,6 +163,8 @@ extension AccountInformation {
         case isBackedUp = "isBackedUp"
         case hdWalletAddressDetail = "hdWalletAddressDetail"
         case jointAccountParticipants
+        case jointAccountThreshold
+        case jointAccountVersion
         case nfDomain
         
         public static func == (lhs: CodingKeys, rhs: CodingKeys) -> Bool {

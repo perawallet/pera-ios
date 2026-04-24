@@ -23,11 +23,13 @@ protocol AccountsServiceable {
     var error: AnyPublisher<AccountsService.ServiceError, Never> { get }
     
     func createJointAccount(participants: [String], threshold: Int, name: String) async throws(AccountsService.ActionError)
+    func syncJointAccountsAfterNetworkSwitch() async
     func createJointAccountSignTransactionRequest(jointAccountAddress: String, proposerAddress: String, rawTransactionLists: [[String]], responses: [JointAccountSignRequestResponse]) async throws(AccountsService.ActionError) -> ProposeSignResponse
     func hasJointAccount(with participantAddresses: [String]) -> Bool
     func signJointAccountTransaction(signRequestId: String, responses: [AccountsService.JointAccountSignResponse]) async throws(AccountsService.ActionError)
     func searchJointAccountSignTransaction(signRequestID: String) async throws(AccountsService.ActionError) -> JointAccountsSignRequestSearchResponse
     func fetchJointAccountDetail(address: String) async throws(AccountsService.ServiceError) -> JointAccountDetailRequestResponse
+    func checkIsJointAccount(addresses: [String]) async throws(AccountsService.ServiceError) -> [IsJointAccountResponse]
     @MainActor func localAccount(address: String) -> AccountInformation?
     @MainActor func localAccount(peraAccount: PeraAccount) -> AccountInformation?
     @MainActor func account(peraAccount: PeraAccount) -> Account?
@@ -99,6 +101,7 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
     
     private func updateManagers(network: CoreApiManager.BaseURL.Network) {
         indexerApiManager.network = network
+        mobileApiManager.network = network
         reset()
     }
     
@@ -108,7 +111,7 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
         do {
             let deviceID = try fetchDeviceID()
             let response = try await mobileApiManager.createJointAccount(participants: participants, threshold: threshold, deviceID: deviceID)
-            try LegacyBridgeAccountManager.addLocalAccount(session: legacySessionManager, sharedDataController: legacySharedDataController, address: response.address, name: name, isWatchAccount: false, participants: participants)
+            try LegacyBridgeAccountManager.addLocalAccount(session: legacySessionManager, sharedDataController: legacySharedDataController, address: response.address, name: name, isWatchAccount: false, participants: participants, threshold: response.threshold, version: response.version)
         } catch {
             throw .unableToCreateLocalAccount(error: error)
         }
@@ -119,6 +122,37 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
         return jointAccounts?.contains(where: { accountInformation in
             accountInformation.jointAccountParticipants?.sorted() == participantAddresses.sorted()
         }) ?? false
+    }
+
+    /// Mirrors Android's `SyncJointAccountsOnNetworkSwitchUseCase`. Joint
+    /// accounts are registered per-network on the backend, so after switching
+    /// nodes we re-create each local joint account on the new network using
+    /// the persisted `(participants, threshold, version)` tuple. The derived
+    /// address is deterministic from those inputs, so the existing local
+    /// entry stays valid — we just need the new backend to know about it
+    /// (otherwise inbox / sign-request endpoints 404 on the new network).
+    func syncJointAccountsAfterNetworkSwitch() async {
+        guard let deviceID = try? fetchDeviceID() else { return }
+        let jointAccounts = legacySessionManager.authenticatedUser?.accounts.filter { $0.type == .joint } ?? []
+        guard !jointAccounts.isEmpty else { return }
+
+        await withTaskGroup(of: Void.self) { group in
+            for account in jointAccounts {
+                // Skip legacy accounts that pre-date persisting threshold /
+                // version locally. Falling back to defaults would derive a
+                // different address than the stored one, registering a stale
+                // account on the new network.
+                guard
+                    let participants = account.jointAccountParticipants,
+                    let threshold = account.jointAccountThreshold,
+                    let version = account.jointAccountVersion
+                else { continue }
+
+                group.addTask { [mobileApiManager] in
+                    _ = try? await mobileApiManager.createJointAccount(participants: participants, threshold: threshold, version: version, deviceID: deviceID)
+                }
+            }
+        }
     }
     
     func createJointAccountSignTransactionRequest(jointAccountAddress: String, proposerAddress: String, rawTransactionLists: [[String]], responses: [JointAccountSignRequestResponse]) async throws(ActionError) -> ProposeSignResponse {
@@ -162,6 +196,17 @@ final class AccountsService: AccountsServiceable, NetworkConfigureable {
     func fetchJointAccountDetail(address: String) async throws(ServiceError) -> JointAccountDetailRequestResponse {
         do {
             return try await mobileApiManager.fetchJointAccountDetail(address: address)
+        } catch {
+            throw .failedToFetchAccounts(error: error)
+        }
+    }
+
+    func checkIsJointAccount(addresses: [String]) async throws(ServiceError) -> [IsJointAccountResponse] {
+        if addresses.isEmpty {
+            return []
+        }
+        do {
+            return try await mobileApiManager.checkIsJointAccount(addresses: addresses)
         } catch {
             throw .failedToFetchAccounts(error: error)
         }

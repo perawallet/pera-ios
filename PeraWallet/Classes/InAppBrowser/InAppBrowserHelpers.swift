@@ -199,7 +199,7 @@ extension InAppBrowserScreen {
         var addressesInfo = [[String: String]]()
         session?.authenticatedUser?.accounts
             .map { Account(localAccount: $0) }
-            .filter { !$0.isJointAccount }
+            .filter { !$0.isJointAccount && !$0.authorization.isJointAccountRekeyed }
             .forEach { account in
                 let name = account.primaryDisplayName
                 let address = account.address

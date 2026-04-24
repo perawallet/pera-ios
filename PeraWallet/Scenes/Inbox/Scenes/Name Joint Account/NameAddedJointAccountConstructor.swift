@@ -17,9 +17,9 @@
 import UIKit
 
 enum NameAddedJointAccountConstructor {
-    
-    static func buildViewController(legacyConfiguration: ViewControllerConfiguration, jointAccountAddress: String, onDismissRequest: ((NameAddedJointAccountHostingController) -> Void)?) -> UIViewController {
-        let model = NameAddedJointAccountModel(jointAccountAddress: jointAccountAddress, inboxService: PeraCoreManager.shared.inbox, accountsService: PeraCoreManager.shared.accounts)
+
+    static func buildViewController(legacyConfiguration: ViewControllerConfiguration, jointAccountAddress: String, directImportData: NameAddedJointAccountModel.DirectImportData? = nil, onDismissRequest: ((NameAddedJointAccountHostingController) -> Void)?) -> UIViewController {
+        let model = NameAddedJointAccountModel(jointAccountAddress: jointAccountAddress, directImportData: directImportData, inboxService: PeraCoreManager.shared.inbox, accountsService: PeraCoreManager.shared.accounts)
         let view = NameAddedJointAccountView(model: model)
         let hostingController = NameAddedJointAccountHostingController(rootView: view, onDismissRequest: onDismissRequest)
         return SwiftUICompatibilityBaseViewController(configuration: legacyConfiguration, hostingController: hostingController)

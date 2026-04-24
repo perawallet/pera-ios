@@ -144,7 +144,7 @@ extension SendTransactionFlowCoordinator {
     private func showJointAccountPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata) {
         
         Task { @MainActor in
-            let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata, isCancelTransactionAvailable: true)
+            let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata, onJointAccountAnalyticsCall: nil)
             presentingScreen.present(viewController, animated: true)
         }
     }

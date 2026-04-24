@@ -205,18 +205,17 @@ final class IncomingASAAccountsViewController: BaseViewController {
                 threshold: request.jointAccount.threshold,
                 deadline: request.expectedExpireDatetime
             )
-            showJointAccountPendingTransactionOverlay(signRequestMetadata: signRequestMetadata, jointAccount: account, isCancelTransactionAvailable: PeraCoreManager.shared.accounts.account(address: proposerAddress) != nil)
+            showJointAccountPendingTransactionOverlay(signRequestMetadata: signRequestMetadata, jointAccount: account)
         } catch {
             show(error: error)
         }
     }
-    
-    private func showJointAccountPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata, jointAccount: Account, isCancelTransactionAvailable: Bool) {
+
+    private func showJointAccountPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata, jointAccount: Account) {
         analytics.track(.jointAccount(type: .showPendingTransaction))
-        
+
         pendingTransactionOverlay = JointAccountPendingTransactionOverlayConstructor.buildViewController(
             signRequestMetadata: signRequestMetadata,
-            isCancelTransactionAvailable: isCancelTransactionAvailable,
             onDismiss: { [weak self] in
                 self?.analytics.track(.jointAccount(type: .closePendingTransaction))
                 self?.pendingTransactionOverlay = nil
@@ -231,7 +230,7 @@ final class IncomingASAAccountsViewController: BaseViewController {
                 )
             }
         )
-        
+
         guard let pendingTransactionOverlay else { return }
         present(pendingTransactionOverlay, animated: true)
     }

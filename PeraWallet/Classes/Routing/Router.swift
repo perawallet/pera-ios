@@ -508,80 +508,8 @@ final class Router:
                 visibleScreen.open(.inbox, by: .present)
             case let .jointAccountImport(address):
                 guard appConfiguration.featureFlagService.isEnabled(.jointAccountEnabled) else { return }
-                
-                let visibleScreen = findVisibleScreen(over: rootViewController)
-                let transition = BottomSheetTransition(presentingViewController: visibleScreen)
-                
-                let eventHandler: QRScanOptionsViewController.EventHandler = {
-                    [weak self] event in
-                    guard let self = self else { return }
-
-                    switch event {
-                    case .transaction:
-                        launch(tab: .home)
-
-                        var transactionDraft = SendTransactionDraft(
-                            from: Account(),
-                            transactionMode: .algo
-                        )
-
-                        let amount: UInt64 = 0
-                        transactionDraft.amount = amount.toAlgos
-
-                        let accountSelectDraft = SelectAccountDraft(
-                            transactionAction: .send,
-                            requiresAssetSelection: true,
-                            transactionDraft: transactionDraft,
-                            receiver: address
-                        )
-
-                        self.route(
-                            to: .accountSelection(
-                                draft: accountSelectDraft,
-                                delegate: self
-                            ),
-                            from: self.findVisibleScreen(over: self.rootViewController),
-                            by: .present
-                        )
-
-                    case .watchAccount:
-                        launch(tab: .home)
-
-                        let session = self.appConfiguration.session
-
-                        if let authenticatedUser = session.authenticatedUser,
-                           authenticatedUser.hasReachedTotalAccountLimit {
-
-                            let bannerController = self.appConfiguration.bannerController
-                            bannerController.presentErrorBanner(
-                                title: String(localized: "user-account-limit-error-title"),
-                                message: String(localized: "user-account-limit-error-message")
-                            )
-                            return
-                        }
-
-                        self.route(
-                            to: .watchAccountAddition(
-                                flow: .addNewAccount(
-                                    mode: .watch
-                                ),
-                                address: address
-                            ),
-                            from: self.findVisibleScreen(over: self.rootViewController),
-                            by: .present
-                        )
-                    case .contact:
-                        launch(tab: .home)
-
-                        self.route(
-                            to: .addContact(address: address, name: ""),
-                            from: self.findVisibleScreen(over: self.rootViewController),
-                            by: .present
-                        )
-                    }
-                }
-                
-                transition.perform(.qrScanOptions(address: address, eventHandler: eventHandler), by: .present)
+                launch(tab: .home)
+                presentJointAccountImportOverlay(address: address)
             }
         case .qrScanner:
             guard let authenticatedUser = appConfiguration.session.authenticatedUser, authenticatedUser.accounts.isNonEmpty else {
@@ -2541,8 +2469,8 @@ final class Router:
         case .accountRecoverySearch:
             let screen = AccountSearchRecoveryScreen(configuration: configuration)
             viewController = screen
-        case let .nameAndAddJointAccount(jointAccountAddress, onDismissRequest):
-            viewController = NameAddedJointAccountConstructor.buildViewController(legacyConfiguration: configuration, jointAccountAddress: jointAccountAddress, onDismissRequest: onDismissRequest)
+        case let .nameAndAddJointAccount(jointAccountAddress, directImportData, onDismissRequest):
+            viewController = NameAddedJointAccountConstructor.buildViewController(legacyConfiguration: configuration, jointAccountAddress: jointAccountAddress, directImportData: directImportData, onDismissRequest: onDismissRequest)
         case let .jointAccountDetail(account, accountsService):
             viewController = JointAccountDetailConstructor.buildCompatibilityViewController(
                 configuration: configuration,
@@ -2553,6 +2481,90 @@ final class Router:
         return viewController as? T
     }
     // swiftlint:enable function_body_length
+
+    private func presentJointAccountImportOverlay(address: String) {
+        if appConfiguration.session.authenticatedUser?.account(address: address) != nil {
+            appConfiguration.bannerController.presentInfoBanner(String(localized: "joint-account-already-exists-message"))
+            return
+        }
+
+        Task { @MainActor in
+            let accountsService = PeraCoreManager.shared.accounts
+            do {
+                let detail = try await accountsService.fetchJointAccountDetail(address: address)
+                let accountModels = detail.participantAddresses.map { makeJointAccountImportAccountModel(address: $0) }
+                showJointAccountInviteConfirmation(jointAccountAddress: detail.address, participants: detail.participantAddresses, threshold: detail.threshold, accountModels: accountModels)
+            } catch {
+                appConfiguration.bannerController.presentErrorBanner(
+                    title: String(localized: "title-error"),
+                    message: error.localizedDescription
+                )
+            }
+        }
+    }
+
+    private func makeJointAccountImportAccountModel(address: String) -> JointAccountInviteConfirmationOverlayViewModel.AccountModel {
+        if let contact = try? ContactsManager.fetchContact(address: address), let contactData = ContactDataProvider.data(contact: contact) {
+            return JointAccountInviteConfirmationOverlayViewModel.AccountModel(id: address, image: contactData.image, title: contactData.title, subtitle: contactData.subtitle)
+        }
+
+        let account = PeraCoreManager.shared.accounts.accounts.value.first(where: { $0.address == address })
+        let title = account?.titles.primary ?? address.shortAddressDisplay
+        let subtitle = account?.titles.secondary
+
+        return JointAccountInviteConfirmationOverlayViewModel.AccountModel(id: address, image: .placeholderUserIconData, title: title, subtitle: subtitle)
+    }
+
+    @MainActor
+    private func showJointAccountInviteConfirmation(jointAccountAddress: String, participants: [String], threshold: Int, accountModels: [JointAccountInviteConfirmationOverlayViewModel.AccountModel]) {
+        let presenter = findVisibleScreen(over: rootViewController)
+        let configuration = appConfiguration.all()
+
+        let onIgnore: () -> Void = { [weak self] in
+            guard let self else { return }
+            appConfiguration.analytics.track(.jointAccount(type: .inviteIgnorePressed))
+            findVisibleScreen(over: rootViewController).dismissScreen()
+            appConfiguration.bannerController.presentInfoBanner(String(localized: "joint-account-invite-ignored-text"))
+        }
+
+        let onAccept: () -> Void = { [weak self] in
+            guard let self else { return }
+            appConfiguration.analytics.track(.jointAccount(type: .inviteAddPressed))
+            findVisibleScreen(over: rootViewController).dismiss(animated: true) { [weak self] in
+                self?.openNameAndAddJointAccount(address: jointAccountAddress, participants: participants, threshold: threshold)
+            }
+        }
+
+        let controller = JointAccountInviteConfirmationOverlayConstructor.buildCompatibilityViewController(
+            configuration: configuration,
+            subtitle: jointAccountAddress.shortAddressDisplay,
+            threshold: threshold,
+            accountModels: accountModels,
+            onIgnore: onIgnore,
+            onAccept: onAccept
+        )
+        presenter.present(controller, animated: true)
+    }
+
+    @MainActor
+    private func openNameAndAddJointAccount(address: String, participants: [String], threshold: Int) {
+        let presenter = findVisibleScreen(over: rootViewController)
+        let bannerController = appConfiguration.bannerController
+        route(
+            to: .nameAndAddJointAccount(
+                jointAccountAddress: address,
+                directImportData: .init(participants: participants, threshold: threshold),
+                onDismissRequest: { screen in
+                    PeraUserDefaults.shouldShowNewAccountAnimation = true
+                    screen.dismiss(animated: true) {
+                        bannerController.presentSuccessBanner(title: String(localized: "joint-account-invite-accepted-text"))
+                    }
+                }
+            ),
+            from: presenter,
+            by: .present
+        )
+    }
 }
 
 extension Router {

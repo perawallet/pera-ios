@@ -22,6 +22,7 @@ final class JointAccountTransactionCoordinator {
     enum Action {
         case connectionWithLedgerNeeded(transactionController: TransactionController)
         case overlayDismissed
+        case transactionConfirmed
         case failure(error: Error, transactionController: TransactionController)
     }
     
@@ -69,18 +70,23 @@ final class JointAccountTransactionCoordinator {
         let onDismiss: (() -> Void)? = { [weak self] in
             self?.action = .overlayDismissed
         }
-        
+
         let onCancelTransaction: (() -> Void)? = { [weak self] in
             guard let confirmationDialogPresenter else { return }
             self?.openTransactionCancellationDialog(jointAccount: jointAccount, transactionType: transactionType, presenter: confirmationDialogPresenter, sharedDataController: sharedDataController)
         }
-        
+
+        let onTransactionConfirmed: (() -> Void)? = { [weak self] in
+            self?.action = .transactionConfirmed
+        }
+
         Task { @MainActor in
             let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(
                 signRequestMetadata: signRequestMetadata,
-                isCancelTransactionAvailable: true,
                 onDismiss: onDismiss,
-                onCancelTransaction: onCancelTransaction
+                onCancelTransaction: onCancelTransaction,
+                onTransactionConfirmed: onTransactionConfirmed,
+                onJointAccountAnalyticsCall: nil
             )
             confirmationDialogPresenter = viewController
             presenter.present(viewController, animated: true)

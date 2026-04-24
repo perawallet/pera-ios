@@ -50,7 +50,7 @@ extension LedgerAccountFetchOperation {
     public func startOperation() {
         ledgerBleController.fetchAddress(at: accountIndex)
     }
-    
+
     public func completeOperation(with data: Data) {
         if data.isErrorResponseFromLedger {
             if data.isLedgerTransactionCancelledError {
@@ -107,28 +107,35 @@ extension LedgerAccountFetchOperation {
         ) { [weak self] response in
             guard let self = self else { return }
 
+            let isFirstFetch = self.ledgerAccounts.isEmpty
+
             switch response {
             case .success(let accountWrapper):
-                if !accountWrapper.account.isSameAccount(with: address) {
-                    self.delegate?.ledgerAccountFetchOperation(self, didFailed: .failedToFetchAccountFromIndexer)
-                    self.returnAccounts()
-                    return
-                }
+                let isAddressMatch = accountWrapper.account.isSameAccount(with: address)
+                let fetchedAccount = isAddressMatch ? accountWrapper.account : Account(address: address)
+                fetchedAccount.ledgerDetail = self.composeLedgerDetail()
 
-                if accountWrapper.account.isCreated {
-                    accountWrapper.account.ledgerDetail = self.composeLedgerDetail()
-                    self.ledgerAccounts.append(accountWrapper.account)
+                if isAddressMatch, fetchedAccount.isCreated {
+                    self.ledgerAccounts.append(fetchedAccount)
+                    self.startOperation()
+                } else if isFirstFetch {
+                    fetchedAccount.authorization = .ledger
+                    self.ledgerAccounts.append(fetchedAccount)
                     self.startOperation()
                 } else {
+                    fetchedAccount.authorization = .ledger
+                    self.ledgerAccounts.append(fetchedAccount)
                     self.returnAccounts()
                 }
             case let .failure(error, _):
                 if error.isHttpNotFound {
-                    if self.isInitialAccount {
-                        let account = Account(address: address)
-                        account.authorization = .ledger
-                        account.ledgerDetail = self.composeLedgerDetail()
-                        self.ledgerAccounts.append(account)
+                    let account = Account(address: address)
+                    account.authorization = .ledger
+                    account.ledgerDetail = self.composeLedgerDetail()
+                    self.ledgerAccounts.append(account)
+                    if isFirstFetch {
+                        self.startOperation()
+                        return
                     }
                 } else {
                     self.delegate?.ledgerAccountFetchOperation(self, didFailed: .failedToFetchAccountFromIndexer)

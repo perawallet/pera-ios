@@ -52,8 +52,8 @@ final class MobileApiManager {
         return try await perform(v1Request: request)
     }
     
-    func createJointAccount(participants: [String], threshold: Int, deviceID: String?) async throws(CoreApiManager.ApiError) -> MultiSigAccountObject {
-        let request = CreateJointAccountRequest(version: 1, threshold: threshold, participantAddresses: participants, deviceID: deviceID)
+    func createJointAccount(participants: [String], threshold: Int, version: Int = 1, deviceID: String?) async throws(CoreApiManager.ApiError) -> MultiSigAccountObject {
+        let request = CreateJointAccountRequest(version: version, threshold: threshold, participantAddresses: participants, deviceID: deviceID)
         return try await perform(v1Request: request)
     }
     
@@ -85,6 +85,11 @@ final class MobileApiManager {
     
     func fetchJointAccountDetail(address: String) async throws(CoreApiManager.ApiError) -> JointAccountDetailRequestResponse {
         let request = JointAccountDetailRequest(address: address)
+        return try await perform(v1Request: request)
+    }
+
+    func checkIsJointAccount(addresses: [String]) async throws(CoreApiManager.ApiError) -> [IsJointAccountResponse] {
+        let request = IsJointAccountRequest(accountAddresses: addresses)
         return try await perform(v1Request: request)
     }
     

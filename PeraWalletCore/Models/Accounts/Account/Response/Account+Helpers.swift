@@ -216,6 +216,10 @@ extension Account {
             return "icon-joint-account".uiImage
         }
 
+        if isJointAccount {
+            return "icon-joint-account".uiImage
+        }
+
         return "icon-no-auth-account".uiImage
     }
     
@@ -229,7 +233,10 @@ extension Account {
         if authorization.isWatch {
             return "icon-watch-account"
         }
-        if authorization == .jointAccount {
+        if authorization == .jointAccountRekeyed {
+            return "icon-joint-to-joint-account-rekeyed-account"
+        }
+        if isJointAccount || authorization.isJointAccount {
             return "icon-joint-account"
         }
         if authorization == .jointAccountRekeyed {
@@ -238,7 +245,7 @@ extension Account {
         if authorization.isLedger {
             return "icon-ledger-account"
         }
-        if authorization.isRekeyedToStandard || authorization.isJointAccountRekeyed {
+        if authorization.isRekeyedToStandard {
             return "icon-any-to-standard-rekeyed-account"
         }
         if authorization.isRekeyedToLedger {

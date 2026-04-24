@@ -39,7 +39,7 @@ struct AccountTypeInformationViewTheme:
         self.spacingBetweenTypeIconAndTitle = 12
         self.spacingBetweenTypeIconAndTypeTitle = 12
         self.typeTitle = [
-            .textOverflow(SingleLineText()),
+            .textOverflow(MultilineText(numberOfLines: 2)),
             .textColor(Colors.Text.main)
         ]
         self.spacingBetweenTypeTitleAndTypeFoonote = 12

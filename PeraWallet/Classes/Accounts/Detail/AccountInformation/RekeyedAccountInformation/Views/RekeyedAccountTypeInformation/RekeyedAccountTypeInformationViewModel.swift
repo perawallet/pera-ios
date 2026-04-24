@@ -58,7 +58,7 @@ extension RekeyedAccountTypeInformationViewModel {
         } else if authorization.isUnknownToStandardRekeyed {
             icon = makeUnknownAccountToStandardAccountRekeyedAccountTypeIcon()
         } else if authorization.isJointAccountRekeyed {
-            icon = makeJointAccountToJointAccountRekeyedAccountTypeIcon()
+            icon = makeJointAccountRekeyedAccountTypeIcon()
         } else {
             icon = nil
         }
@@ -84,7 +84,7 @@ extension RekeyedAccountTypeInformationViewModel {
         } else if authorization.isUnknownToStandardRekeyed {
             title = makeUnknownAccountToStandardAccountRekeyedAccountTypeTitle()
         } else if authorization.isJointAccountRekeyed {
-            title = makeJointAccountToJointAccountRekeyedAccountTypeTitle()
+            title = makeJointAccountRekeyedAccountTypeTitle()
         } else {
             title = nil
         }
@@ -203,17 +203,15 @@ extension RekeyedAccountTypeInformationViewModel {
     }
 }
 
-extension RekeyedAccountTypeInformationViewModel{
-    private mutating func makeJointAccountToJointAccountRekeyedAccountTypeIcon() -> Image { UIImage.iconAnyToStandardRekeyedAccount }
-    private mutating func makeJointAccountToJointAccountRekeyedAccountTypeTitle() -> TextProvider { makeTypeTitle(text: String(localized: "rekeyed-account-type-joint-to-joint-title")) }
+extension RekeyedAccountTypeInformationViewModel {
+    private mutating func makeJointAccountRekeyedAccountTypeIcon() -> Image { UIImage.iconJointToJointAccountRekeyedAccount }
+    private mutating func makeJointAccountRekeyedAccountTypeTitle() -> TextProvider { makeTypeTitle(text: String(localized: "title-joint-account-to-joint-account-rekeyed")) }
     private mutating func makeJointAccountToJointAccountRekeyedAccountTypeDescription() -> TypeDescriptionTextProvider {
         makeTypeDescription(
-            text: String(localized: "rekeyed-account-type-joint-to-joint-description"),
+            text: String(localized: "joint-account-to-joint-account-rekeyed-account-type-description"),
             highlightedText: String(localized: "title-learn-more")
         )
     }
-    private mutating func makeJointAccountRekeyedAccountTypeIcon() -> Image { UIImage.iconJointToJointAccountRekeyedAccount }
-    private mutating func makeJointAccountRekeyedAccountTypeTitle() -> TextProvider { makeTypeTitle(text: String(localized: "title-joint-account-to-joint-account-rekeyed")) }
 }
 
 extension RekeyedAccountTypeInformationViewModel {

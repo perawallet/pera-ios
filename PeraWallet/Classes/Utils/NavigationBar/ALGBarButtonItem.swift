@@ -246,14 +246,16 @@ struct ALGBarButtonItem: BarButtonItem {
             
             guard let image = UIImage.iconShield16.convert(to: CGSize(width: 16.0, height: 16.0))?.templateImage else { return nil }
 
-            if authorization.isRekeyedToLedger {
+            let isJointAccount = authorization == .jointAccount || authorization.isJointAccountRekeyed
+
+            if !isJointAccount, authorization.isRekeyedToLedger {
                 return ImageContent(
                     normal: image,
                     tintColor: Colors.Wallet.wallet3Icon.uiColor
                 )
             }
 
-            if authorization.isRekeyedToStandard {
+            if !isJointAccount, authorization.isRekeyedToStandard {
                 return ImageContent(
                     normal: image,
                     tintColor: Colors.Wallet.wallet4Icon.uiColor
@@ -267,7 +269,7 @@ struct ALGBarButtonItem: BarButtonItem {
                 )
             }
 
-            if authorization.isNoAuth {
+            if !isJointAccount, authorization.isNoAuth {
                 return ImageContent(
                     normal: image,
                     tintColor: Colors.Helpers.negative.uiColor

@@ -136,6 +136,10 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
          openLedgerConnection()
       case .overlayDismissed:
          dismissScreen()
+      case .transactionConfirmed:
+         // Joint send request confirmed on-chain. The send preview has done
+         // its job; dismiss just like the overlay-dismiss path.
+         dismissScreen()
       case let .failure(error, _):
          show(error: error)
       }

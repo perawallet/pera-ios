@@ -42,7 +42,7 @@ final class InboxViewModel {
         let deadline: Date
     }
     
-    enum SignRequestState: Hashable, Equatable {
+    enum SignRequestState: Hashable {
         case pending
         case submitting
         case confirmed
@@ -165,10 +165,10 @@ final class InboxModel: InboxModelable {
     // MARK: - Handlers
     
     private func jointAccountImportRequestViewModel(model: MultiSigAccountObject) -> InboxViewModel.JointAccountImportRequestModel? {
-        
+
         let title: AttributedString
         let displayName = displayName(for: model.address)
-        
+
         do {
             title = try AttributedString(localizedMarkdown: "inbox-joint-account-import-request-title-\(displayName)")
         } catch {
@@ -183,10 +183,10 @@ final class InboxModel: InboxModelable {
     }
     
     private func jointAccountSignRequestViewModel(model: SignRequestObject) -> InboxViewModel.JointAccountSignRequestModel? {
-        
+
         let title: AttributedString
         let displayName = displayName(for: model.jointAccount.address)
-        
+
         do {
             title = try AttributedString(localizedMarkdown: "inbox-joint-account-sign-transaction-request-title-\(displayName)")
         } catch {
@@ -253,7 +253,7 @@ final class InboxModel: InboxModelable {
     }
     
     // MARK: - Helpers
-    
+
     private func displayName(for address: String) -> String {
         let shortAddress = address.shortAddressDisplay
 
@@ -273,7 +273,7 @@ final class InboxModel: InboxModelable {
 
         return shortAddress
     }
-    
+
     private func state(signRequest: SignRequestObject) -> InboxViewModel.SignRequestState {
         switch signRequest.status {
         case .pending: return .pending

@@ -227,6 +227,7 @@ extension RekeyInstructionsScreen {
 
     private func addBody() {
         guard draft.body != nil else { return }
+
         bodyView.customizeAppearance(theme.body)
 
         contentView.addSubview(bodyView)

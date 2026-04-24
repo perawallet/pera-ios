@@ -249,7 +249,22 @@ extension ASADetailViewController {
 
     private func openAccountInformationScreen() {
         let sourceAccount = dataController.account
+        if sourceAccount.authorization == .jointAccount {
+            openJointAccountDetail(sourceAccount)
+            return
+        }
         accountInformationFlowCoordinator.launch(sourceAccount)
+    }
+
+    private func openJointAccountDetail(_ account: Account) {
+        navigationItem.backButtonDisplayMode = .minimal
+        open(
+            .jointAccountDetail(
+                account: account,
+                accountsService: PeraCoreManager.shared.accounts
+            ),
+            by: .push
+        )
     }
 
     private func updateUIWhenAccountDidRename() {

@@ -149,37 +149,47 @@ extension NodeSettingsViewController {
         onComplete completion: @escaping (ALGAPI.Network) -> Void
     ) {
         loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
-        
+
         let oldNetwork = selectedNetwork
-        
+
+        // Switch the API base first so the push registration call below
+        // targets the NEW network. We revert if registration fails.
+        api?.setupNetworkBase(node.network)
+
         pushNotificationController.sendDeviceDetails {
             [weak self] error in
             guard let self = self else { return }
-            
+
             self.loadingController?.stopLoading()
-            
-            guard let error = error else {
-                self.api?.setupNetworkBase(node.network)
-                self.pushNotificationController.unregisterDevice(from: oldNetwork)
-                change()
-                
-                self.session?.authenticatedUser?.setDefaultNode(node)
-                self.sharedDataController.resetPolling()
-                
-                completion(node.network)
-                
+
+            if let error {
+                self.api?.setupNetworkBase(oldNetwork)
+                self.sharedDataController.startPolling()
+
+                self.bannerController?.presentErrorBanner(
+                    title: String(localized: "title-error"),
+                    message: error.prettyDescription
+                )
+
+                completion(oldNetwork)
                 return
             }
-            
-            self.api?.setupNetworkBase(oldNetwork)
-            self.sharedDataController.startPolling()
 
-            self.bannerController?.presentErrorBanner(
-                title: String(localized: "title-error"),
-                message: error.prettyDescription
-            )
-            
-            completion(oldNetwork)
+            self.pushNotificationController.unregisterDevice(from: oldNetwork)
+            change()
+
+            self.session?.authenticatedUser?.setDefaultNode(node)
+            self.sharedDataController.resetPolling()
+
+            completion(node.network)
+
+            // Mirror Android's `SyncJointAccountsOnNetworkSwitchUseCase`:
+            // joint accounts are registered per-network on the backend, so
+            // re-create each local joint account on the new network now
+            // that we have a device ID for it.
+            Task {
+                await PeraCoreManager.shared.accounts.syncJointAccountsAfterNetworkSwitch()
+            }
         }
     }
     

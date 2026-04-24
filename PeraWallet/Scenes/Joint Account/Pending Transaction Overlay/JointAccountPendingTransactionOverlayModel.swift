@@ -38,7 +38,7 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
     }
     
     enum TransactionStatus {
-        case inProgress(canCancelTransaction: Bool)
+        case inProgress
         case success
         case cancelled
         case failed(errorMessage: String)
@@ -62,9 +62,10 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
         @Published fileprivate(set) var numberOfSignaturesText: String = ""
         @Published fileprivate(set) var deadline: Date = Date()
         @Published fileprivate(set) var threshold: Int = 0
-        @Published fileprivate(set) var transactionState: TransactionStatus = .inProgress(canCancelTransaction: false)
+        @Published fileprivate(set) var transactionState: TransactionStatus = .inProgress
         @Published fileprivate(set) var accounts: [AccountModel] = []
         @Published fileprivate(set) var isCancelProcessStarted: Bool = false
+        @Published fileprivate(set) var hasProposerAccount: Bool = false
         @Published fileprivate(set) var error: ModelError?
     }
     
@@ -74,8 +75,7 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
     private let accountsService: AccountsServiceable
     private let pollingService = PollingService(timeInterval: .seconds(6))
     private let legacyBannerController: BannerController?
-    private let proposerAddress: String
-    private let isCancelTransactionAvailable: Bool
+    private let cancellableAddress: String?
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - Properties - JointAccountPendingTransactionOverlayViewModelable
@@ -85,28 +85,40 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
     // MARK: - Initialisers
     
     @MainActor
-    init(accountsService: AccountsServiceable, legacyBannerController: BannerController?, signRequestID: String, proposerAddress: String, signaturesInfo: [SignRequestInfo], threshold: Int, deadline: Date, isCancelTransactionAvailable: Bool) {
-        
+    init(accountsService: AccountsServiceable, legacyBannerController: BannerController?, signRequestID: String, proposerAddress: String, signaturesInfo: [SignRequestInfo], threshold: Int, deadline: Date) {
+
         self.accountsService = accountsService
         self.legacyBannerController = legacyBannerController
         self.signRequestID = signRequestID
-        self.proposerAddress = proposerAddress
-        self.isCancelTransactionAvailable = isCancelTransactionAvailable
-        
+        self.cancellableAddress = Self.resolveCancellableAddress(accountsService: accountsService, proposerAddress: proposerAddress, signaturesInfo: signaturesInfo)
+
         let participants = signaturesInfo.map(\.address)
         let localAccounts = accountsService.accounts.value.filter { participants.contains($0.address) }
-        
+
         let accountsModels = signaturesInfo
             .sorted { $0.address < $1.address }
             .map { accountModel(address: $0.address, signRequestStatus: $0.status, localAccounts: localAccounts) }
-        
-        viewModel.transactionState = .inProgress(canCancelTransaction: isCancelTransactionAvailable)
+
+        viewModel.hasProposerAccount = cancellableAddress != nil
         viewModel.threshold = threshold
         viewModel.deadline = deadline
-        
+
         update(accounts: accountsModels)
         setupCallbacks()
         startPoolingForData()
+    }
+
+    /// The proposer is the only participant allowed to cancel the request.
+    /// Mirrors Android's `checkHasProposer` fallback — if the server-reported
+    /// proposer isn't a local account, fall back to the first local signer
+    /// that has already signed (practically, they proposed it).
+    private static func resolveCancellableAddress(accountsService: AccountsServiceable, proposerAddress: String, signaturesInfo: [SignRequestInfo]) -> String? {
+        if accountsService.accounts.value.contains(where: { $0.address == proposerAddress }) {
+            return proposerAddress
+        }
+        return signaturesInfo.first { info in
+            info.status == .signed && accountsService.accounts.value.contains(where: { $0.address == info.address })
+        }?.address
     }
     
     // MARK: - Setups
@@ -133,11 +145,15 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
     
     @MainActor
     func cancelTransaction() {
-        
+
+        // The view hides the Cancel button when `cancellableAddress` is nil,
+        // so this guard should never trip in practice.
+        guard let cancellableAddress else { return }
+
         viewModel.isCancelProcessStarted = true
-        
-        let responses: [AccountsService.JointAccountSignResponse] = [.declined(address: proposerAddress)]
-        
+
+        let responses: [AccountsService.JointAccountSignResponse] = [.declined(address: cancellableAddress)]
+
         Task {
             do {
                 try await accountsService.signJointAccountTransaction(signRequestId: signRequestID, responses: responses)
@@ -147,7 +163,7 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
             }
         }
     }
-    
+
     func stopPolling() {
         Task {
             await pollingService.stop()
@@ -203,7 +219,7 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
         if let status = result.status {
             switch status {
             case .pending, .ready, .submitting:
-                viewModel.transactionState = .inProgress(canCancelTransaction: isCancelTransactionAvailable)
+                viewModel.transactionState = .inProgress
                 isTransactionInProgress = true
             case .confirmed:
                 viewModel.transactionState = .success
