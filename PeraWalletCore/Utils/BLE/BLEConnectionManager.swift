@@ -305,7 +305,7 @@ private extension BLEConnectionManager {
         }
         
         static var allServiceUuids: [CBUUID] {
-            [NanoX.serviceUuid, Stax.serviceUuid, Flex.serviceUuid]
+            [NanoX.serviceUuid, Stax.serviceUuid, Flex.serviceUuid, NanoGen5.serviceUuid]
         }
     }
 }
