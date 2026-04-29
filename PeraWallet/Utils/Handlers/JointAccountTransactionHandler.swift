@@ -50,7 +50,10 @@ final class JointAccountTransactionHandler {
     
     @MainActor
     func isConnectionWithLedgerRequired(jointAccount: Account) -> Bool {
-        guard let participants = jointAccount.jointAccountParticipants else { return false }
+        
+        let signerAccount = accountsService.account(address: jointAccount.signerAddress)
+        
+        guard let participants = signerAccount?.jointAccountParticipants else { return false }
         return participants
             .compactMap { accountsService.account(address: $0) }
             .contains { $0.hasLedgerDetail() }
