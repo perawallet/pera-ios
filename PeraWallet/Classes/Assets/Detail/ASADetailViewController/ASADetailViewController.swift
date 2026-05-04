@@ -82,6 +82,7 @@ final class ASADetailViewController: PageContainer {
     private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
         presentingScreen: self,
         sharedDataController: sharedDataController,
+        legacyConfiguration: configuration,
         account: dataController.account,
         asset: dataController.asset
     )

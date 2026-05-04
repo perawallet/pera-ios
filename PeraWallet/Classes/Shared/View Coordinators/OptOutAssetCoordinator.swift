@@ -24,6 +24,7 @@ final class OptOutAssetCoordinator {
     weak var presenter: BaseViewController?
     
     private let jointAccountTransactionCoordinator: JointAccountTransactionCoordinator
+    private let viewControllerConfiguration: ViewControllerConfiguration
     private var ledgerConnectionScreen: LedgerConnectionScreen?
     private var signWithLedgerProcessScreen: SignWithLedgerProcessScreen?
     private var blockchainUpdatesMonitor: BlockchainUpdatesMonitor? { presenter?.sharedDataController.blockchainUpdatesMonitor }
@@ -32,8 +33,9 @@ final class OptOutAssetCoordinator {
     
     // MARK: - Initialisers
     
-    init(accountsService: AccountsServiceable) {
+    init(accountsService: AccountsServiceable, viewControllerConfiguration: ViewControllerConfiguration) {
         jointAccountTransactionCoordinator = JointAccountTransactionCoordinator(accountsService: accountsService)
+        self.viewControllerConfiguration = viewControllerConfiguration
         setupCallbacks()
     }
     
@@ -133,9 +135,9 @@ final class OptOutAssetCoordinator {
             jointAccountTransactionCoordinator.handleTransaction(
                 jointAccount: account,
                 transactionType: .optOut(draft: assetTransactionSendDraft),
-                sharedDataController: presenter.sharedDataController,
                 transactionController: transactionController,
-                presenter: presenter
+                presenter: presenter,
+                legacyConfiguration: viewControllerConfiguration
             )
         }
     }

@@ -52,11 +52,11 @@ final class JointAccountTransactionHandler {
     func isConnectionWithLedgerRequired(jointAccount: Account) -> Bool {
         
         let signerAccount = accountsService.account(address: jointAccount.signerAddress)
-        
         guard let participants = signerAccount?.jointAccountParticipants else { return false }
-        return participants
-            .compactMap { accountsService.account(address: $0) }
-            .contains { $0.hasLedgerDetail() }
+        let localParticipants = participants.compactMap { accountsService.account(address: $0) }
+        let ledgerParticipants = localParticipants.filter { $0.hasLedgerDetail() }
+        
+        return !localParticipants.isEmpty && localParticipants.count == ledgerParticipants.count
     }
     
     @MainActor
@@ -84,7 +84,16 @@ final class JointAccountTransactionHandler {
                     }
                     
                     let participants = subjectAccount.jointAccountParticipants ?? []
-                    let signersAccounts = participants.compactMap { self.accountsService.account(address: $0) }
+                    
+                    let signersAccounts: [Account]
+                    let localAccounts = participants.compactMap { self.accountsService.account(address: $0) }
+                    let normalLocalAcounts = localAccounts.filter { !$0.hasLedgerDetail() }
+                    
+                    if normalLocalAcounts.isEmpty, let ledgerAccount = localAccounts.first {
+                        signersAccounts = [ledgerAccount]
+                    } else {
+                        signersAccounts = normalLocalAcounts
+                    }
                     
                     guard let proposerAddress = signersAccounts.first?.address else {
                         continuation.resume(throwing: HandlerError.noSignersAccounts)
@@ -181,6 +190,6 @@ extension JointAccountTransactionHandler.Metadata {
                 return SignRequestInfo(address: address, status: status)
             }
         
-        return SignRequestMetadata(signRequestID: apiResponse.id, proposerAddress: proposerAddress, signaturesInfo: signaturesInfo, threshold: apiResponse.jointAccount.threshold, deadline: apiResponse.expectedExpireDatetime)
+        return SignRequestMetadata(signRequestID: apiResponse.id, transactions: apiResponse.transactionLists, proposerAddress: proposerAddress, signaturesInfo: signaturesInfo, threshold: apiResponse.jointAccount.threshold, deadline: apiResponse.expectedExpireDatetime)
     }
 }

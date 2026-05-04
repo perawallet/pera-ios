@@ -12,62 +12,58 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   JointAccountPendingTransactionOverlayViewController.swift
+//   JointAccountPendingTransactionOverlayHostingController.swift
 
-import UIKit
+import SwiftUI
 
-final class JointAccountPendingTransactionOverlayViewController: SwiftUICompatibilityBaseViewController {
-    
-    // MARK: - Properties
+final class JointAccountPendingTransactionOverlayHostingController: UIHostingController<JointAccountPendingTransactionOverlay> {
     
     var onDismiss: (() -> Void)?
     var onCancelTransaction: (() -> Void)?
     var onJointAccountAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?
-    var onSignWithLedger: ((TransactionController, UIViewController, String) -> Void)?
-    
-    private let hostingController: JointAccountPendingTransactionOverlayHostingController
-    
+    var onSignWithLedger: ((_ signerAddress: String) -> Void)?
     
     // MARK: - Initialisers
     
-    init(configuration: ViewControllerConfiguration, rootView: JointAccountPendingTransactionOverlay) {
-        hostingController = JointAccountPendingTransactionOverlayHostingController(rootView: rootView)
-        super.init(configuration: configuration, hostingController: hostingController)
+    override init(rootView: JointAccountPendingTransactionOverlay) {
+        super.init(rootView: rootView)
         setupController()
         setupCallbacks()
+    }
+    
+    @available(*, unavailable) @preconcurrency @MainActor
+    required dynamic init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Setups
     
     private func setupController() {
-        modalPresentationStyle = .overFullScreen
-        modalTransitionStyle = .crossDissolve
         view.backgroundColor = .clear
     }
     
     private func setupCallbacks() {
         
-        hostingController.onDismiss = { [weak self] in
-            self?.dismissScreen()
+        rootView.onDismiss = { [weak self] in
             self?.onDismiss?()
         }
         
-        hostingController.onCancelTransaction = { [weak self] in
+        rootView.onCancelTransactionAction = { [weak self] in
             self?.onCancelTransaction?()
         }
-        hostingController.onJointAccountAnalyticsCall = { [weak self] in
+        
+        rootView.onJointAccountAnalyticsCall = { [weak self] in
             self?.onJointAccountAnalyticsCall?($0)
         }
         
-        hostingController.onSignWithLedger = { [weak self] in
-            guard let self else { return }
-            onSignWithLedger?(makeTransactionController(), self, $0)
+        rootView.onSignWithLedgerAction = { [weak self] in
+            self?.onSignWithLedger?($0)
         }
     }
     
     // MARK: - Actions
     
     func cancelTransaction() {
-        hostingController.cancelTransaction()
+        rootView.cancelTransaction()
     }
 }

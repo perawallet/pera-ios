@@ -25,22 +25,30 @@ final class JointAccountTransactionCoordinator {
         case failure(error: Error, transactionController: TransactionController)
     }
     
+    enum InternalError: Error {
+        case signerAccountNotFound
+        case unableToEncodeTransaction
+    }
+    
     // MARK: - Properties
     
     @Published private(set) var action: Action?
     private let jointAccountTransactionHandler: JointAccountTransactionHandler
+    private let accountsService: AccountsServiceable
+    private var sharedAccountSignWithLedgerHandler: SharedAccountSignWithLedgerHandler?
     private var bottomSheetTransition: BottomSheetTransition?
     
     // MARK: - Initialisers
     
     init(accountsService: AccountsServiceable) {
+        self.accountsService = accountsService
         jointAccountTransactionHandler = JointAccountTransactionHandler(accountsService: accountsService)
     }
     
     // MARK: - Actions
     
     @MainActor
-    func handleTransaction(jointAccount: Account, transactionType: JointAccountTransactionHandler.TransactionType, sharedDataController: SharedDataController, transactionController: TransactionController, presenter: UIViewController) {
+    func handleTransaction(jointAccount: Account, transactionType: JointAccountTransactionHandler.TransactionType, transactionController: TransactionController, presenter: UIViewController, legacyConfiguration: ViewControllerConfiguration) {
         
         if jointAccountTransactionHandler.isConnectionWithLedgerRequired(jointAccount: jointAccount) {
             action = .connectionWithLedgerNeeded(transactionController: transactionController)
@@ -48,16 +56,34 @@ final class JointAccountTransactionCoordinator {
         
         Task {
             do {
-                let result = try await jointAccountTransactionHandler.handleTransaction(jointAccount: jointAccount, type: transactionType, sharedDataController: sharedDataController, transactionController: transactionController)
-                openPendingTransactionOverlay(signRequestMetadata: result.signRequestMetadata, presenter: presenter, jointAccount: jointAccount, transactionType: transactionType, sharedDataController: sharedDataController)
+                let result = try await jointAccountTransactionHandler.handleTransaction(
+                    jointAccount: jointAccount,
+                    type: transactionType,
+                    sharedDataController: legacyConfiguration.sharedDataController,
+                    transactionController: transactionController
+                )
+                
+                guard let rawTransaction = result.apiResponse.transactionLists.first?.rawTransactions.first, let transactionData = Data(base64Encoded: rawTransaction) else {
+                    throw InternalError.unableToEncodeTransaction
+                }
+                
+                openPendingTransactionOverlay(
+                    signRequestMetadata: result.signRequestMetadata,
+                    presenter: presenter,
+                    jointAccount: jointAccount,
+                    transactionType: transactionType,
+                    transactionData: transactionData,
+                    transactionController: transactionController,
+                    legacyConfiguration: legacyConfiguration
+                )
             } catch {
                 action = .failure(error: error, transactionController: transactionController)
             }
         }
     }
     
-    private func openPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata?, presenter: UIViewController,
-                                               jointAccount: Account, transactionType: JointAccountTransactionHandler.TransactionType, sharedDataController: SharedDataController) {
+    private func openPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata?, presenter: UIViewController, jointAccount: Account, transactionType: JointAccountTransactionHandler.TransactionType,
+                                               transactionData: Data, transactionController: TransactionController, legacyConfiguration: ViewControllerConfiguration) {
         
         guard let signRequestMetadata else {
             action = .overlayDismissed
@@ -72,16 +98,38 @@ final class JointAccountTransactionCoordinator {
         
         let onCancelTransaction: (() -> Void)? = { [weak self] in
             guard let confirmationDialogPresenter else { return }
-            self?.openTransactionCancellationDialog(jointAccount: jointAccount, transactionType: transactionType, presenter: confirmationDialogPresenter, sharedDataController: sharedDataController)
+            self?.openTransactionCancellationDialog(jointAccount: jointAccount, transactionType: transactionType, presenter: confirmationDialogPresenter, sharedDataController: legacyConfiguration.sharedDataController)
+        }
+        
+        let onSignWithLedger: ((TransactionController, UIViewController, String) -> Void)? = { [weak self] transactionController, presenter, signerAddress in
+            
+            guard let self else { return }
+            sharedAccountSignWithLedgerHandler = SharedAccountSignWithLedgerHandler(presenter: presenter, bannerController: legacyConfiguration.bannerController, accountsService: accountsService)
+                
+            Task { @MainActor in
+                
+                guard let signerAccount = self.accountsService.account(address: signerAddress) else {
+                    self.action = .failure(error: InternalError.signerAccountNotFound, transactionController: transactionController)
+                    return
+                }
+                
+                self.sharedAccountSignWithLedgerHandler?.handle(signerAccount: signerAccount, transactionData: transactionData, signRequestId: signRequestMetadata.signRequestID, transactionController: transactionController)
+            }
         }
         
         Task { @MainActor in
+            
             let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(
                 signRequestMetadata: signRequestMetadata,
                 isCancelTransactionAvailable: true,
-                onDismiss: onDismiss,
-                onCancelTransaction: onCancelTransaction
+                isSignWithLedgerActionAvailable: true,
+                legacyConfiguration: legacyConfiguration
             )
+            
+            viewController.onDismiss = onDismiss
+            viewController.onCancelTransaction = onCancelTransaction
+            viewController.onSignWithLedger = onSignWithLedger
+            
             confirmationDialogPresenter = viewController
             presenter.present(viewController, animated: true)
         }

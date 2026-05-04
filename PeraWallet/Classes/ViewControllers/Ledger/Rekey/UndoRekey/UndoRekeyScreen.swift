@@ -77,6 +77,7 @@ final class UndoRekeyScreen:
     private let analytics: ALGAnalytics
     private let hdWalletStorage: HDWalletStorable
     private let jointAccountTransactionCoordinator = JointAccountTransactionCoordinator(accountsService: PeraCoreManager.shared.accounts)
+    private let viewControllerConfiguration: ViewControllerConfiguration
     private var cancellables: Set<AnyCancellable> = []
     
     private let sourceAccount: Account
@@ -94,7 +95,8 @@ final class UndoRekeyScreen:
         bannerController: BannerController,
         loadingController: LoadingController,
         analytics: ALGAnalytics,
-        hdWalletStorage: HDWalletStorable
+        hdWalletStorage: HDWalletStorable,
+        viewControllerConfiguration: ViewControllerConfiguration
     ) {
         self.sourceAccount = sourceAccount
         self.authAccount = authAccount
@@ -106,6 +108,7 @@ final class UndoRekeyScreen:
         self.loadingController = loadingController
         self.analytics = analytics
         self.hdWalletStorage = hdWalletStorage
+        self.viewControllerConfiguration = viewControllerConfiguration
         super.init(api: api)
     }
 
@@ -383,9 +386,9 @@ extension UndoRekeyScreen {
                 jointAccountTransactionCoordinator.handleTransaction(
                     jointAccount: sourceAccount,
                     transactionType: .rekey(draft: rekeyTransactionDraft),
-                    sharedDataController: sharedDataController,
                     transactionController: transactionController,
-                    presenter: self
+                    presenter: self,
+                    legacyConfiguration: viewControllerConfiguration
                 )
             }
         }
