@@ -20,6 +20,8 @@ import pera_wallet_core
 
 class FundInAppBrowserScreen: InAppBrowserScreen {
     
+    var selectedAddress: String?
+    
     override var useSafeAreaBottom: Bool { true }
     
     override var userAgent: String? {
@@ -61,6 +63,14 @@ class FundInAppBrowserScreen: InAppBrowserScreen {
             self.updateTheme(self.traitCollection.userInterfaceStyle)
         }
         self.navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if let selectedAddress {
+            loadPeraURL(and: selectedAddress)
+        }
+        selectedAddress = nil
     }
     
     override func viewWillDisappear(_ animated: Bool) {

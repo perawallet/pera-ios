@@ -413,7 +413,7 @@ extension AccountDetailViewController {
     
     private func openFundIfPossible() {
         guard let rootViewController = UIApplication.shared.rootViewController() else { return }
-        rootViewController.launch(tab: .fund)
+        rootViewController.launch(tab: .fund, and: dataController.assetListDataController.account.value.address)
     }
 }
 

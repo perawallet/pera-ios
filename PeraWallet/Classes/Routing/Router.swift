@@ -502,7 +502,7 @@ final class Router:
                 )
             case .buy(path: let path, address: let address):
                 guard appConfiguration.featureFlagService.isEnabled(.xoSwapEnabled) else { return }
-                rootViewController.mainContainer.launchFund(with: path, and: address)
+                rootViewController.mainContainer.launchFundFromDeeplink(with: path, and: address)
             case .assetInbox:
                 let visibleScreen = findVisibleScreen(over: rootViewController)
                 visibleScreen.open(.inbox, by: .present)
