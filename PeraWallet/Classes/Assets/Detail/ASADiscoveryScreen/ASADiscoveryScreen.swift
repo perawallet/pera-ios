@@ -806,9 +806,9 @@ extension ASADiscoveryScreen {
                     self.jointAccountTransactionCoordinator.handleTransaction(
                         jointAccount: account,
                         transactionType: .optIn(draft: assetTransactionDraft),
-                        sharedDataController: self.sharedDataController,
                         transactionController: self.transactionController,
-                        presenter: self
+                        presenter: self,
+                        legacyConfiguration: configuration
                     )
                 }
             }

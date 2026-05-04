@@ -26,14 +26,15 @@ protocol JointAccountPendingTransactionOverlayModelable {
     @MainActor var viewModel: JointAccountPendingTransactionOverlayModel.ViewModel { get }
     @MainActor func cancelTransaction()
     func stopPolling()
+    @MainActor func signWithLedger(identifier: UUID)
 }
 
 final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTransactionOverlayModelable {
     
-    enum SignatureStatus {
+    enum SignatureStatus: Equatable {
         case signed
         case declined
-        case pending
+        case pending(isSignatureNeeded: Bool)
         case expired
     }
     
@@ -47,6 +48,11 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
     enum ModelError: Error {
         case unableToFetchData(error: Error)
         case cancelTransactionFailed(error: Error)
+        case unableToFindLedgerAccount
+    }
+    
+    enum Action {
+        case signWithLedger(_ signerAddress: String)
     }
     
     struct AccountModel: Identifiable {
@@ -65,6 +71,7 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
         @Published fileprivate(set) var transactionState: TransactionStatus = .inProgress(canCancelTransaction: false)
         @Published fileprivate(set) var accounts: [AccountModel] = []
         @Published fileprivate(set) var isCancelProcessStarted: Bool = false
+        @Published fileprivate(set) var action: Action?
         @Published fileprivate(set) var error: ModelError?
     }
     
@@ -76,6 +83,7 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
     private let legacyBannerController: BannerController?
     private let proposerAddress: String
     private let isCancelTransactionAvailable: Bool
+    private let isSignWithLedgerActionAvailable: Bool
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - Properties - JointAccountPendingTransactionOverlayViewModelable
@@ -85,24 +93,25 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
     // MARK: - Initialisers
     
     @MainActor
-    init(accountsService: AccountsServiceable, legacyBannerController: BannerController?, signRequestID: String, proposerAddress: String, signaturesInfo: [SignRequestInfo], threshold: Int, deadline: Date, isCancelTransactionAvailable: Bool) {
+    init(signRequestMetadata: SignRequestMetadata, isCancelTransactionAvailable: Bool, isSignWithLedgerActionAvailable: Bool, accountsService: AccountsServiceable, legacyBannerController: BannerController?) {
         
         self.accountsService = accountsService
         self.legacyBannerController = legacyBannerController
-        self.signRequestID = signRequestID
-        self.proposerAddress = proposerAddress
+        self.signRequestID = signRequestMetadata.signRequestID
+        self.proposerAddress = signRequestMetadata.proposerAddress
         self.isCancelTransactionAvailable = isCancelTransactionAvailable
+        self.isSignWithLedgerActionAvailable = isSignWithLedgerActionAvailable
         
-        let participants = signaturesInfo.map(\.address)
+        let participants = signRequestMetadata.signaturesInfo.map(\.address)
         let localAccounts = accountsService.accounts.value.filter { participants.contains($0.address) }
         
-        let accountsModels = signaturesInfo
+        let accountsModels = signRequestMetadata.signaturesInfo
             .sorted { $0.address < $1.address }
             .map { accountModel(address: $0.address, signRequestStatus: $0.status, localAccounts: localAccounts) }
         
         viewModel.transactionState = .inProgress(canCancelTransaction: isCancelTransactionAvailable)
-        viewModel.threshold = threshold
-        viewModel.deadline = deadline
+        viewModel.threshold = signRequestMetadata.threshold
+        viewModel.deadline = signRequestMetadata.deadline
         
         update(accounts: accountsModels)
         setupCallbacks()
@@ -154,6 +163,17 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
         }
     }
     
+    @MainActor
+    func signWithLedger(identifier: UUID) {
+        
+        guard let address = viewModel.accounts.first(where: { $0.id == identifier })?.address else {
+            viewModel.error = .unableToFindLedgerAccount
+            return
+        }
+        
+        viewModel.action = .signWithLedger(address)
+    }
+    
     // MARK: - Actions
     
     private func startPoolingForData() {
@@ -187,6 +207,8 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
             message = String(localized: "error-joint-account-pending-transaction-unable-to-fetch-data")
         case .cancelTransactionFailed:
             message = String(localized: "error-joint-account-pending-transaction-cancel-transaction-failed")
+        case .unableToFindLedgerAccount:
+            message = String(localized: "error-joint-account-pending-transaction-unable-to-find-ledger-account")
         }
         
         legacyBannerController?.presentErrorBanner(title: title, message: message)
@@ -225,43 +247,49 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
             .reduce(into: [String: SignRequestStatus]()) { $0[$1.address] = $1.response }
         
         let accounts = viewModel.accounts.map {
-            let transactionResponse = updates[$0.address]
-            let signatureStatus = viewModelSignatureStatus(signRequestStatus: transactionResponse, isTransactionInProgress: isTransactionInProgress)
+            let address = $0.address
+            let transactionResponse = updates[address]
+            let isSignatureNeeded = isSignWithLedgerActionAvailable && accountsService.accounts.value.first { $0.address == address }?.type == .ledger
+            let signatureStatus = viewModelSignatureStatus(signRequestStatus: transactionResponse, isTransactionInProgress: isTransactionInProgress, isSignatureNeeded: isSignatureNeeded)
             return AccountModel(id: $0.id, address: $0.address, avatar: $0.avatar, title: $0.title, subtitle: $0.subtitle, signatureStatus: signatureStatus)
         }
         
         update(accounts: accounts)
     }
     
-    private func viewModelSignatureStatus(signRequestStatus: SignRequestStatus?, isTransactionInProgress: Bool) -> SignatureStatus {
+    private func viewModelSignatureStatus(signRequestStatus: SignRequestStatus?, isTransactionInProgress: Bool, isSignatureNeeded: Bool) -> SignatureStatus {
         switch signRequestStatus {
         case .signed: .signed
         case .declined: .declined
-        case .none: isTransactionInProgress ? .pending : .expired
+        case .none: isTransactionInProgress ? .pending(isSignatureNeeded: isSignatureNeeded) : .expired
         }
     }
     
     private func accountModel(address: String, signRequestStatus: SignRequestStatus?, localAccounts: Set<PeraAccount>) -> AccountModel {
         
-        let signatureStatus = viewModelSignatureStatus(signRequestStatus: signRequestStatus, isTransactionInProgress: true)
         let title: String
         let subtitle: String?
         let avatar: ImageType
+        let isSignatureNeeded: Bool
         
         if let contactData = fetchContactData(address: address) {
             title = contactData.title
             subtitle = contactData.subtitle
             avatar = contactData.image
+            isSignatureNeeded = false
         } else if let localAccount = localAccounts.first(where: { $0.address == address }) {
             title = localAccount.titles.primary
             subtitle = localAccount.titles.secondary
             avatar = .icon(data: AccountIconProvider.iconData(account: localAccount))
+            isSignatureNeeded = isSignWithLedgerActionAvailable && localAccount.type == .ledger
         } else {
             title = address.shortAddressDisplay
             subtitle = nil
             avatar = .placeholderGroupIconData
+            isSignatureNeeded = false
         }
         
+        let signatureStatus = viewModelSignatureStatus(signRequestStatus: signRequestStatus, isTransactionInProgress: true, isSignatureNeeded: isSignatureNeeded)
         return AccountModel(id: UUID(), address: address, avatar: avatar, title: title, subtitle: subtitle, signatureStatus: signatureStatus)
     }
 }

@@ -14,12 +14,12 @@
 
 //   SendTransactionCoordinator.swift
 
-import Foundation
 import UIKit
 import pera_wallet_core
 
 struct SignRequestMetadata {
     let signRequestID: String
+    let transactions: [SignRequestTransactionObject]
     let proposerAddress: String
     let signaturesInfo: [SignRequestInfo]
     let threshold: Int
@@ -35,15 +35,18 @@ final class SendTransactionFlowCoordinator: SelectAccountViewControllerDelegate 
     private unowned let presentingScreen: UIViewController
 
     private let sharedDataController: SharedDataController
+    private let legacyConfiguration: ViewControllerConfiguration
 
     init(
         presentingScreen: UIViewController,
         sharedDataController: SharedDataController,
+        legacyConfiguration: ViewControllerConfiguration,
         account: Account? = nil,
         asset: Asset? = nil
     ) {
         self.presentingScreen = presentingScreen
         self.sharedDataController = sharedDataController
+        self.legacyConfiguration = legacyConfiguration
         self.account = account
         self.asset = asset
 
@@ -144,7 +147,12 @@ extension SendTransactionFlowCoordinator {
     private func showJointAccountPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata) {
         
         Task { @MainActor in
-            let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata, isCancelTransactionAvailable: true)
+            let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(
+                signRequestMetadata: signRequestMetadata,
+                isCancelTransactionAvailable: true,
+                isSignWithLedgerActionAvailable: false,
+                legacyConfiguration: legacyConfiguration
+            )
             presentingScreen.present(viewController, animated: true)
         }
     }
