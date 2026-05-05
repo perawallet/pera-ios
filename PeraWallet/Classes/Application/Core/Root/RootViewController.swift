@@ -170,11 +170,14 @@ extension RootViewController {
 
     func launch(
         tab: TabBarItemID,
-        with draft: SwapAssetFlowDraft? = nil
+        with draft: SwapAssetFlowDraft? = nil,
+        and address: String? = nil
     ) {
         switch tab {
         case .swap:
             mainContainer.launchSwap(with: draft)
+        case .fund:
+            mainContainer.launchFund(with: address)
         default:
             mainContainer.selectedTab = tab
         }
