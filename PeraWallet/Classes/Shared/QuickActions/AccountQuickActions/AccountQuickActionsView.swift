@@ -59,7 +59,6 @@ final class AccountQuickActionsView:
     
     private func updateActions() {
         swapActionView.isHidden = isSwapHidden
-        buyActionView.isHidden = isBuyHidden
         fundActionView.isHidden = isFundHidden
     }
     
