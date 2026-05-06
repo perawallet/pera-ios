@@ -37,8 +37,23 @@ final class IncomingASAAccountsViewController: BaseViewController {
 
     private lazy var theme = Theme()
     
-    private lazy var listDataSource: InboxDiffableDataSource = InboxDiffableDataSource(collectionView: listView, onJointAccountInviteInboxRowTap: { [weak self] in self?.model.requestAction(identifier: $0) })
+    private lazy var listDataSource: InboxDiffableDataSource = InboxDiffableDataSource(collectionView: listView, onJointAccountInviteInboxRowTap: { [weak self] action in
+        switch action {
+        case .import:
+            self?.analytics.track(.jointAccount(type: .invitePressed))
+        default: break
+        }
+        self?.model.requestAction(identifier: action)
+    })
     private lazy var transitionToMinimumBalanceInfo = BottomSheetTransition(presentingViewController: self)
+    
+    private lazy var noContentView: NoContentView = {
+        let view = NoContentView()
+        view.customize(NoContentViewCommonTheme())
+        view.bindData(InboxNoContentViewModel())
+        view.isHidden = true
+        return view
+    }()
 
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = AccountAssetListLayout.build(backgroundColor: .clear)
@@ -56,6 +71,8 @@ final class IncomingASAAccountsViewController: BaseViewController {
     
     private var positionYForVisibleAccountActionsMenuAction: CGFloat?
     private var cancellables = Set<AnyCancellable>()
+    private var bottomSheetTransition: BottomSheetTransition?
+    private var pendingTransactionOverlay: JointAccountPendingTransactionOverlayViewController?
         
     init(model: InboxModelable, legacyConfiguration: ViewControllerConfiguration) {
         self.model = model
@@ -104,7 +121,10 @@ final class IncomingASAAccountsViewController: BaseViewController {
         var snapshot = NSDiffableDataSourceSnapshot<Int, InboxViewModel.RowType>()
         snapshot.appendSections([0])
         snapshot.appendItems(rows)
-        listDataSource.apply(snapshot)
+        DispatchQueue.main.async { [weak self] in
+            self?.listDataSource.apply(snapshot)
+            self?.noContentView.isHidden = !rows.isEmpty
+        }
     }
     
     private func handle(action: InboxViewModel.Action) {
@@ -113,11 +133,9 @@ final class IncomingASAAccountsViewController: BaseViewController {
         case let .moveToImportJointAccountScene(jointAccountAddress, subtitle, threshold, accountModels):
             presentImportJointAccountOverlay(jointAccountAddress: jointAccountAddress, subtitle: subtitle, threshold: threshold, accountModels: accountModels)
         case let .moveToRequestSendScene(request):
-            if request.didRequestFailed {
-                presentSigningStatusOverlay(request: request)
-            } else {
-                presentSignJointAccountTransactionScene(request: request)
-            }
+            presentSignJointAccountTransactionScene(request: request)
+        case let .presentPendingTransactionOverlay(request):
+            presentSigningStatusOverlay(request: request)
         case let .moveToAssetDetailsScene(address, requestCount):
             moveToAssetDetailsScene(address: address, requestCount: requestCount)
         }
@@ -127,7 +145,8 @@ final class IncomingASAAccountsViewController: BaseViewController {
     
     private func presentImportJointAccountOverlay(jointAccountAddress: String, subtitle: String, threshold: Int, accountModels: [JointAccountInviteConfirmationOverlayViewModel.AccountModel]) {
         
-        let onIgnore: () -> Void = {
+        let onIgnore: () -> Void = { [weak self] in
+            self?.analytics.track(.jointAccount(type: .inviteIgnorePressed))
             Task { [weak self] in
                 guard let self else { return }
                 if await model.ignoreJointAccountInvitation(address: jointAccountAddress) {
@@ -138,6 +157,11 @@ final class IncomingASAAccountsViewController: BaseViewController {
         }
         
         let onAccept: () -> Void = { [weak self] in
+            guard self?.session?.authenticatedUser?.account(address: jointAccountAddress) == nil else {
+                self?.bannerController?.presentInfoBanner(String(localized: "joint-account-already-exists-message"))
+                return
+            }
+            self?.analytics.track(.jointAccount(type: .inviteAddPressed))
             self?.moveToNameAccountScene(jointAccountAddress: jointAccountAddress)
         }
         
@@ -164,7 +188,11 @@ final class IncomingASAAccountsViewController: BaseViewController {
     }
     
     private func presentSigningStatusOverlay(request: SignRequestObject) {
-        guard let responses = request.transactionLists.first?.responses else { return }
+        guard
+            let responses = request.transactionLists.first?.responses,
+                let proposerAddress = request.proposerAddress,
+                let account = PeraCoreManager.shared.accounts.account(address: request.jointAccount.address)
+        else { return }
         do {
             let signaturesInfo = try buildSignaturesInfo(
                 from: request.jointAccount.participantAddresses,
@@ -172,20 +200,40 @@ final class IncomingASAAccountsViewController: BaseViewController {
             )
             let signRequestMetadata = SignRequestMetadata(
                 signRequestID: request.id,
-                proposerAddress: request.jointAccount.address,
+                proposerAddress: proposerAddress,
                 signaturesInfo: signaturesInfo,
                 threshold: request.jointAccount.threshold,
                 deadline: request.expectedExpireDatetime
             )
-            showJointAccountPendingTransactionOverlay(signRequestMetadata: signRequestMetadata)
+            showJointAccountPendingTransactionOverlay(signRequestMetadata: signRequestMetadata, jointAccount: account, isCancelTransactionAvailable: PeraCoreManager.shared.accounts.account(address: proposerAddress) != nil)
         } catch {
             show(error: error)
         }
     }
     
-    private func showJointAccountPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata) {
-        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata)
-        present(viewController, animated: true)
+    private func showJointAccountPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata, jointAccount: Account, isCancelTransactionAvailable: Bool) {
+        analytics.track(.jointAccount(type: .showPendingTransaction))
+        
+        pendingTransactionOverlay = JointAccountPendingTransactionOverlayConstructor.buildViewController(
+            signRequestMetadata: signRequestMetadata,
+            isCancelTransactionAvailable: isCancelTransactionAvailable,
+            onDismiss: { [weak self] in
+                self?.analytics.track(.jointAccount(type: .closePendingTransaction))
+                self?.pendingTransactionOverlay = nil
+            },
+            onCancelTransaction: { [weak self] in
+                guard let self, let pendingTransactionOverlay else { return }
+                analytics.track(.jointAccount(type: .cancelTransaction))
+                openTransactionCancellationDialog(
+                    jointAccount: jointAccount,
+                    presenter: pendingTransactionOverlay,
+                    sharedDataController: sharedDataController
+                )
+            }
+        )
+        
+        guard let pendingTransactionOverlay else { return }
+        present(pendingTransactionOverlay, animated: true)
     }
     
     private func buildSignaturesInfo(
@@ -210,7 +258,7 @@ final class IncomingASAAccountsViewController: BaseViewController {
     
     private func moveToAssetDetailsScene(address: String, requestCount: Int) {
         
-        let screen = open(.inbox, by: .push) as? IncomingASAAccountsViewController
+        let screen = open(.incomingASA(address: address, requestsCount: requestCount), by: .push) as? IncomingASAAccountInboxViewController
         
         screen?.eventHandler = { [weak self, weak screen] event in
             switch event {
@@ -235,6 +283,25 @@ final class IncomingASAAccountsViewController: BaseViewController {
             ),
             by: .push
         )
+    }
+    
+    private func openTransactionCancellationDialog(jointAccount: Account, presenter: JointAccountPendingTransactionOverlayViewController, sharedDataController: SharedDataController) {
+        
+        let configurator = BottomWarningViewConfigurator(
+            image: .iconIncomingAsaError,
+            title: String(localized: "shared-account-cancel-transaction-confirmation-title"),
+            description: .plain(String(localized: "shared-account-cancel-transaction-confirmation-description")),
+            primaryActionButtonTitle: String(localized: "shared-account-cancel-transaction-confirmation-primary-button-title"),
+            secondaryActionButtonTitle: String(localized: "shared-account-cancel-transaction-confirmation-secondary-button-title"),
+            primaryAction: { [weak self] in self?.cancelTransaction(jointAccount: jointAccount, overlay: presenter, sharedDataController: sharedDataController) }
+        )
+        
+        bottomSheetTransition = BottomSheetTransition(presentingViewController: presenter)
+        bottomSheetTransition?.perform(.bottomWarning(configurator: configurator), by: .presentWithoutNavigationController)
+    }
+    
+    private func cancelTransaction(jointAccount: Account, overlay: JointAccountPendingTransactionOverlayViewController, sharedDataController: SharedDataController) {
+        overlay.cancelTransaction()
     }
     
     // MARK: - Deinitializer
@@ -281,6 +348,7 @@ extension IncomingASAAccountsViewController {
     
     private func addUI() {
         addList()
+        addNoContent()
     }
 
     private func addList() {
@@ -299,6 +367,13 @@ extension IncomingASAAccountsViewController {
         listView.showsHorizontalScrollIndicator = false
         listView.alwaysBounceVertical = true
         listView.delegate = self
+    }
+    
+    private func addNoContent() {
+        view.addSubview(noContentView)
+        noContentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
 }
 

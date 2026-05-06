@@ -49,6 +49,17 @@ final class JointAccountTransactionHandler {
     // MARK: - Actions
     
     @MainActor
+    func isConnectionWithLedgerRequired(jointAccount: Account) -> Bool {
+        
+        let signerAccount = accountsService.account(address: jointAccount.signerAddress)
+        
+        guard let participants = signerAccount?.jointAccountParticipants else { return false }
+        return participants
+            .compactMap { accountsService.account(address: $0) }
+            .contains { $0.hasLedgerDetail() }
+    }
+    
+    @MainActor
     func handleTransaction(jointAccount: Account, type: TransactionType, sharedDataController: SharedDataController, transactionController: TransactionController) async throws -> Metadata {
         
         try await withCheckedThrowingContinuation { continuation in
@@ -64,7 +75,15 @@ final class JointAccountTransactionHandler {
                 case let .success(transactionParameters):
                     
                     let transactions = [transactionData(transactionType: type, parameters: transactionParameters)]
-                    let participants = jointAccount.jointAccountParticipants ?? []
+                    let subjectAccount: Account
+                    
+                    if jointAccount.authorization.isJointAccountRekeyed, let authAddress = jointAccount.authAddress, let authHolderAccount = accountsService.account(address: authAddress) {
+                        subjectAccount = authHolderAccount
+                    } else {
+                        subjectAccount = jointAccount
+                    }
+                    
+                    let participants = subjectAccount.jointAccountParticipants ?? []
                     let signersAccounts = participants.compactMap { self.accountsService.account(address: $0) }
                     
                     guard let proposerAddress = signersAccounts.first?.address else {
@@ -73,12 +92,18 @@ final class JointAccountTransactionHandler {
                     }
                     
                     let rawTransactionLists = transactions.map { $0.map { $0.base64EncodedString() }}
-                    let responses = signersAccounts.map { self.signRequestResponse(signerAccount: $0, transactions: transactions, transactionController: transactionController) }
                     
                     Task {
+                        var responses: [JointAccountSignRequestResponse] = []
+                        
+                        for account in signersAccounts {
+                            let response = await self.signRequestResponse(signerAccount: account, transactions: transactions, transactionController: transactionController)
+                            responses.append(response)
+                        }
+                        
                         do {
                             let result = try await self.accountsService.createJointAccountSignTransactionRequest(
-                                jointAccountAddress: jointAccount.address,
+                                jointAccountAddress: subjectAccount.address,
                                 proposerAddress: proposerAddress,
                                 rawTransactionLists: rawTransactionLists,
                                 responses: responses
@@ -120,16 +145,28 @@ final class JointAccountTransactionHandler {
         }
     }
     
-    private func signRequestResponse(signerAccount: Account, transactions: [[Data]], transactionController: TransactionController) -> JointAccountSignRequestResponse {
+    private func signRequestResponse(signerAccount: Account, transactions: [[Data]], transactionController: TransactionController) async -> JointAccountSignRequestResponse {
        
-       let signatures = transactions.map { $0.compactMap { transactionController.singature(signerAccount: signerAccount, transactionData: $0)?.base64EncodedString() }}
-       
-       return JointAccountSignRequestResponse(
-          address: signerAccount.address,
-          response: .signed,
-          signatures: signatures,
-          deviceId: nil
-       )
+        var signatures: [[String]] = []
+        
+        for transactionGroup in transactions {
+            
+            var signaturesGroup: [String] = []
+            
+            for transactionData in transactionGroup {
+                guard let signature = await transactionController.singature(signerAccount: signerAccount, transactionData: transactionData)?.base64EncodedString() else { continue }
+                signaturesGroup.append(signature)
+            }
+            
+            signatures.append(signaturesGroup)
+        }
+        
+        return JointAccountSignRequestResponse(
+            address: signerAccount.address,
+            response: .signed,
+            signatures: signatures,
+            deviceId: nil
+        )
     }
 }
 

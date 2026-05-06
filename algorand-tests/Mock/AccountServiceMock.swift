@@ -35,6 +35,7 @@ final class AccountServiceMock: AccountsServiceable {
     
     func createJointAccount(participants: [String], threshold: Int, name: String) async throws(AccountsService.ActionError) {}
     func createJointAccountSignTransactionRequest(jointAccountAddress: String, proposerAddress: String, rawTransactionLists: [[String]], responses: [JointAccountSignRequestResponse]) async throws(AccountsService.ActionError) -> ProposeSignResponse { .mock }
+    func syncJointAccountsAfterNetworkSwitch() async {}
     func signJointAccountTransaction(signRequestId: String, responses: [AccountsService.JointAccountSignResponse]) async throws(AccountsService.ActionError) {}
     func searchJointAccountSignTransaction(signRequestID: String) async throws(AccountsService.ActionError) -> JointAccountsSignRequestSearchResponse { .mock }
     func fetchJointAccountDetail(address: String) async throws(AccountsService.ServiceError) -> JointAccountDetailRequestResponse { .mock }

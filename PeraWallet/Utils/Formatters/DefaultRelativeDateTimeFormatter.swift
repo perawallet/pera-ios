@@ -52,6 +52,10 @@ final class DefaultRelativeDateTimeFormatter: RelativeDateTimeFormatter {
         
         let adjustedDate = adjustedDate(date: date)
         
+        if abs(adjustedDate.timeIntervalSinceNow) < 60 {
+            return String(localized: "time-ago-just-now")
+        }
+        
         switch additionalTextOption {
         case .default:
             return super.localizedString(fromTimeInterval: adjustedDate.timeIntervalSinceNow)

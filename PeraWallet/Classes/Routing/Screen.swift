@@ -98,6 +98,7 @@ indirect enum Screen {
     case transactionFilterCustomRange(fromDate: Date?, toDate: Date?)
     case pinLimit
     case rekeyToStandardAccountInstructions(sourceAccount: Account)
+    case rekeyToJointAccountInstructions(sourceAccount: Account)
     case rekeyToLedgerAccountInstructions(sourceAccount: Account)
     case rekeyConfirmation(sourceAccount: Account, authAccount: Account? = nil, newAuthAccount: Account)
     case rekeySuccess(sourceAccount: Account, eventHandler: RekeySuccessScreen.EventHandler)
@@ -176,6 +177,10 @@ indirect enum Screen {
     )
     case jsonDisplay(jsonData: Data, title: String)
     case inbox
+    case incomingASA(
+        address: String,
+        requestsCount: Int
+    )
     case incomingASAsDetail(draft: IncomingASAListItem)
     case successResultScreen(
         viewModel: SuccessResultScreenViewModel,
@@ -393,6 +398,7 @@ indirect enum Screen {
     case ledgerAccountInformation(account: Account)
     case noAuthAccountInformation(account: Account)
     case rekeyedAccountInformation(sourceAccount: Account, authAccount: Account)
+    case rekeyedJointAccountInformation(sourceAccount: Account, authAccount: Account)
     case anyToNoAuthRekeyedAccountInformation(account: Account)
     case rekeyedAccountSelectionList(
         authAccount: Account,

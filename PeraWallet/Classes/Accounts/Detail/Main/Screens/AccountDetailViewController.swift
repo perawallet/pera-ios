@@ -75,6 +75,7 @@ final class AccountDetailViewController: PageContainer {
         presentingScreen: self,
         sharedDataController: sharedDataController
     )
+    private lazy var rekeyToJointAccountFlowCoordinator = RekeyToJointAccountFlowCoordinator(presenter: self, sharedDataController: sharedDataController)
     private lazy var rekeyToLedgerAccountFlowCoordinator = RekeyToLedgerAccountFlowCoordinator(
         presentingScreen: self,
         sharedDataController: sharedDataController
@@ -238,6 +239,7 @@ extension AccountDetailViewController {
             case .transactionOption:
                 self.openAccountActionsMenu()
             case .jointAccountDetail:
+                self.analytics.track(.recordAccountDetailScreen(type: .tapJointAccountDetail))
                 self.openJointAccountDetail()
             }
         }
@@ -411,7 +413,7 @@ extension AccountDetailViewController {
     
     private func openFundIfPossible() {
         guard let rootViewController = UIApplication.shared.rootViewController() else { return }
-        rootViewController.launch(tab: .fund)
+        rootViewController.launch(tab: .fund, and: dataController.assetListDataController.account.value.address)
     }
 }
 
@@ -702,14 +704,16 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
     
     func optionsViewControllerDidOpenExportJointAccount(_ optionsViewController: OptionsViewController) {
+        analytics.track(.recordAccountDetailScreen(type: .tapJointAccountExport))
         let address = accountHandle.value.address
-        let deepLink = "perawallet://joint-account-import?address=\(address)"
+        let deepLink = "perawallet://app/joint-account-import/?address=\(address)"
         let draft = QRCreationDraft(address: "", mode: .exportJointAccount, title: String(localized: "export-share-deeplink-url-section-title"), deepLink: deepLink)
         open(.qrGenerator(title: String(localized: "export-share-deeplink-title"), draft: draft, isTrackable: true), by: .present)
     }
     
     func optionsViewControllerDidRekeyingToJointAccount(_ optionsViewController: OptionsViewController) {
-        rekeyToStandardAccountFlowCoordinator.launch(accountHandle.value)
+        analytics.track(.recordAccountDetailScreen(type: .tapJointAccountRekey))
+        rekeyToJointAccountFlowCoordinator.launchFlow(sourceAccount: accountHandle.value)
     }
 }
 

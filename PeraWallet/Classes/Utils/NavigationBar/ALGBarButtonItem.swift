@@ -41,6 +41,10 @@ struct ALGBarButtonItem: BarButtonItem {
             if authorization.isRekeyedToStandard {
                 return Colors.Wallet.wallet4.uiColor
             }
+            
+            if authorization.isJointAccountRekeyed {
+                return .Wallet.wallet1Icon
+            }
 
             return nil
         default:
@@ -120,6 +124,14 @@ struct ALGBarButtonItem: BarButtonItem {
                 return BarButtonItemTitleContent(
                     text: String(localized: "title-rekeyed"),
                     textColor: Colors.Wallet.wallet4Icon.uiColor,
+                    font: Typography.captionMedium()
+                )
+            }
+            
+            if authorization.isJointAccountRekeyed {
+                return BarButtonItemTitleContent(
+                    text: String(localized: "title-rekeyed"),
+                    textColor: .Wallet.wallet1,
                     font: Typography.captionMedium()
                 )
             }
@@ -231,24 +243,33 @@ struct ALGBarButtonItem: BarButtonItem {
             return nil
         case .account(let account):
             let authorization = account.authorization
+            
+            guard let image = UIImage.iconShield16.convert(to: CGSize(width: 16.0, height: 16.0))?.templateImage else { return nil }
 
             if authorization.isRekeyedToLedger {
                 return ImageContent(
-                    normal: "icon-shield-16".templateImage,
+                    normal: image,
                     tintColor: Colors.Wallet.wallet3Icon.uiColor
                 )
             }
 
             if authorization.isRekeyedToStandard {
                 return ImageContent(
-                    normal: "icon-shield-16".templateImage,
+                    normal: image,
                     tintColor: Colors.Wallet.wallet4Icon.uiColor
+                )
+            }
+            
+            if authorization.isJointAccountRekeyed {
+                return ImageContent(
+                    normal: image,
+                    tintColor: Colors.Wallet.wallet1.uiColor
                 )
             }
 
             if authorization.isNoAuth {
                 return ImageContent(
-                    normal: "icon-shield-16".templateImage,
+                    normal: image,
                     tintColor: Colors.Helpers.negative.uiColor
                 )
             }

@@ -35,7 +35,7 @@ final class NotificationFilterDataSource: NSObject {
     ) {
         self.api = api
         super.init()
-        accounts = sharedDataController.sortedAccounts()
+        accounts = sharedDataController.sortedAccountsForDisplay()
     }
 }
 

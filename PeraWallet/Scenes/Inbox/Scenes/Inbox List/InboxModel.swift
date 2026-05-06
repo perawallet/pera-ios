@@ -42,9 +42,13 @@ final class InboxViewModel {
         let deadline: Date
     }
     
-    enum SignRequestState {
+    enum SignRequestState: Hashable, Equatable {
         case pending
-        case failed
+        case submitting
+        case confirmed
+        case failed(reason: String?)
+        case expired
+        case declined
     }
     
     struct AlgorandStandardAssetInboxModel: Hashable, Identifiable {
@@ -57,6 +61,7 @@ final class InboxViewModel {
     enum Action {
         case moveToImportJointAccountScene(jointAccountAddress: String, subtitle: String, threshold: Int, accountModels: [JointAccountInviteConfirmationOverlayViewModel.AccountModel])
         case moveToRequestSendScene(request: SignRequestObject)
+        case presentPendingTransactionOverlay(request: SignRequestObject)
         case moveToAssetDetailsScene(address: String, requestCount: Int)
     }
     
@@ -128,6 +133,7 @@ final class InboxModel: InboxModelable {
     
     // MARK: - Actions - InboxModelable
     
+    @MainActor
     func requestAction(identifier: InboxRowIdentifier) {
         
         switch identifier {
@@ -161,9 +167,10 @@ final class InboxModel: InboxModelable {
     private func jointAccountImportRequestViewModel(model: MultiSigAccountObject) -> InboxViewModel.JointAccountImportRequestModel? {
         
         let title: AttributedString
+        let displayName = displayName(for: model.address)
         
         do {
-            title = try AttributedString(localizedMarkdown: "inbox-joint-account-import-request-title-\(model.address.shortAddressDisplay)")
+            title = try AttributedString(localizedMarkdown: "inbox-joint-account-import-request-title-\(displayName)")
         } catch {
             viewModel.errorMessage = .unableToParseImportRequest
             return nil
@@ -178,9 +185,10 @@ final class InboxModel: InboxModelable {
     private func jointAccountSignRequestViewModel(model: SignRequestObject) -> InboxViewModel.JointAccountSignRequestModel? {
         
         let title: AttributedString
+        let displayName = displayName(for: model.jointAccount.address)
         
         do {
-            title = try AttributedString(localizedMarkdown: "inbox-joint-account-sign-transaction-request-title-\(model.jointAccount.address.shortAddressDisplay)")
+            title = try AttributedString(localizedMarkdown: "inbox-joint-account-sign-transaction-request-title-\(displayName)")
         } catch {
             viewModel.errorMessage = .unableToParseSendRequest
             return nil
@@ -200,7 +208,7 @@ final class InboxModel: InboxModelable {
         
         let threshold = model.jointAccount.threshold
         let signedTransactionsText = String(localized: "inbox-joint-account-sign-request-signed-transactions-\(signatureCount)-\(threshold)")
-        let state = state(signRequestStatus: model.status)
+        let state = state(signRequest: model)
         let creationDatetime = model.creationDatetime
         
         return InboxViewModel.JointAccountSignRequestModel(id: model.id, isUnread: isUnread, title: title, state: state, creationDatetime: creationDatetime, signedTransactionsText: signedTransactionsText, deadline: model.expectedExpireDatetime)
@@ -232,19 +240,59 @@ final class InboxModel: InboxModelable {
         viewModel.action = .moveToImportJointAccountScene(jointAccountAddress: importRequest.address, subtitle: importRequest.address.shortAddressDisplay, threshold: importRequest.threshold, accountModels: accountModels)
     }
     
+    @MainActor
     private func handleSendRequestAction(identifier: String) {
+        
         guard let signRequest = inboxService.jointAccountSignRequests.value.first(where: { $0.id == identifier }) else { return }
-        viewModel.action = .moveToRequestSendScene(request: signRequest)
+        
+        if signRequest.didRequestFailed || !isSignatureRequired(request: signRequest) {
+            viewModel.action = .presentPendingTransactionOverlay(request: signRequest)
+        } else {
+            viewModel.action = .moveToRequestSendScene(request: signRequest)
+        }
     }
     
-    // MARK: - Handlers
+    // MARK: - Helpers
     
-    private func state(signRequestStatus: SignRequestObject.Status) -> InboxViewModel.SignRequestState {
-        switch signRequestStatus {
-        case .pending, .ready, .submitting, .confirmed:
-                .pending
-        case .failed, .declined, .expired:
-                .failed
+    private func displayName(for address: String) -> String {
+        let shortAddress = address.shortAddressDisplay
+
+        if let account = accountsService.accounts.value.first(where: { $0.address == address }) {
+            let primary = account.titles.primary
+            if !primary.isEmpty, primary != shortAddress {
+                return primary
+            }
         }
+
+        if let contact = try? ContactsManager.fetchContact(address: address),
+           let contactData = ContactDataProvider.data(contact: contact),
+           !contactData.title.isEmpty,
+           contactData.title != shortAddress {
+            return contactData.title
+        }
+
+        return shortAddress
+    }
+    
+    private func state(signRequest: SignRequestObject) -> InboxViewModel.SignRequestState {
+        switch signRequest.status {
+        case .pending: return .pending
+        case .ready, .submitting: return .submitting
+        case .confirmed: return .confirmed
+        case .failed: return .failed(reason: signRequest.failReasonDisplay)
+        case .expired: return .expired
+        case .declined: return .declined
+        }
+    }
+    
+    @MainActor
+    private func isSignatureRequired(request: SignRequestObject) -> Bool {
+        
+        let participantAddresses = request.jointAccount.participantAddresses
+        let responseAddresses = request.transactionLists.flatMap { $0.responses.map { $0.address }}
+        
+        return participantAddresses
+            .filter { !responseAddresses.contains($0) }
+            .contains { accountsService.localAccount(address: $0) != nil }
     }
 }

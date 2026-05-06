@@ -54,10 +54,15 @@ public extension String {
     }
     
     func numericValue() -> Double {
-        let formatter = NumberFormatter()
-        formatter.locale = Locale.current
-        formatter.numberStyle = .decimal
-        return formatter.number(from: self)?.doubleValue ?? 0
+        let decimalSeparator = Locale.current.decimalSeparator ?? "."
+        let groupingSeparator = Locale.current.groupingSeparator ?? ","
+        
+        let cleaned = self
+            .replacingOccurrences(of: groupingSeparator, with: "")
+            .filter { String($0) == decimalSeparator || $0.isNumber }
+            .replacingOccurrences(of: decimalSeparator, with: ".")
+        
+        return Double(cleaned) ?? 0
     }
     
     var isZeroValue: Bool { numericValue() == 0 }

@@ -107,11 +107,18 @@ extension SharedDataController {
             $0.value.address > $1.value.address
         }
     }
-}
 
-extension SharedDataController {
     public func sortedAccounts(by sortAlgorithm: AccountSortingAlgorithm) -> [AccountHandle] {
         accountCollection.sorted(sortAlgorithm)
+    }
+    
+    public func sortedAccountsForDisplay() -> [AccountHandle] {
+        let accounts = sortedAccounts()
+        guard let featureFlagService = CoreAppConfiguration.shared?.featureFlagService,
+              !featureFlagService.isEnabled(.jointAccountEnabled) else {
+            return accounts
+        }
+        return accounts.filter { !$0.value.isJointAccount }
     }
 }
 

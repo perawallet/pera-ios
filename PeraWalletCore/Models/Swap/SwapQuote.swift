@@ -36,6 +36,8 @@ public final class SwapQuote: ALGEntityModel {
     public let price: Decimal?
     public let priceImpact: Decimal?
     public let peraFee: UInt64?
+    public let peraFeeAmountInFeeAsset: UInt64?
+    public let peraFeeAsset: AssetDecoration?
     public let exchangeFee: UInt64?
 
     public init(
@@ -58,6 +60,8 @@ public final class SwapQuote: ALGEntityModel {
         self.price = apiModel.price.unwrap { Decimal(string: $0) }
         self.priceImpact = apiModel.priceImpact.unwrap { Decimal(string: $0) }
         self.peraFee = UInt64(apiModel.peraFee.unwrap(or: "0"))
+        self.peraFeeAmountInFeeAsset = UInt64(apiModel.peraFeeAmountInFeeAsset.unwrap(or: "0"))
+        self.peraFeeAsset = apiModel.peraFeeAsset.unwrap(AssetDecoration.init)
         self.exchangeFee = UInt64(apiModel.exchangeFee.unwrap(or: "0"))
     }
 
@@ -80,6 +84,8 @@ public final class SwapQuote: ALGEntityModel {
         apiModel.price = price.unwrap { String(describing: $0) }
         apiModel.priceImpact = priceImpact.unwrap { String(describing: $0) }
         apiModel.peraFee = peraFee.unwrap { String(describing: $0) }
+        apiModel.peraFeeAmountInFeeAsset = peraFeeAmountInFeeAsset.unwrap { String(describing: $0) }
+        apiModel.peraFeeAsset = peraFeeAsset?.encode()
         apiModel.exchangeFee = exchangeFee.unwrap { String(describing: $0) }
         return apiModel
     }
@@ -104,6 +110,8 @@ extension SwapQuote {
         var price: String?
         var priceImpact: String?
         var peraFee: String?
+        var peraFeeAmountInFeeAsset: String?
+        var peraFeeAsset: AssetDecoration.APIModel?
         var exchangeFee: String?
 
         public init() {
@@ -130,6 +138,8 @@ extension SwapQuote {
             case price
             case priceImpact = "price_impact"
             case peraFee = "pera_fee_amount"
+            case peraFeeAmountInFeeAsset = "pera_fee_amount_in_fee_asset"
+            case peraFeeAsset = "pera_fee_asset"
             case exchangeFee = "exchange_fee_amount"
         }
     }
@@ -147,6 +157,8 @@ extension SwapQuote {
         slippage: Decimal? = nil,
         priceImpact: Decimal? = nil,
         peraFee: UInt64? = nil,
+        peraFeeAmountInFeeAsset: UInt64? = nil,
+        peraFeeAsset: AssetDecoration? = nil,
         exchangeFee: UInt64? = nil,
         provider: SwapProvider? = nil
     ) {
@@ -159,6 +171,8 @@ extension SwapQuote {
         apiModel.slippage = slippage.map { String(describing: $0) }
         apiModel.priceImpact = priceImpact.map { String(describing: $0) }
         apiModel.peraFee = peraFee.map { String($0) }
+        apiModel.peraFeeAmountInFeeAsset = peraFeeAmountInFeeAsset.map { String($0) }
+        apiModel.peraFeeAsset = peraFeeAsset?.encode()
         apiModel.exchangeFee = exchangeFee.map { String($0) }
         apiModel.provider = provider
 

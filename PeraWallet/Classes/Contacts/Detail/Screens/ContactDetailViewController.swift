@@ -142,9 +142,11 @@ extension ContactDetailViewController {
                                 assetsToBeFetched.append(asset.id)
                             }
                         }
+                        
+                        guard let deviceId = self.api?.deviceId else { return }
 
                         self.api?.fetchAssetList(
-                            AssetFetchQuery(ids: assetsToBeFetched),
+                            AssetFetchQuery(deviceID: deviceId, ids: assetsToBeFetched),
                             queue: .main,
                             ignoreResponseOnCancelled: false
                         ) { [weak self] assetResponse in

@@ -16,6 +16,8 @@
 
 import Foundation
 
-enum WalletConnectEvent: String {
+public enum WalletConnectEvent: String {
     case accountsChanged = "accountsChanged"
+    
+    public var title: String { switch self { case .accountsChanged: String(localized: "wc-session-permission-accounts-text") } }
 }

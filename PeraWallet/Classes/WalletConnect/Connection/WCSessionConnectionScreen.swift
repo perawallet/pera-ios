@@ -461,26 +461,26 @@ extension WCSessionConnectionScreen {
         let index = indexPath.row
         let isSelected = dataController.isAccountSelected(at: index)
 
-        if isAccountMultiselectionEnabled {
-            if isSelected {
-                dataController.unselectAccountItem(at: index)
-            } else {
-                dataController.selectAccountItem(at: index)
-            }
+        if isSelected {
+            dataController.unselectAccountItem(at: index)
         } else {
-            let selectedAccounts = dataController.getSelectedAccounts()
-            if selectedAccounts.first != nil {
-                for i in 0..<listView.numberOfItems(inSection: indexPath.section) {
-                    if dataController.isAccountSelected(at: i) {
-                        dataController.unselectAccountItem(at: i)
-                        if let previousCell = listView.cellForItem(at: IndexPath(row: i, section: indexPath.section)) as? WCSessionConnectionAccountCell {
-                            previousCell.accessory = .unselected
+            if isAccountMultiselectionEnabled {
+                dataController.selectAccountItem(at: index)
+            } else {
+                let selectedAccounts = dataController.getSelectedAccounts()
+                if selectedAccounts.first != nil {
+                    for i in 0..<listView.numberOfItems(inSection: indexPath.section) {
+                        if dataController.isAccountSelected(at: i) {
+                            dataController.unselectAccountItem(at: i)
+                            if let previousCell = listView.cellForItem(at: IndexPath(row: i, section: indexPath.section)) as? WCSessionConnectionAccountCell {
+                                previousCell.accessory = .unselected
+                            }
+                            break
                         }
-                        break
                     }
                 }
+                dataController.selectAccountItem(at: index)
             }
-            dataController.selectAccountItem(at: index)
         }
 
         if let cell = listView.cellForItem(at: indexPath) as? WCSessionConnectionAccountCell {

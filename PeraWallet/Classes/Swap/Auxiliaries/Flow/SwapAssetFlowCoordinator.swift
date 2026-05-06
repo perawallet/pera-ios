@@ -63,7 +63,7 @@ final class SwapAssetFlowCoordinator:
     var onAssetInSelected: ((Asset) -> Void)?
     var onAssetOutSelected: ((Asset) -> Void)?
     var onQuoteLoaded: (([SwapQuote]?, SwapAssetDataController.Error?) -> Void)?
-    var onFeeCalculated: ((PeraSwapV2Fee?, SwapAssetDataController.Error?) -> Void)?
+    var onAmountCalculated: ((PeraSwapAmount?, SwapAssetDataController.Error?) -> Void)?
     var onProvidersListLoaded: ((SwapProviderV2List) -> Void)?
     var onHistoryListLoaded: ((SwapHistoryList?, SwapAssetDataController.Error?) -> Void)?
     var onTopPairsListLoaded: ((SwapTopPairsList?, SwapAssetDataController.Error?) -> Void)?
@@ -155,10 +155,7 @@ extension SwapAssetFlowCoordinator {
             switch event {
             case .performPrimaryAction:
                 self.displayStore.isConfirmedSwapUserAgreement = true
-                self.visibleScreen.dismissScreen {
-                    [weak self] in
-                    guard let self else { return }
-                    
+                self.visibleScreen.dismissScreen { 
                     guard let rootViewController = UIApplication.shared.rootViewController() else { return }
                     rootViewController.launch(tab: .swap)
                 }
@@ -708,8 +705,9 @@ extension SwapAssetFlowCoordinator {
     }
     
     func fetchAsset(with assetId: AssetID) {
+        guard let deviceId = api.deviceId else { return }
         api.fetchAssetList(
-            AssetFetchQuery(ids: [assetId]),
+            AssetFetchQuery(deviceID: deviceId, ids: [assetId]),
             queue: .main,
             ignoreResponseOnCancelled: false
         ) { [weak self] response in
@@ -804,7 +802,7 @@ extension SwapAssetFlowCoordinator {
         return number.toFraction(of: decimals)
     }
     
-    func calculateFee(assetIn: Asset, amount: Double) {
+    func calculateSwapAmount(address: String, assetIn: Asset, assetOut: Asset, percentage: String?) {
         let assetInBalance = assetIn.amount
         let formatter = SwapAssetValueFormatter()
         
@@ -813,18 +811,18 @@ extension SwapAssetFlowCoordinator {
             for: AssetDecoration(asset: assetIn)
         ).toFraction(of: assetIn.decimals)
         
-        let draft = PeraSwapFeeDraft(assetID: assetIn.id, amount: decimalValue)
-        api.calculatePeraSwapV2Fee(draft) { [weak self] result in
+        let draft = PeraSwapAmountDraft(address: address, assetID: assetIn.id, assetOut: assetOut.id, amount: decimalValue, percentage: percentage)
+        api.calculateSwapAmount(draft) { [weak self] result in
             guard let self else { return }
             switch result {
             case let .success(response):
-                onFeeCalculated?(response, nil)
+                onAmountCalculated?(response, nil)
             case let .failure(apiError, hipApiError):
                 let error = HIPNetworkError(
                     apiError: apiError,
                     apiErrorDetail: hipApiError
                 )
-                onFeeCalculated?(nil, error)
+                onAmountCalculated?(nil, error)
             }
         }
     }

@@ -23,13 +23,13 @@ class RekeyInstructionsDraft {
 
     let image: Image
     let title: TextProvider
-    let body: BodyTextProvider
+    let body: BodyTextProvider?
     let instructions: [InstructionItemViewModel]
 
     init(
         image: Image,
         title: TextProvider,
-        body: BodyTextProvider,
+        body: BodyTextProvider?,
         instructions: [InstructionItemViewModel] = []
     ) {
         self.image = image

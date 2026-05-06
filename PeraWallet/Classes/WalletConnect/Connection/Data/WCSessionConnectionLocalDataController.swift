@@ -29,15 +29,12 @@ final class WCSessionConnectionLocalDataController: WCSessionConnectionDataContr
 
     private(set) var sessionProfileViewModel: WCSessionConnectionProfileViewModel?
 
-    private var sessionRequestedPermissionsHeaderViewModel: WCSessionConnectionRequestedPermissionsHeaderViewModel?
     private var sessionAccountsHeaderViewModel: WCSessionConnectionSelectAccountHeaderViewModel?
     subscript(sectionForHeader: SectionIdentifier) -> WCSessionConnectionHeaderViewModel? {
         return findViewModel(forSection: sectionForHeader)
     }
 
-    private var sessionNetworkRequestedPermissionViewModel: WCSessionNetworkRequestedPermissionViewModel?
-    private var sessionMethodsRequestedPermissionViewModel: WCSessionMethodsRequestedPermissionViewModel?
-    private var sessionEventsRequestedPermissionViewModel: WCSessionEventsRequestedPermissionViewModel?
+    private var sessionRequestedPermissionViewModel: WCSessionRequestedPermissionViewModel?
 
     private(set) var accountListItemViewModelsCache: [PublicKey: AccountListItemViewModel] = [:]
 
@@ -52,8 +49,8 @@ final class WCSessionConnectionLocalDataController: WCSessionConnectionDataContr
         self.sharedDataController = sharedDataController
     }
 
-    subscript(requestedPermission: WCSessionRequestedPermission) -> SecondaryListItemViewModel? {
-        return findViewModel(forRequestedPermission: requestedPermission)
+    subscript(requestedPermission: WCSessionRequestedPermission) -> WCSessionRequestedPermissionViewModel? {
+        return sessionRequestedPermissionViewModel
     }
 
     subscript(accountAddress: PublicKey) -> AccountListItemViewModel? {
@@ -149,33 +146,17 @@ extension WCSessionConnectionLocalDataController {
     }
 
     private func makeItemsForRequestedPermissions() -> [ItemIdentifier] {
-        var permissions: [WCSessionRequestedPermission] = []
-
-        if let requestedChains = draft.requestedChains,
-           requestedChains.isNonEmpty {
-            permissions.append(.network)
-        }
-
-        if let supportedEvents = draft.supportedEvents,
-           !supportedEvents.isEmpty {
-            permissions.append(.events)
-        }
-
-        if let supportedMethods = draft.supportedMethods,
-           !supportedMethods.isEmpty {
-            permissions.append(.methods)
-        }
-
-        if permissions.isNonEmpty {
-            sessionRequestedPermissionsHeaderViewModel = .init()
-        }
-
-        return permissions.map(makeItem(forPermission:))
+        let supportedMethods = draft.supportedMethods ?? []
+        let supportedEvents = draft.supportedEvents ?? []
+        
+        guard !supportedMethods.isEmpty || !supportedEvents.isEmpty else { return [] }
+        
+        saveToCache(.permissions, methods: supportedMethods, events: supportedEvents)
+        return [.requestedPermission(.permissions)]
     }
 
-    private func makeItem(forPermission permission: WCSessionRequestedPermission) -> ItemIdentifier {
-        saveToCache(permission)
-        return .requestedPermission(permission)
+    private func saveToCache(_ permission: WCSessionRequestedPermission, methods: Set<WCSessionSupportedMethod>, events: Set<WCSessionSupportedEvent>) {
+        sessionRequestedPermissionViewModel = .init(methods: methods, events: events)
     }
 }
 
@@ -202,8 +183,9 @@ extension WCSessionConnectionLocalDataController {
         let filterAlgorithm = AuthorizedAccountListFilterAlgorithm()
         let accounts =
             sharedDataController
-                .sortedAccounts()
+                .sortedAccountsForDisplay()
                 .filter(filterAlgorithm.getFormula)
+                .filter { !$0.value.isJointAccount }
 
         sessionAccountsHeaderViewModel = .init(isSingle: accounts.isSingular)
 
@@ -236,33 +218,8 @@ extension WCSessionConnectionLocalDataController {
 extension WCSessionConnectionLocalDataController {
     private func findViewModel(forSection section: SectionIdentifier) -> WCSessionConnectionHeaderViewModel? {
         switch section {
-        case .requestedPermissions: return sessionRequestedPermissionsHeaderViewModel
         case .accounts: return sessionAccountsHeaderViewModel
         default: return nil
-        }
-    }
-}
-
-extension WCSessionConnectionLocalDataController {
-    private func findViewModel(forRequestedPermission permission: WCSessionRequestedPermission) -> SecondaryListItemViewModel? {
-        switch permission {
-        case .network: return sessionNetworkRequestedPermissionViewModel
-        case .methods: return sessionMethodsRequestedPermissionViewModel
-        case .events: return sessionEventsRequestedPermissionViewModel
-        }
-    }
-
-    private func saveToCache(_ permission: WCSessionRequestedPermission) {
-        switch permission {
-        case .network:
-            let requestedChains = draft.requestedChains!
-            sessionNetworkRequestedPermissionViewModel = .init(requestedChains)
-        case .methods:
-            let supportedMethods = draft.supportedMethods!
-            sessionMethodsRequestedPermissionViewModel = .init(supportedMethods)
-        case .events:
-            let supportedEvents = draft.supportedEvents!
-            sessionEventsRequestedPermissionViewModel = .init(supportedEvents)
         }
     }
 }

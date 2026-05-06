@@ -272,9 +272,11 @@ extension ScanQRFlowCoordinator {
         }
 
         loadingController.startLoadingWithMessage(String(localized: "title-loading"))
+        
+        guard let deviceId = api.deviceId else { return }
 
         api.fetchAssetList(
-            AssetFetchQuery(ids: [assetID]),
+            AssetFetchQuery(deviceID: deviceId, ids: [assetID]),
             queue: .main,
             ignoreResponseOnCancelled: false
         ) { [weak self] response in
@@ -434,13 +436,17 @@ extension ScanQRFlowCoordinator {
 
             self.transactionController.delegate = self
             self.transactionController.setTransactionDraft(assetTransactionDraft)
-            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
-
-            if account.requiresLedgerConnection() {
-                self.openLedgerConnection()
-
-                self.transactionController.initializeLedgerTransactionAccount()
-                self.transactionController.startTimer()
+            
+            Task { [weak self] in
+                guard let self else { return }
+                await self.transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
+                
+                if account.requiresLedgerConnection() {
+                    self.openLedgerConnection()
+                    
+                    self.transactionController.initializeLedgerTransactionAccount()
+                    self.transactionController.startTimer()
+                }
             }
         }
     }

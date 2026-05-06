@@ -106,7 +106,7 @@ final class SwapViewController: BaseViewController {
         if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
             sharedViewModel.payingText = sharedViewModel.fiatFormat(with: value)
         } else {
-            sharedViewModel.payingText = String(value)
+            sharedViewModel.payingText = sharedViewModel.amountFormatter.string(from: Decimal(value)) ?? String(value)
         }
         sharedViewModel.updatePayingText(sharedViewModel.payingText) { [weak self] doubleValue in
             guard let self else { return }
@@ -640,26 +640,31 @@ final class SwapViewController: BaseViewController {
                 return
             }
             swapAssetFlowCoordinator.getQuote(account: selectedAccount, assetIn: assetIn, assetOut: assetOut, amount: value, slippage: sharedViewModel?.slippageSelected.map { Decimal(floatLiteral: $0.value) })
-        case let .calculatePeraFee(amount, percentage):
-            guard let assetIn = selectedAssetIn?.asset else { return }
-            swapAssetFlowCoordinator.onFeeCalculated = { [weak self] response, error in
+        case let .calculateSwapAmount(percentage):
+            guard let address = selectedAccount?.address, let assetIn = selectedAssetIn?.asset, let assetOut = selectedAssetOut?.asset else { return }
+            swapAssetFlowCoordinator.onAmountCalculated = { [weak self] response, error in
                 guard let self else { return }
                 if let error {
                     bannerController?.presentErrorBanner(title: String(localized: "title-error"), message: error.prettyDescription)
                     sharedViewModel?.isLoadingPayAmount = false
                     return
                 }
-                let swapAmount = calculateSwapAmount(for: assetIn, balance: Decimal(amount), peraSwapFee: response, percentage: Decimal(percentage))
+                
+                guard let swapAmount = response?.amount?.assetAmount(fromFraction: assetIn.decimals).doubleValue else { return }
                 
                 if PeraUserDefaults.shouldUseLocalCurrencyInSwap ?? false {
-                    sharedViewModel?.payingText = sharedViewModel?.fiatValueText(fromAlgo: swapAmount.doubleValue) ?? .empty
+                    if assetIn.isAlgo {
+                        sharedViewModel?.payingText = sharedViewModel?.fiatValueText(fromAlgo: swapAmount) ?? .empty
+                    } else {
+                        sharedViewModel?.payingText = sharedViewModel?.fiatValueText(fromAsset: assetIn, with: swapAmount) ?? .empty
+                    }
                     sharedViewModel?.payingTextInSecondaryCurrency = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: swapAmount) ?? .empty
                 } else {
                     sharedViewModel?.payingText = Formatter.decimalFormatter(minimumFractionDigits: 0, maximumFractionDigits: 8).string(for: swapAmount) ?? .empty
-                    sharedViewModel?.payingTextInSecondaryCurrency = sharedViewModel?.fiatValueText(fromAlgo: swapAmount.doubleValue) ?? .empty
+                    sharedViewModel?.payingTextInSecondaryCurrency = sharedViewModel?.fiatValueText(fromAlgo: swapAmount) ?? .empty
                 }
                 
-                guard swapAmount.doubleValue > 0 else {
+                guard swapAmount > 0 else {
                     sharedViewModel?.isLoadingPayAmount = false
                     sharedViewModel?.isLoadingReceiveAmount = false
                     sharedViewModel?.isBalanceNotSufficient = true
@@ -668,10 +673,10 @@ final class SwapViewController: BaseViewController {
                 
                 sharedViewModel?.isLoadingPayAmount = false
                 sharedViewModel?.isLoadingReceiveAmount = true
-                handleSwapViewCallbacks(with: .getQuote(for: swapAmount.doubleValue))
+                handleSwapViewCallbacks(with: .getQuote(for: swapAmount))
             }
             
-            swapAssetFlowCoordinator.calculateFee(assetIn: assetIn, amount: amount)
+            swapAssetFlowCoordinator.calculateSwapAmount(address: address, assetIn: assetIn, assetOut: assetOut, percentage: percentage)
         case let .selectSwap(swapAssetIn, swapAssetOut):
             if let assetIn = asset(from: swapAssetIn) {
                 selectedAssetIn = assetItem(from: assetIn)
@@ -747,26 +752,6 @@ final class SwapViewController: BaseViewController {
                 analytics.track(.swapV2ConfirmEvent(type: .confirmSwap))
             }
         }
-    }
-    
-    private func calculateSwapAmount(for asset: Asset, balance: Decimal, peraSwapFee: PeraSwapV2Fee?, percentage: Decimal) -> Decimal {
-        guard let peraSwapFee else { return 0 }
-        
-        let peraFee = peraSwapFee.fee?.assetAmount(fromFraction: asset.decimals) ?? 0
-        let minBalance = asset.isAlgo ? selectedAccount?.calculateMinBalance().assetAmount(fromFraction: asset.decimals) ?? 0 : 0
-        var paddingFee: Decimal {
-            guard asset.isAlgo else {
-                return 0
-            }
-            if let feePadding = configuration.featureFlagService.double(for: .swapFeePadding) {
-                return Decimal(feePadding)
-            } else {
-                return SwapQuote.feePadding.assetAmount(fromFraction: asset.decimals)
-            }
-        }
-        let desired = balance * percentage
-        let maxTradable = max(balance - peraFee - minBalance - paddingFee, 0)
-        return min(desired, maxTradable)
     }
     
     private func asset(from swapAsset: SwapAsset) -> Asset? {

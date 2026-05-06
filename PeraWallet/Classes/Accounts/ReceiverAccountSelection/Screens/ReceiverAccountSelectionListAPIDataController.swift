@@ -158,7 +158,7 @@ extension ReceiverAccountSelectionListAPIDataController {
         case .didFinishRunning:
             sharedDataController.remove(self)
 
-            accounts = sharedDataController.sortedAccounts()
+            accounts = sharedDataController.sortedAccountsForDisplay()
 
             deliverContentSnapshot(for: lastQuery)
         }

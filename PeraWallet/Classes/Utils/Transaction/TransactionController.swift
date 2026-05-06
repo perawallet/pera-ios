@@ -21,19 +21,34 @@ import pera_wallet_core
 import MessagePack
 
 final class TransactionController {
+    
     weak var delegate: TransactionControllerDelegate?
+    private var ledgerDataContinuation: CheckedContinuation<Data, Never>?
 
     private(set) var currentTransactionType: TransactionType?
     
-    var ledgerTansactionCount: Int {
-        let senderAddresses = transactions.map { $0.sender }
-        if senderAddresses.isEmpty {
-            return 0
+    private var ledgerAccounts: [Account] {
+        
+        var accounts: [Account] = []
+        var pendingAddresses = transactions.map { $0.sender }
+        
+        while !pendingAddresses.isEmpty {
+            
+            let foundAccounts = pendingAddresses.compactMap { sharedDataController.accountCollection[$0]?.value }
+            
+            accounts += foundAccounts
+            
+            pendingAddresses = foundAccounts
+                .compactMap(\.jointAccountParticipants)
+                .flatMap(\.self)
         }
         
-        let accounts = senderAddresses.compactMap { sharedDataController.accountCollection[$0]?.value }
-        return accounts.filter { $0.requiresLedgerConnection() }.count
+        return accounts
+            .filter { $0.requiresLedgerConnection() }
     }
+    
+    var enforceLedgerConnection: Bool = false
+    var ledgerTansactionCount: Int { ledgerAccounts.count }
 
     private lazy var ledgerTransactionOperation = LedgerTransactionOperation(
         api: api,
@@ -51,7 +66,7 @@ final class TransactionController {
     )
 
     private var requiresLedgerConnection: Bool {
-        return senderAccountForLedger != nil
+        return senderAccountForLedger != nil || enforceLedgerConnection
     }
     
     private var params: TransactionParams?
@@ -81,15 +96,7 @@ final class TransactionController {
 }
 
 extension TransactionController {
-    var senderAccountForLedger: Account? {
-        let senderAddresses = transactions.map { $0.sender }
-        if senderAddresses.isEmpty {
-            return nil
-        }
-        
-        let accounts = senderAddresses.compactMap { sharedDataController.accountCollection[$0]?.value }
-        return accounts.first { $0.requiresLedgerConnection() }
-    }
+    var senderAccountForLedger: Account? { ledgerAccounts.first }
 
     var assetTransactionDraft: AssetTransactionSendDraft? {
         return transactionDraft as? AssetTransactionSendDraft
@@ -113,14 +120,29 @@ extension TransactionController {
     
     // MARK: - Signatures
     
-    func singature(signerAccount: Account, transactionData: Data) -> Data? {
-        
+    func singature(signerAccount: Account, transactionData: Data) async -> Data? {
+
+        if signerAccount.hasLedgerDetail() {
+            return await fetchLedgerSignature(signerAccount: signerAccount, transactionData: transactionData)
+        }
+
         guard signerAccount.canSignTransaction else { return nil }
         
         if signerAccount.isHDAccount {
             return hdWalletSignature(signerAccount: signerAccount, transactionData: transactionData)
         } else {
             return algo25WalletSignature(signerAccount: signerAccount, transactionData: transactionData)
+        }
+    }
+    
+    private func fetchLedgerSignature(signerAccount: Account, transactionData: Data) async -> Data? {
+        await withCheckedContinuation { [weak self] continuation in
+            guard let self else { return }
+            ledgerDataContinuation = continuation
+            connectToLedger(account: signerAccount)
+            startTimer()
+            ledgerTransactionOperation.setUnsignedTransactionData(transactionData, transactionIndex: 0)
+            ledgerTransactionOperation.startScan()
         }
     }
     
@@ -228,27 +250,29 @@ extension TransactionController {
 
         ledgerTransactionOperation.delegate = self
 
-        timer = Timer.scheduledTimer(
-            withTimeInterval: 20.0,
-            repeats: false
-        ) { [weak self] timer in
-            guard let self = self else {
-                timer.invalidate()
-                return
+        DispatchQueue.main.async {
+            self.timer = Timer.scheduledTimer(
+                withTimeInterval: 20.0,
+                repeats: false
+            ) { [weak self] timer in
+                guard let self = self else {
+                    timer.invalidate()
+                    return
+                }
+                
+                self.ledgerTransactionOperation.stopScan()
+                
+                self.bannerController?.presentErrorBanner(
+                    title: String(localized: "ble-error-connection-title"),
+                    message: ""
+                )
+                
+                self.delegate?.transactionController(
+                    self,
+                    didFailedComposing: .inapp(.ledgerConnection)
+                )
+                self.stopTimer()
             }
-
-            self.ledgerTransactionOperation.stopScan()
-
-            self.bannerController?.presentErrorBanner(
-                title: String(localized: "ble-error-connection-title"),
-                message: ""
-            )
-
-            self.delegate?.transactionController(
-                self,
-                didFailedComposing: .inapp(.ledgerConnection)
-            )
-            self.stopTimer()
         }
     }
 
@@ -270,28 +294,38 @@ extension TransactionController {
             ledgerTransactionOperation.setTransactionAccount(account)
         }
     }
+    
+    func connectToLedger(account: Account) {
+        ledgerTransactionOperation.setTransactionAccount(account)
+    }
 }
 
 extension TransactionController {
-    func getTransactionParamsAndComposeTransactionData(for transactionType: TransactionType) {
-        currentTransactionType = transactionType
-
-        transactionAPIConnector.getTransactionParams { result in
-            switch result {
-            case .success(let params):
-                self.params = params
-                self.composeTransactionData(
-                    for: transactionType,
-                    index: 0
-                )
-            case .failure:
-                self.resetLedgerOperationIfNeeded()
-                self.transactions.removeAll()
-
-                self.delegate?.transactionController(
-                    self,
-                    didFailedComposing: .network(.connection(.init(reason: .unexpected(.unknown))))
-                )
+    
+    func getTransactionParamsAndComposeTransactionData(for transactionType: TransactionType) async {
+        
+        await withCheckedContinuation { continuation in
+            
+            currentTransactionType = transactionType
+            
+            transactionAPIConnector.getTransactionParams { result in
+                switch result {
+                case .success(let params):
+                    self.params = params
+                    self.composeTransactionData(
+                        for: transactionType,
+                        index: 0
+                    )
+                case .failure:
+                    self.resetLedgerOperationIfNeeded()
+                    self.transactions.removeAll()
+                    
+                    self.delegate?.transactionController(
+                        self,
+                        didFailedComposing: .network(.connection(.init(reason: .unexpected(.unknown))))
+                    )
+                }
+                continuation.resume()
             }
         }
     }
@@ -689,11 +723,19 @@ extension TransactionController {
 }
 
 extension TransactionController: LedgerTransactionOperationDelegate {
+    
     func ledgerTransactionOperation(
         _ ledgerTransactionOperation: LedgerTransactionOperation,
         didReceiveSignature data: Data,
         forTransactionIndex index: Int
     ) {
+        
+        if ledgerDataContinuation != nil {
+            ledgerDataContinuation?.resume(returning: data)
+            ledgerDataContinuation = nil
+            return
+        }
+        
         signTransactionForLedgerAccount(
             with: data,
             index: index

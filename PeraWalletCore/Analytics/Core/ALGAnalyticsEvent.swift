@@ -50,6 +50,27 @@ public enum ALGAnalyticsEventName:
     case discoverAssetSell
     case discoverDappDetail
     case importAccount
+    case jointAccountWelcomePressed
+    case jointAccountAddAccount
+    case jointAccountEditAccount
+    case jointAccountRemoveAddress
+    case jointAccountThresholdContinue
+    case jointAccountAddAccountContinue
+    case jointAccountAddAccountContinueFromInbox
+    case jointAccountNameAccount
+    case jointAccountInfoScreenProceed
+    case jointAccountInfoScreenGoBack
+    case jointAccountCancelTransaction
+    case jointAccountConfirmTransaction
+    case jointAccountDeclinePendingTransaction
+    case jointAccountCloseForNow
+    case jointAccountInvitePressed
+    case jointAccountInviteIgnorePressed
+    case jointAccountInviteAddPressed
+    case jointAccountCopyUrl
+    case jointAccountShareUrl
+    case jointAccountShowPendingTransaction
+    case jointAccountClosePendingTransaction
     case manageAsset
     case nameAccount
     case onboardCreateAccountNew
@@ -152,6 +173,9 @@ public enum ALGAnalyticsEventName:
     case tapStakeInHome
     case tapStakeInQuickAction
     case tapChartInAccountDetail
+    case tapJointAccountDetail
+    case tapJointAccountRekey
+    case tapJointAccountExport
     case tapSwapInAccountDetail
     case tapSwapInAlgoDetail
     case tapSwapInHome
@@ -238,6 +262,27 @@ extension ALGAnalyticsEventName {
         case .buyAlgoFromMoonPayCompleted: rawName = "moonpaycom_algo_buy_completed"
         case .createNewWallet: rawName = "new_onb_welcome_create_wallet"
         case .importAccount: rawName = "new_onb_welcome_import_wallet"
+        case .jointAccountWelcomePressed: rawName = "onb_jointAccount_welcome_press"
+        case .jointAccountAddAccount: rawName = "onb_jointAccount_addAccount_press"
+        case .jointAccountEditAccount: rawName = "onb_jointAccount_editAccount_press"
+        case .jointAccountRemoveAddress: rawName = "onb_jointAccount_removeAddress_press"
+        case .jointAccountAddAccountContinue: rawName = "onb_jointAccount_addAcc_continue_press"
+        case .jointAccountAddAccountContinueFromInbox: rawName = "inbox_jointAccount_nameAccount_press"
+        case .jointAccountThresholdContinue: rawName = "onb_jointAccount_thresholdContinue_press"
+        case .jointAccountNameAccount: rawName = "onb_jointAccount_nameAccount_press"
+        case .jointAccountInfoScreenProceed: rawName = "onb_jointAccount_infoScr_proceed_press"
+        case .jointAccountInfoScreenGoBack: rawName = "onb_jointAccount_infoScreen_goBack_press"
+        case .jointAccountCancelTransaction: rawName = "jointAccount_cancelTx_press"
+        case .jointAccountConfirmTransaction: rawName = "jointAccount_confirmTx_slide"
+        case .jointAccountDeclinePendingTransaction: rawName = "jointAccount_declinePendingTx_press"
+        case .jointAccountCloseForNow: rawName = "jointAccount_closeForNow_press"
+        case .jointAccountInvitePressed: rawName = "inbox_jointAccount_invite_press"
+        case .jointAccountInviteAddPressed: rawName = "inbox_jointAccount_invite_add_press"
+        case .jointAccountInviteIgnorePressed: rawName = "inbox_jointAccount_invite_ignore_press"
+        case .jointAccountCopyUrl: rawName = "accountscr_tapmenu_jntAccExpCopy_tap"
+        case .jointAccountShareUrl: rawName = "accountscr_tapmenu_jntAccExpShare_tap"
+        case .jointAccountShowPendingTransaction: rawName = "inbox_jointAccount_pendingTx_press"
+        case .jointAccountClosePendingTransaction: rawName = "inbox_jointAccount_pendingTx_close_press"
         case .nameAccount: rawName = "new_onb_welcome_name_wallet"
         case .tapNftReceive: rawName = "nftscr_nft_receive"
         case .changeNotificationFilter: rawName = "notification_filter_change"
@@ -326,6 +371,9 @@ extension ALGAnalyticsEventName {
         case .tapSpotBanner: rawName = "homescr_banner_click"
         case .tapSpotBannerCloseButton: rawName = "homescr_banner_close_click"
         case .tapChartInAccountDetail: rawName = "accountscr_chart_tap"
+        case .tapJointAccountDetail: rawName = "accountscr_jointAccount_detail_press"
+        case .tapJointAccountRekey: rawName = "accountscr_tapmenu_rekeyJntAcc_tap"
+        case .tapJointAccountExport: rawName = "accountscr_tapmenu_jntAccExport_tap"
         case .tapQRInMenu: rawName = "menuscr_qr_scan"
         case .tapCreateCardInMenu: rawName = "menuscr_create_card_tap"
         case .tapGoToCardsInMenu: rawName = "menuscr_cards_tap"

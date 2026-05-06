@@ -31,6 +31,7 @@ public enum APIParamKey: String, CodingKey {
     case afterTime = "after_time"
     case algoDollarConversion = "symbol"
     case amount = "amount"
+    case amountInput = "amount_input"
     case app = "application"
     case appVersion = "app_version"
     case authAddress = "auth-addr"
@@ -80,6 +81,7 @@ public enum APIParamKey: String, CodingKey {
     case offset = "offset"
     case ordering = "ordering"
     case paginator = "paginator"
+    case percentage
     case period
     case platform = "platform"
     case privateKey = "private_key"

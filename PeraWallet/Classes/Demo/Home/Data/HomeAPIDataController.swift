@@ -95,10 +95,13 @@ final class HomeAPIDataController:
         
         let label: String?
         let assetsRequestsCount = algorandStandardAssetInboxes.map(\.requestCount).reduce(0, +)
+        let isJointAccountEnabled = featureFlagService.isEnabled(.jointAccountEnabled)
+        let visibleJointImportCount = isJointAccountEnabled ? jointAccountImportRequests.count : 0
+        let visibleJointSignCount = isJointAccountEnabled ? jointAccountSignRequests.count : 0
         
-        if jointAccountImportRequests.count > 0 {
+        if visibleJointImportCount > 0 {
             label = String(localized: "home-inbox-button-joint-account-request")
-        } else if jointAccountSignRequests.count > 0 {
+        } else if visibleJointSignCount > 0 {
             label = String(localized: "home-inbox-button-sign-request")
         } else if assetsRequestsCount > 0 {
             label = String(localized: "home-inbox-button-standard-asset-\(assetsRequestsCount)")
@@ -107,6 +110,14 @@ final class HomeAPIDataController:
         }
         
         publish(.deliverInboxActionLabel(label))
+    }
+    
+    func hasJointAccountRequests(for account: Account) -> Bool {
+        guard account.isJointAccount else { return false }
+            
+        let addresses = [account.address] + (account.jointAccountParticipants ?? [])
+        return inboxService.jointAccountImportRequests.value.contains { addresses.contains($0.address) } ||
+                inboxService.jointAccountSignRequests.value.contains { addresses.contains($0.jointAccount.address) }
     }
 }
 
@@ -127,7 +138,7 @@ extension HomeAPIDataController {
     }
     
     func fetchSpotBanners() {
-        let accounts = self.sharedDataController.sortedAccounts()
+        let accounts = self.sharedDataController.sortedAccountsForDisplay()
         let shouldDisplayCriticalWarningForNotBackedUpAccounts = shouldDisplayCriticalWarningForNotBackedUpAccounts(accounts)
         spotBannersDataController.loadData(shouldAddBackupBanner: shouldDisplayCriticalWarningForNotBackedUpAccounts)
     }
@@ -230,12 +241,13 @@ extension HomeAPIDataController {
         let usdcAssetID = ALGAsset.usdcAssetID(api.network)
         guard
             sharedDataController.assetDetailCollection.isEmpty ||
-            sharedDataController.assetDetailCollection.first(where: { $0.id == usdcAssetID }) == nil
+            sharedDataController.assetDetailCollection.first(where: { $0.id == usdcAssetID }) == nil,
+            let deviceId = api.deviceId
         else {
             return
         }
         api.fetchAssetList(
-            AssetFetchQuery(ids: [usdcAssetID]),
+            AssetFetchQuery(deviceID: deviceId, ids: [usdcAssetID]),
             queue: .main,
             ignoreResponseOnCancelled: false
         ) { [weak self] response in
@@ -331,7 +343,7 @@ extension HomeAPIDataController {
             
             guard let self else { return nil }
             
-            let accounts = self.sharedDataController.sortedAccounts()
+            let accounts = self.sharedDataController.sortedAccountsForDisplay()
             let currency = self.sharedDataController.currency
             let isAmountHidden = ObservableUserDefaults.shared.isPrivacyModeEnabled
             

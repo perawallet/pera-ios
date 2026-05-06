@@ -12,20 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   WCSessionConnectionRequestedPermissionsHeaderViewModel.swift
+//   IncomingASAAccountInboxHeaderTitleCell.swift
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
-struct WCSessionConnectionRequestedPermissionsHeaderViewModel: WCSessionConnectionHeaderViewModel {
-    private(set) var title: TextProvider?
+final class IncomingASAAccountInboxHeaderTitleCell:
+    CollectionCell<TitleView>,
+    ViewModelBindable {
+    
+    override static var contextPaddings: LayoutPaddings {
+        return (14, 24, 14, 24)
+    }
+    
+    static let theme = TitleViewTheme()
 
-    init() {
-        title =
-            String(localized: "wc-session-connection-requested-permissions")
-                .captionMedium(
-                    alignment: .center,
-                    lineBreakMode: .byTruncatingTail
-                )
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
     }
 }

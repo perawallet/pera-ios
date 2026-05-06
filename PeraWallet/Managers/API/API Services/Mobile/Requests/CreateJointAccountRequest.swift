@@ -15,8 +15,14 @@
 //   CreateJointAccountRequest.swift
 
 struct CreateJointAccountRequest {
-    /// The multisig account object containing the address, participant addresses, threshold, and version details.
-    let jointAccountObject: MultiSigAccountObject
+    /// The version of the multisig scheme being used
+    let version: Int
+    /// The minimum number of signatures required to authorize a transaction.
+    let threshold: Int
+    /// The list of participant public addresses involved in the shared account.
+    let participantAddresses: [String]
+    /// Device ID for the shared account creation.
+    let deviceID: String?
 }
 
 extension CreateJointAccountRequest: BodyRequestable {
@@ -25,5 +31,5 @@ extension CreateJointAccountRequest: BodyRequestable {
     
     var path: String { "/joint-accounts/accounts/" }
     var method: RequestMethod { .post }
-    var body: any Encodable { jointAccountObject }
+    var body: any Encodable { self }
 }

@@ -481,7 +481,7 @@ final class Router:
                     for: appConfiguration.api.network
                 )
                 
-                if !isCardsFeatureEnabled {
+                if !isCardsFeatureEnabled || !appConfiguration.featureFlagService.isEnabled(.enableImmersve) {
                     return
                 }
                 
@@ -502,11 +502,12 @@ final class Router:
                 )
             case .buy(path: let path, address: let address):
                 guard appConfiguration.featureFlagService.isEnabled(.xoSwapEnabled) else { return }
-                rootViewController.mainContainer.launchFund(with: path, and: address)
+                rootViewController.mainContainer.launchFundFromDeeplink(with: path, and: address)
             case .assetInbox:
                 let visibleScreen = findVisibleScreen(over: rootViewController)
                 visibleScreen.open(.inbox, by: .present)
             case let .jointAccountImport(address):
+                guard appConfiguration.featureFlagService.isEnabled(.jointAccountEnabled) else { return }
                 
                 let visibleScreen = findVisibleScreen(over: rootViewController)
                 let transition = BottomSheetTransition(presentingViewController: visibleScreen)
@@ -1241,6 +1242,9 @@ final class Router:
                 draft: draft,
                 api: configuration.api
             )
+        case let .rekeyToJointAccountInstructions(sourceAccount):
+            let draft = RekeyToJointAccountInstructionsDraft(sourceAccount: sourceAccount)
+            viewController = RekeyInstructionsScreen(draft: draft, api: configuration.api)
         case let .rekeyConfirmation(sourceAccount, authAccount, newAuthAccount):
             viewController = RekeyConfirmationScreen(
                 sourceAccount: sourceAccount,
@@ -1503,6 +1507,21 @@ final class Router:
             )
         case .inbox:
             viewController = InboxConstructor.buildScene(legacyConfiguration: configuration) ?? UIViewController()
+        case let .incomingASA(address, requestsCount):
+            let copyToClipboardController = ALGCopyToClipboardController(
+                toastPresentationController: appConfiguration.toastPresentationController
+            )
+            let dataController = IncomingASAAccountInboxAPIDataController(
+                address: address,
+                requestsCount: requestsCount,
+                sharedDataController: configuration.sharedDataController,
+                api: appConfiguration.api
+            )
+            viewController = IncomingASAAccountInboxViewController(
+                dataController: dataController,
+                copyToClipboardController: copyToClipboardController,
+                configuration: configuration
+            )
         case let .incomingASAsDetail(draft):
             let visibleScreen = findVisibleScreen(over: rootViewController)
             let transactionController = IncomingASATransactionController(
@@ -2281,6 +2300,9 @@ final class Router:
                 copyToClipboardController: copyToClipboardController,
                 configuration: configuration
             )
+        case let .rekeyedJointAccountInformation(sourceAccount, authAccount):
+            let copyToClipboardController = ALGCopyToClipboardController(toastPresentationController: appConfiguration.toastPresentationController)
+            viewController = RekeyedJointAccountInformationScreen(sourceAccount: sourceAccount, authAccount: authAccount, copyToClipboardController: copyToClipboardController)
         case .anyToNoAuthRekeyedAccountInformation(let account):
             let copyToClipboardController = ALGCopyToClipboardController(
                 toastPresentationController: appConfiguration.toastPresentationController
@@ -2488,6 +2510,7 @@ final class Router:
                 configuration: configuration
             )
         case .cards(path: let path):
+            if !appConfiguration.featureFlagService.isEnabled(.enableImmersve) { return nil }
             let cardsScreen = CardsScreen(
                 configuration: configuration,
                 destination: path.isNilOrEmpty ? .welcome : .other(path: path)
@@ -2627,13 +2650,16 @@ extension Router {
 
         transactionController.delegate = self
         transactionController.setTransactionDraft(assetTransactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
-
-        if account.requiresLedgerConnection() {
-            openLedgerConnection()
-
-            transactionController.initializeLedgerTransactionAccount()
-            transactionController.startTimer()
+        
+        Task {
+            await transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
+            
+            if account.requiresLedgerConnection() {
+                openLedgerConnection()
+                
+                transactionController.initializeLedgerTransactionAccount()
+                transactionController.startTimer()
+            }
         }
     }
 }
@@ -3521,9 +3547,11 @@ extension Router {
         }
 
         appConfiguration.loadingController.startLoadingWithMessage(String(localized: "title-loading"))
+        
+        guard let deviceId = appConfiguration.api.deviceId else { return }
 
         appConfiguration.api.fetchAssetList(
-            AssetFetchQuery(ids: [assetID]),
+            AssetFetchQuery(deviceID: deviceId, ids: [assetID]),
             queue: .main,
             ignoreResponseOnCancelled: false
         ) { [weak self] response in
@@ -3633,13 +3661,16 @@ extension Router {
 
             self.transactionController.delegate = self
             self.transactionController.setTransactionDraft(assetTransactionDraft)
-            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
-
-            if account.requiresLedgerConnection() {
-                self.openLedgerConnection()
-
-                self.transactionController.initializeLedgerTransactionAccount()
-                self.transactionController.startTimer()
+            
+            Task {
+                await self.transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
+                
+                if account.requiresLedgerConnection() {
+                    self.openLedgerConnection()
+                    
+                    self.transactionController.initializeLedgerTransactionAccount()
+                    self.transactionController.startTimer()
+                }
             }
         }
     }

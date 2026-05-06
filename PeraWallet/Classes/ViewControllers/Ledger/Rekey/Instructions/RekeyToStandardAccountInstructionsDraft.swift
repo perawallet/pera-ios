@@ -80,7 +80,7 @@ extension RekeyToStandardAccountInstructionsDraft {
 extension RekeyToStandardAccountInstructionsDraft {
     private static func makeBody(
         sourceAccount: Account
-    ) -> RekeyInstructionsBodyTextProvider {
+    ) -> RekeyInstructionsBodyTextProvider? {
         let authorization = sourceAccount.authorization
 
         if authorization.isStandard {
@@ -96,7 +96,7 @@ extension RekeyToStandardAccountInstructionsDraft {
         }
         
         if sourceAccount.isJointAccount {
-            return Self.makeRekeyJointAccountToJointAccountBody()
+            return nil
         }
 
         preconditionFailure("Unexpected account type in the flow")
@@ -116,12 +116,6 @@ extension RekeyToStandardAccountInstructionsDraft {
 
     private static func makeRekeyRekeyedAccountToStandardAccountBody() -> RekeyInstructionsBodyTextProvider {
         let text = String(localized: "rekey-rekeyed-to-standard-account-instructions-body")
-        let highlightedText = String(localized: "title-learn-more")
-        return Self.makeBody(text: text, highlightedText: highlightedText)
-    }
-    
-    private static func makeRekeyJointAccountToJointAccountBody() -> RekeyInstructionsBodyTextProvider {
-        let text = String(localized: "rekey-joint-account-to-joint-account-instructions-body")
         let highlightedText = String(localized: "title-learn-more")
         return Self.makeBody(text: text, highlightedText: highlightedText)
     }

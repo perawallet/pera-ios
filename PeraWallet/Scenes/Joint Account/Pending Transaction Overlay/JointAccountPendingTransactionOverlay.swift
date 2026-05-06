@@ -28,6 +28,8 @@ struct JointAccountPendingTransactionOverlay: View {
     // MARK: - Properties - UIKit Compatibility
     
     var onDismiss: (() -> Void)?
+    var onCancelTransactionAction: (() -> Void)?
+    var onJointAccountAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?
     
     // MARK: - Initialisers
     
@@ -89,13 +91,16 @@ struct JointAccountPendingTransactionOverlay: View {
             JointAccountSendRequestInboxCapsule(icon: .Icons.check, text: .localized(text: "joint-account-pending-transaction-overlay-capsule-success"), foregroundColor: .Helpers.positive, backgroundColor: .Helpers.positiveLighter)
         case .cancelled:
             JointAccountSendRequestInboxCapsule(icon: .Icons.error, text: .localized(text: "joint-account-pending-transaction-overlay-capsule-cancelled"), foregroundColor: .Helpers.negative, backgroundColor: .Helpers.negativeLighter)
+        case let .failed(errorMessage):
+            JointAccountSendRequestInboxCapsule(icon: .Icons.error, text: .raw(text: errorMessage), foregroundColor: .Helpers.negative, backgroundColor: .Helpers.negativeLighter)
+                
         }
     }
     
     @ViewBuilder
     private func buttonsRow() -> some View {
         switch viewModel.transactionState {
-        case .inProgress:
+        case let .inProgress(canCancelTransaction) where canCancelTransaction:
             HStack(spacing: 20.0) {
                 RoundedButton(
                     contentType: viewModel.isCancelProcessStarted ? .spinner : .text("title-cancel"),
@@ -105,18 +110,26 @@ struct JointAccountPendingTransactionOverlay: View {
                 )
                 RoundedButton(contentType: .text("joint-account-pending-transaction-overlay-button-close"), style: .primary, isEnabled: true, onTap: onCloseAction)
             }
-        case .success, .cancelled:
+        case .success, .cancelled, .failed, .inProgress:
             RoundedButton(contentType: .text("title-close"), style: .secondary, isEnabled: true, onTap: onCloseAction)
         }
+    }
+    
+    // MARK: - Actions - UIKit Compatibility
+    
+    func cancelTransaction() {
+        model.cancelTransaction()
     }
     
     // MARK: - Actions
     
     private func onCancelAction() {
-        model.cancelTransaction()
+        onJointAccountAnalyticsCall?(.cancelTransaction)
+        onCancelTransactionAction?()
     }
     
     private func onCloseAction() {
+        onJointAccountAnalyticsCall?(.closeForNow)
         isVisible = false
         model.stopPolling()
         onDismiss?()
@@ -132,7 +145,9 @@ private extension JointAccountPendingTransactionOverlayModel.SignatureStatus {
         case .declined:
             return .rejected
         case .pending:
-            return .unknown
+            return .waiting
+        case .expired:
+            return .none
         }
     }
 }

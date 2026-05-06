@@ -185,7 +185,7 @@ extension WCSessionConnectionListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForRequestedPermissionItem item: SecondaryListItemViewModel,
+        sizeForRequestedPermissionItem item: WCSessionRequestedPermissionViewModel,
         at indexPath: IndexPath
     ) -> CGSize {
         let cacheIdentifier = WCSessionRequestedPermissionItemCell.reuseIdentifier

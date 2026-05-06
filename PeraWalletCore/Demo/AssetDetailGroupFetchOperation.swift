@@ -62,14 +62,14 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
             return
         }
         
-        guard let account = input.account else {
+        guard let account = input.account, let deviceId = api.deviceId else {
             result = .failure(.unexpected(UnexpectedError(responseData: nil, underlyingError: nil)))
             finish()
 
             return
         }
         
-        let assets = account.assetsToFetch
+        let assets = account.assets.someArray
         let newAssetIDs: [AssetID]
         
         if let cacheAccount = input.cachedAccounts.account(for: account.address) {
@@ -101,7 +101,7 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
             dispatchGroup.enter()
             
             let endpoint =
-                fetchAssetDetails(withIDs: subNewAssetIDs) { [weak self] result in
+                fetchAssetDetails(withDeviceId: deviceId, andAssetIDs: subNewAssetIDs) { [weak self] result in
                     guard let self = self else {return }
                 
                     self.ongoingEndpoints[order] = nil
@@ -126,6 +126,25 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
                     dispatchGroup.leave()
                 }
             ongoingEndpoints[order] = endpoint
+        }
+        
+        if input.cachedAccounts.account(for: account.address) == nil {
+            dispatchGroup.enter()
+            let algoEndpoint = fetchAssetDetails(withDeviceId: deviceId, andAssetIDs: [0]) { [weak self] result in
+                guard let self = self else {
+                    dispatchGroup.leave()
+                    return
+                }
+                if case .success(let details) = result,
+                   let algoDetail = details.first {
+                    self.input.account?.algo.updateStatus(
+                        priceAlert: algoDetail.isPriceAlertEnabled ?? false,
+                        favorite: algoDetail.isFavorited ?? false
+                    )
+                }
+                dispatchGroup.leave()
+            }
+            ongoingEndpoints[-1] = algoEndpoint
         }
         
         dispatchGroup.notify(queue: completionQueue) { [weak self] in
@@ -155,28 +174,18 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
                 
                 assets.enumerated().forEach { index, asset in
                     let id = asset.id
-                    if
-                        let assetDetail = newAssetDetails[id],
-                        assetDetail.isAlgo
-                    {
-                        self.input.account?.algo.updateStatus(priceAlert: assetDetail.isPriceAlertEnabled ?? false, favorite: assetDetail.isFavorited ?? false)
-
-                    } else {
-                        if let assetDetail = newAssetDetails[id] ?? self.input.cachedAssetDetails[id] {
-                            if assetDetail.isCollectible {
-                                let collectible = CollectibleAsset(asset: asset, decoration: assetDetail)
-                                collectible.optedInAddress = account.address
-                                newCollectibles.append(collectible)
-                                newCollectibleAssetsIndexer[asset.id] = newCollectibleAssetsIndexer.count
-                            } else {
-                                let standardAsset = StandardAsset(asset: asset, decoration: assetDetail)
-                                newStandardAssets.append(standardAsset)
-                                newStandardAssetsIndexer[asset.id] = newStandardAssetsIndexer.count
-                            }
+                    if let assetDetail = newAssetDetails[id] ?? self.input.cachedAssetDetails[id] {
+                        if assetDetail.isCollectible {
+                            let collectible = CollectibleAsset(asset: asset, decoration: assetDetail)
+                            collectible.optedInAddress = account.address
+                            newCollectibles.append(collectible)
+                            newCollectibleAssetsIndexer[asset.id] = newCollectibleAssetsIndexer.count
+                        } else {
+                            let standardAsset = StandardAsset(asset: asset, decoration: assetDetail)
+                            newStandardAssets.append(standardAsset)
+                            newStandardAssetsIndexer[asset.id] = newStandardAssetsIndexer.count
                         }
                     }
-                    
-
 
                     /// <note>
                     /// Check if the opt-in request is granted.
@@ -246,10 +255,11 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
 
 extension AssetDetailGroupFetchOperation {
     private func fetchAssetDetails(
-        withIDs ids: [AssetID],
+        withDeviceId deviceId: String,
+        andAssetIDs ids: [AssetID],
         onComplete handler: @escaping (Result<[AssetDecoration], Error>) -> Void
     ) -> EndpointOperatable {
-        let draft = AssetFetchQuery(ids: ids, includeDeleted: true)
+        let draft = AssetFetchQuery(deviceID: deviceId, ids: ids, includeDeleted: true)
         return
             api.fetchAssetList(
                 draft,

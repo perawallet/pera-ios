@@ -18,19 +18,23 @@ import Foundation
 import MagpieCore
 
 public final class PeraSwapV2Fee: ALGEntityModel {
-    public let fee: UInt64?
+    public let peraFee: UInt64?
+    public let peraFeeAmountInFeeAsset: UInt64?
+    
     public let assetId: UInt64?
 
     public init(
         _ apiModel: APIModel = APIModel()
     ) {
-        self.fee = apiModel.peraFeeAmount.unwrap { UInt64($0) }
+        self.peraFee = UInt64(apiModel.peraFee.unwrap(or: "0"))
+        self.peraFeeAmountInFeeAsset = UInt64(apiModel.peraFeeAmountInFeeAsset.unwrap(or: "0"))
         self.assetId = apiModel.peraFeeAssetId.unwrap { UInt64($0) }
     }
 
     public func encode() -> APIModel {
         var apiModel = APIModel()
-        apiModel.peraFeeAmount = fee.unwrap { $0 }
+        apiModel.peraFee = peraFee.unwrap { String(describing: $0) }
+        apiModel.peraFeeAmountInFeeAsset = peraFeeAmountInFeeAsset.unwrap { String(describing: $0) }
         apiModel.peraFeeAssetId = assetId.unwrap { $0 }
         return apiModel
     }
@@ -38,18 +42,21 @@ public final class PeraSwapV2Fee: ALGEntityModel {
 
 extension PeraSwapV2Fee {
     public struct APIModel: ALGAPIModel {
-        var peraFeeAmount: UInt64?
+        var peraFee: String?
+        var peraFeeAmountInFeeAsset: String?
         var peraFeeAssetId: UInt64?
 
         public init() {
-            self.peraFeeAmount = nil
+            self.peraFee = nil
+            self.peraFeeAmountInFeeAsset = nil
             self.peraFeeAssetId = nil
         }
 
         private enum CodingKeys:
             String,
             CodingKey {
-            case peraFeeAmount = "pera_fee_amount"
+            case peraFee = "pera_fee_amount"
+            case peraFeeAmountInFeeAsset = "pera_fee_amount_in_fee_asset"
             case peraFeeAssetId = "pera_fee_asset_id"
         }
     }

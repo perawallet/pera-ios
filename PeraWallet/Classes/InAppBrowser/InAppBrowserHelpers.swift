@@ -197,13 +197,15 @@ extension InAppBrowserScreen {
     
     private func handleAddresses(id: Int) {
         var addressesInfo = [[String: String]]()
-        session?.authenticatedUser?.accounts.forEach { accountInformation in
-            let account = Account(localAccount: accountInformation)
-            let name = account.primaryDisplayName
-            let address = account.address
-            let type = account.authType
-            addressesInfo.append(["name": name, "address": address, "type": type])
-        }
+        session?.authenticatedUser?.accounts
+            .map { Account(localAccount: $0) }
+            .filter { !$0.isJointAccount }
+            .forEach { account in
+                let name = account.primaryDisplayName
+                let address = account.address
+                let type = account.authType
+                addressesInfo.append(["name": name, "address": address, "type": type])
+            }
         
         guard
             let jsonData = try? JSONSerialization.data(withJSONObject: addressesInfo),

@@ -41,6 +41,7 @@ extension AlgorandError {
 public enum APIErrorType: String {
     case deviceAlreadyExists = "DeviceAlreadyExistsException"
     case tinymanExcessAmount = "TinymanExcessAmountError"
+    case http404
     
     public static func == (lhs: APIErrorType, rhs: APIErrorType) -> Bool {
         return lhs.rawValue == rhs.rawValue

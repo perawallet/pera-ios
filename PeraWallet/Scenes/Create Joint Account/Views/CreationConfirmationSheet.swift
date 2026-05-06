@@ -20,6 +20,7 @@ struct CreationConfirmationSheet: View {
     @SwiftUI.Environment(\.dismiss) private var dismiss
     var onConfirmTap: () -> Void
     var onLearnMoreTap: () -> Void
+    var onAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?
 
     var body: some View {
         VStack() {
@@ -84,6 +85,7 @@ struct CreationConfirmationSheet: View {
                 .onTapGesture { onLearnMoreTap() }
                 Spacer()
                 SwiftUI.Button {
+                    onAnalyticsCall?(.infoScreenProceed)
                     onConfirmTap()
                     dismiss()
                 } label: {
@@ -98,6 +100,7 @@ struct CreationConfirmationSheet: View {
                 }
                 .padding(.bottom, 12)
                 SwiftUI.Button {
+                    onAnalyticsCall?(.infoScreenGoBack)
                     dismiss()
                 } label: {
                     Text("joint-account-confirmation-sheet-dismiss-button-text")

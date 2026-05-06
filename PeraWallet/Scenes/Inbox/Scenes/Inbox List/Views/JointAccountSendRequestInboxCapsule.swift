@@ -46,6 +46,7 @@ struct JointAccountSendRequestInboxCapsule: View {
                 .frame(width: 20.0, height: 20.0)
             textView()
                 .font(.DMSans.medium.size(13.0))
+                .multilineTextAlignment(.center)
         }
         .foregroundStyle(foregroundColor)
         .padding(.leading, 8.0)

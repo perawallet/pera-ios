@@ -174,7 +174,17 @@ extension TabBarController {
         screen.launchDraft = draft
     }
     
-    func launchFund(with path: String? = nil, and address: String? = nil) {
+    func launchFund(with address: String? = nil) {
+        selectedTab = .fund
+
+        let container = selectedScreen as? NavigationContainer
+        guard let screen = container?.viewControllers.first as? FundInAppBrowserScreen, let address else {
+            return
+        }
+        screen.selectedAddress = address
+    }
+    
+    func launchFundFromDeeplink(with path: String? = nil, and address: String? = nil) {
         selectedTab = .fund
         
         NotificationCenter.default.post(

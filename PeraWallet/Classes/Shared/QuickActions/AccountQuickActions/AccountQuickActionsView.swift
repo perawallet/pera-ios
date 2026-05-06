@@ -47,16 +47,21 @@ final class AccountQuickActionsView:
     }
     
     var showFundButton: Bool = false {
-        didSet {
-            buyActionView.isHidden = showFundButton
-            fundActionView.isHidden = !showFundButton
-        }
+        didSet { updateActions() }
     }
     
     var isJointAccount: Bool = false {
-        didSet {
-            swapActionView.isHidden = isJointAccount
-        }
+        didSet { updateActions() }
+    }
+    
+    private var isSwapHidden: Bool { isJointAccount }
+    private var isBuyHidden: Bool  { isJointAccount || showFundButton }
+    private var isFundHidden: Bool { isJointAccount || !showFundButton }
+    
+    private func updateActions() {
+        swapActionView.isHidden = isSwapHidden
+        buyActionView.isHidden = isBuyHidden
+        fundActionView.isHidden = isFundHidden
     }
     
     func customize(_ theme: AccountQuickActionsViewTheme) {
@@ -152,6 +157,8 @@ extension AccountQuickActionsView {
         addBuyAction(theme)
         addRequestsAction(theme)
         addMoreAction(theme)
+        
+        updateActions()
     }
 
     private func addSwapAction(_ theme: AccountQuickActionsViewTheme) {

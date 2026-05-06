@@ -14,10 +14,10 @@
 
 //   UndoRekeyScreen.swift
 
-import Foundation
 import MacaroonUIKit
 import UIKit
 import pera_wallet_core
+import Combine
 
 final class UndoRekeyScreen:
     ScrollScreen,
@@ -76,7 +76,8 @@ final class UndoRekeyScreen:
     private let loadingController: LoadingController
     private let analytics: ALGAnalytics
     private let hdWalletStorage: HDWalletStorable
-    private let jointAccountTransactionHandler = JointAccountTransactionHandler(accountsService: PeraCoreManager.shared.accounts)
+    private let jointAccountTransactionCoordinator = JointAccountTransactionCoordinator(accountsService: PeraCoreManager.shared.accounts)
+    private var cancellables: Set<AnyCancellable> = []
     
     private let sourceAccount: Account
     private let authAccount: Account
@@ -121,8 +122,27 @@ final class UndoRekeyScreen:
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         addUI()
+        setupCallbacks()
+    }
+    
+    private func setupCallbacks() {
+        
+        jointAccountTransactionCoordinator.$action
+            .compactMap { $0 }
+            .sink { [weak self] in self?.handle(action: $0) }
+            .store(in: &cancellables)
+    }
+    
+    private func handle(action: JointAccountTransactionCoordinator.Action) {
+       switch action {
+       case .connectionWithLedgerNeeded:
+          openLedgerConnection()
+       case .overlayDismissed:
+           finish(event: .dismissedSharedAccountPreviewOverlay)
+       case let .failure(error, _):
+           finish(error: error)
+       }
     }
 
     override func linkInteractors() {
@@ -348,41 +368,34 @@ extension UndoRekeyScreen {
         )
 
         transactionController.setTransactionDraft(rekeyTransactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .rekey)
-
-        if sourceAccount.requiresLedgerConnection() {
-            openLedgerConnection()
-
-            transactionController.initializeLedgerTransactionAccount()
-            transactionController.startTimer()
-        }
         
-        if sourceAccount.isJointAccount {
-            performAsyncJointAccountTransaction(draft: rekeyTransactionDraft)
-        }
-    }
-    
-    private func performAsyncJointAccountTransaction(draft: RekeyTransactionSendDraft) {
         Task {
-            do {
-                _ = try await jointAccountTransactionHandler.handleTransaction(
+            await transactionController.getTransactionParamsAndComposeTransactionData(for: .rekey)
+            
+            if sourceAccount.requiresLedgerConnection() {
+                openLedgerConnection()
+                
+                transactionController.initializeLedgerTransactionAccount()
+                transactionController.startTimer()
+            }
+            
+            if sourceAccount.isJointAccount {
+                jointAccountTransactionCoordinator.handleTransaction(
                     jointAccount: sourceAccount,
-                    type: .rekey(draft: draft),
+                    transactionType: .rekey(draft: rekeyTransactionDraft),
                     sharedDataController: sharedDataController,
-                    transactionController: transactionController
+                    transactionController: transactionController,
+                    presenter: self
                 )
-                finishWithSuccess()
-            } catch {
-                finish(error: error)
             }
         }
     }
     
-    private func finishWithSuccess() {
+    private func finish(event: Event) {
         loadingController.stopLoading()
         analytics.track(.rekeyAccount())
         saveRekeyedAccountDetails()
-        eventHandler?(.didUndoRekey)
+        eventHandler?(event)
     }
     
     private func finish(error: Error) {
@@ -411,7 +424,7 @@ extension UndoRekeyScreen {
 extension UndoRekeyScreen {
     
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
-        finishWithSuccess()
+        finish(event: .didUndoRekey)
     }
 
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
@@ -598,5 +611,6 @@ extension UndoRekeyScreen {
 extension UndoRekeyScreen {
     enum Event {
         case didUndoRekey
+        case dismissedSharedAccountPreviewOverlay
     }
 }

@@ -41,6 +41,7 @@ struct SignRequestObject: Decodable, Equatable {
     let expectedExpireDatetime: Date
     let status: Status
     let creationDatetime: Date
+    let failReasonDisplay: String?
     
     var didRequestFailed: Bool { status == .declined || status == .expired || status == .failed }
 }
@@ -59,4 +60,8 @@ struct SignRequestTransactionResponseObject: Decodable, Equatable {
     let response: SignRequestStatus
     let signatures: [[String]]?
     let deviceId: String?
+}
+
+extension SignRequestObject {
+    var proposerAddress: String? { jointAccount.participantAddresses.first }
 }

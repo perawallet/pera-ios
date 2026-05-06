@@ -297,8 +297,12 @@ final class CollectibleDetailViewController:
             }
         }
         
-        collectibleDetailTransactionController.eventHandlers.onJointAccountTransactionStarted = { [weak self] in
-            self?.openPendingTransactionOverlay(signRequestMetadata: $0)
+        collectibleDetailTransactionController.eventHandlers.onJointAccountTransactionRequireConnectionWithLedger = { [weak self] in
+            self?.openLedgerConnection()
+        }
+        
+        collectibleDetailTransactionController.eventHandlers.onJointAccountPendingTransactionOverlayDismissed = { [weak self] in
+            self?.handleSucessfulTransaction()
         }
         
         collectibleDetailTransactionController.eventHandlers.onJointAccountTransactionError = { [weak self] in
@@ -309,17 +313,6 @@ final class CollectibleDetailViewController:
     override func linkInteractors() {
         super.linkInteractors()
         linkMediaPreviewInteractors()
-    }
-    
-    private func openPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata) {
-        
-        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata) { [weak self] in
-            self?.handleSucessfulTransaction()
-        }
-        
-        Task { @MainActor in
-            present(viewController, animated: true)
-        }
     }
 }
 
@@ -792,7 +785,7 @@ extension CollectibleDetailViewController {
             [weak self] in
             guard let self = self else { return }
 
-            self.collectibleDetailTransactionController.optOutAsset()
+            self.collectibleDetailTransactionController.optOutAsset(presenter: self)
         }
     }
 
@@ -839,7 +832,7 @@ extension CollectibleDetailViewController {
             [weak self] in
             guard let self = self else { return }
 
-            self.collectibleDetailTransactionController.optInToAsset()
+            self.collectibleDetailTransactionController.optInToAsset(presenter: self)
         }
     }
 

@@ -65,6 +65,8 @@ extension UndoRekeyFlowCoordinator {
                     sourceAccount: sourceAccount,
                     screen: undoRekeyScreen
                 )
+            case .dismissedSharedAccountPreviewOverlay:
+                self.presentingScreen.dismiss(animated: true)
             }
         }
     }

@@ -71,6 +71,7 @@ struct AssetSelectionView: View {
     @Binding var isBalanceNotSufficient: Bool
     
     let onAssetSelectionTap: () -> Void
+    let onAmountChanged: (String) -> Void
     
     // MARK: - Body
     var body: some View {
@@ -94,13 +95,8 @@ struct AssetSelectionView: View {
                             .cornerRadius(3)
                     } else {
                         PeraTextField(placeholder: nil, text: Binding(
-                            get: { amountText },
-                            set: {
-                                amountText = $0.isEmpty ? .empty : $0
-                                if type == .pay, amountText.isEmpty {
-                                    isBalanceNotSufficient = false
-                                }
-                            }
+                            get: { isPayingFocused ? (amountText.isZeroValue ? .empty : amountText.numericValue().formatted(.number.grouping(.never))) : amountText },
+                            set: { onAmountChanged($0) }
                         ))
                         .placeholder(when: amountText.isEmpty) {
                             Text(SwapSharedViewModel.defaultAmountValue)
@@ -114,8 +110,8 @@ struct AssetSelectionView: View {
                         .multilineTextAlignment(.leading)
                         .focused($isPayingFocused)
                         .onChange(of: isPayingFocused) { focused in
-                            if focused && amountText.isZeroValue {
-                                amountText = .empty
+                            if focused {
+                                amountText = amountText.isZeroValue ? .empty : amountText.numericValue().formatted(.number.grouping(.never))
                             }
                         }
                     }

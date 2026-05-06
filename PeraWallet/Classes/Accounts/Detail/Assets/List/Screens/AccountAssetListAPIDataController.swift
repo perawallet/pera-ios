@@ -236,8 +236,9 @@ extension AccountAssetListAPIDataController {
     
     func checkForAssetsToUpdate() {
         if let asset = assetToUpdate {
+            guard let deviceId = api.deviceId else { return }
             api.fetchAssetList(
-                AssetFetchQuery(ids: [asset.id]),
+                AssetFetchQuery(deviceID: deviceId, ids: [asset.id]),
                 queue: .main,
                 ignoreResponseOnCancelled: false
             ) { [weak self] response in
@@ -375,7 +376,7 @@ extension AccountAssetListAPIDataController {
 
 extension AccountAssetListAPIDataController {
     private func appendSectionsForAccountNotBackedUpWarningIfNeeded(into snapshot: inout Snapshot) {
-        guard !account.value.isBackedUp, account.value.hasBalance else { return }
+        guard !account.value.isBackedUp, account.value.hasBalance, !account.value.isJointAccount else { return }
 
         let items = makeItemsForAccountNotBackedUpWarning()
         snapshot.appendSections([ .accountNotBackedUpWarning ])

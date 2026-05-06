@@ -145,15 +145,13 @@ extension NodeSettingsViewController {
 
     private func select(
         node: AlgorandNode,
-        onChange change: () -> Void,
+        onChange change: @escaping () -> Void,
         onComplete completion: @escaping (ALGAPI.Network) -> Void
     ) {
         loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
         
         let oldNetwork = selectedNetwork
-        
         api?.setupNetworkBase(node.network)
-        change()
         
         pushNotificationController.sendDeviceDetails {
             [weak self] error in
@@ -161,40 +159,37 @@ extension NodeSettingsViewController {
             
             self.loadingController?.stopLoading()
             
-            guard let error = error else {
-                self.pushNotificationController.unregisterDevice(from: oldNetwork)
-                
-                self.session?.authenticatedUser?.setDefaultNode(node)
-                self.sharedDataController.resetPolling()
-                
-                completion(node.network)
-                
+            if let error {
+                self.api?.setupNetworkBase(oldNetwork)
+                self.sharedDataController.startPolling()
+
+                self.bannerController?.presentErrorBanner(
+                    title: String(localized: "title-error"),
+                    message: error.prettyDescription
+                )
+
+                completion(oldNetwork)
                 return
             }
             
-            self.api?.setupNetworkBase(oldNetwork)
-            self.sharedDataController.startPolling()
+            self.pushNotificationController.unregisterDevice(from: oldNetwork)
+            change()
 
-            self.bannerController?.presentErrorBanner(
-                title: String(localized: "title-error"),
-                message: error.prettyDescription
-            )
-            
-            completion(oldNetwork)
+            self.session?.authenticatedUser?.setDefaultNode(node)
+            self.sharedDataController.resetPolling()
+
+            completion(node.network)
+
+            Task {
+                await PeraCoreManager.shared.accounts.syncJointAccountsAfterNetworkSwitch()
+            }
         }
     }
     
     private func didSelectNetwork(
         _ network: ALGAPI.Network
-    ) {
-        nodeSettingsView.reloadData()
-        
-        NotificationCenter.default.post(
-            name: Self.didUpdateNetwork,
-            object: self
-        )
-        
-        switch selectedNetwork {
+    ) {        
+        switch network {
         case .mainnet:
             PeraCoreManager.shared.network = .mainNet
         case .testnet:

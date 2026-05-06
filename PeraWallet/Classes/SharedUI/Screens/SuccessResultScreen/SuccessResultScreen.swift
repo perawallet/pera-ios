@@ -43,6 +43,8 @@ final class SuccessResultScreen: BaseViewController {
 
         isModalInPresentation = true
     }
+    
+    override var shouldShowNavigationBar: Bool { false }
 
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()

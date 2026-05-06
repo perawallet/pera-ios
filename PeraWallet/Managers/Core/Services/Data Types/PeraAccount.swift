@@ -51,6 +51,7 @@ extension PeraAccount {
 
 extension PeraAccount.AccountType {
     var isStandardAccount: Bool { self == .algo25 || self == .universalWallet }
+    var canAuthorize: Bool { self != .invalid || self != .watch }
 }
 
 extension PeraAccount.AccountType {

@@ -20,6 +20,7 @@ import MagpieHipo
 import SnapKit
 import UIKit
 import pera_wallet_core
+import Combine
 
 final class ASADiscoveryScreen:
     BaseViewController,
@@ -89,7 +90,8 @@ final class ASADiscoveryScreen:
     private let quickAction: AssetQuickAction?
     private let dataController: ASADiscoveryScreenDataController
     private let copyToClipboardController: CopyToClipboardController
-    private let jointAccountTransactionHandler: JointAccountTransactionHandler
+    private let jointAccountTransactionCoordinator: JointAccountTransactionCoordinator
+    private var cancellables: Set<AnyCancellable> = []
 
     private let theme = ASADiscoveryScreenTheme()
 
@@ -103,7 +105,7 @@ final class ASADiscoveryScreen:
         self.quickAction = quickAction
         self.dataController = dataController
         self.copyToClipboardController = copyToClipboardController
-        jointAccountTransactionHandler = JointAccountTransactionHandler(accountsService: accountsService)
+        jointAccountTransactionCoordinator = JointAccountTransactionCoordinator(accountsService: accountsService)
 
         super.init(configuration: configuration)
 
@@ -119,6 +121,7 @@ final class ASADiscoveryScreen:
 
         addUI()
         loadData()
+        setupCallbacks()
     }
 
     override func setListeners() {
@@ -510,6 +513,14 @@ extension ASADiscoveryScreen {
 }
 
 extension ASADiscoveryScreen {
+    
+    private func setupCallbacks() {
+        jointAccountTransactionCoordinator.$action
+           .compactMap { $0 }
+           .sink { [weak self] in self?.handle(action: $0) }
+           .store(in: &cancellables)
+    }
+    
     private func loadData() {
         dataController.eventHandler = {
             [weak self] event in
@@ -522,6 +533,18 @@ extension ASADiscoveryScreen {
             }
         }
         dataController.loadData()
+    }
+    
+    private func handle(action: JointAccountTransactionCoordinator.Action) {
+        switch action {
+        case .connectionWithLedgerNeeded:
+            openLedgerConnection()
+        case .overlayDismissed:
+            loadingController?.stopLoading()
+            dismiss(animated: true)
+        case let .failure(error, _):
+            handle(error: error)
+        }
     }
 }
 
@@ -763,43 +786,30 @@ extension ASADiscoveryScreen {
                 assetIndex: asset.id
             )
             self.transactionController.setTransactionDraft(assetTransactionDraft)
-            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
-
-            self.loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
-
-            if account.requiresLedgerConnection() {
-                self.openLedgerConnection()
-
-                self.transactionController.initializeLedgerTransactionAccount()
-                self.transactionController.startTimer()
-            }
             
-            if account.isJointAccount {
-                optInAssetForJointAccount(jointAccount: account, draft: assetTransactionDraft)
+            Task { [weak self] in
+                guard let self else { return }
+                await self.transactionController.getTransactionParamsAndComposeTransactionData(for: .optIn)
+                
+                self.loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
+                
+                if account.requiresLedgerConnection() {
+                    self.openLedgerConnection()
+                    
+                    self.transactionController.initializeLedgerTransactionAccount()
+                    self.transactionController.startTimer()
+                }
+                
+                if account.isJointAccount {
+                    self.jointAccountTransactionCoordinator.handleTransaction(
+                        jointAccount: account,
+                        transactionType: .optIn(draft: assetTransactionDraft),
+                        sharedDataController: self.sharedDataController,
+                        transactionController: self.transactionController,
+                        presenter: self
+                    )
+                }
             }
-        }
-    }
-    
-    private func optInAssetForJointAccount(jointAccount: Account, draft: AssetTransactionSendDraft) {
-        Task {
-            do {
-                let result = try await jointAccountTransactionHandler.handleTransaction(jointAccount: jointAccount, type: .optIn(draft: draft), sharedDataController: sharedDataController, transactionController: transactionController)
-                openPendingTransactionOverlay(signRequestMetadata: result.signRequestMetadata)
-            } catch {
-                handle(error: error)
-            }
-        }
-    }
-    
-    private func openPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata) {
-        
-        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata) { [weak self] in
-            self?.loadingController?.stopLoading()
-            self?.dismiss(animated: true)
-        }
-        
-        Task { @MainActor in
-            present(viewController, animated: true)
         }
     }
 
@@ -901,15 +911,18 @@ extension ASADiscoveryScreen {
             )
 
             self.transactionController.setTransactionDraft(assetTransactionDraft)
-            self.transactionController.getTransactionParamsAndComposeTransactionData(for: .optOut)
-
-            self.loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
-
-            if account.requiresLedgerConnection() {
-                self.openLedgerConnection()
-
-                self.transactionController.initializeLedgerTransactionAccount()
-                self.transactionController.startTimer()
+            
+            Task {
+                await self.transactionController.getTransactionParamsAndComposeTransactionData(for: .optOut)
+                
+                self.loadingController?.startLoadingWithMessage(String(localized: "title-loading"))
+                
+                if account.requiresLedgerConnection() {
+                    self.openLedgerConnection()
+                    
+                    self.transactionController.initializeLedgerTransactionAccount()
+                    self.transactionController.startTimer()
+                }
             }
         }
     }
@@ -1033,6 +1046,7 @@ extension ASADiscoveryScreen {
         }
     }
 
+    @MainActor
     func transactionController(
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String

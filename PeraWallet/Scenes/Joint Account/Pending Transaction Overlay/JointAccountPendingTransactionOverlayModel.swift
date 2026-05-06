@@ -34,12 +34,14 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
         case signed
         case declined
         case pending
+        case expired
     }
     
     enum TransactionStatus {
-        case inProgress
+        case inProgress(canCancelTransaction: Bool)
         case success
         case cancelled
+        case failed(errorMessage: String)
     }
     
     enum ModelError: Error {
@@ -60,7 +62,7 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
         @Published fileprivate(set) var numberOfSignaturesText: String = ""
         @Published fileprivate(set) var deadline: Date = Date()
         @Published fileprivate(set) var threshold: Int = 0
-        @Published fileprivate(set) var transactionState: TransactionStatus = .inProgress
+        @Published fileprivate(set) var transactionState: TransactionStatus = .inProgress(canCancelTransaction: false)
         @Published fileprivate(set) var accounts: [AccountModel] = []
         @Published fileprivate(set) var isCancelProcessStarted: Bool = false
         @Published fileprivate(set) var error: ModelError?
@@ -73,6 +75,7 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
     private let pollingService = PollingService(timeInterval: .seconds(6))
     private let legacyBannerController: BannerController?
     private let proposerAddress: String
+    private let isCancelTransactionAvailable: Bool
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: - Properties - JointAccountPendingTransactionOverlayViewModelable
@@ -81,12 +84,14 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
     
     // MARK: - Initialisers
     
-    init(accountsService: AccountsServiceable, legacyBannerController: BannerController?, signRequestID: String, proposerAddress: String, signaturesInfo: [SignRequestInfo], threshold: Int, deadline: Date) {
+    @MainActor
+    init(accountsService: AccountsServiceable, legacyBannerController: BannerController?, signRequestID: String, proposerAddress: String, signaturesInfo: [SignRequestInfo], threshold: Int, deadline: Date, isCancelTransactionAvailable: Bool) {
         
         self.accountsService = accountsService
         self.legacyBannerController = legacyBannerController
         self.signRequestID = signRequestID
         self.proposerAddress = proposerAddress
+        self.isCancelTransactionAvailable = isCancelTransactionAvailable
         
         let participants = signaturesInfo.map(\.address)
         let localAccounts = accountsService.accounts.value.filter { participants.contains($0.address) }
@@ -95,14 +100,12 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
             .sorted { $0.address < $1.address }
             .map { accountModel(address: $0.address, signRequestStatus: $0.status, localAccounts: localAccounts) }
         
-        Task { @MainActor in
-            viewModel.threshold = threshold
-            viewModel.deadline = deadline
-            update(accounts: accountsModels)
-            
-            setupCallbacks()
-        }
+        viewModel.transactionState = .inProgress(canCancelTransaction: isCancelTransactionAvailable)
+        viewModel.threshold = threshold
+        viewModel.deadline = deadline
         
+        update(accounts: accountsModels)
+        setupCallbacks()
         startPoolingForData()
     }
     
@@ -195,14 +198,22 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
     private func handle(searchResult: JointAccountsSignRequestSearchResponse) {
         
         guard let result = searchResult.results.first else { return }
+        var isTransactionInProgress = false
         
         if let status = result.status {
             switch status {
             case .pending, .ready, .submitting:
-                viewModel.transactionState = .inProgress
+                viewModel.transactionState = .inProgress(canCancelTransaction: isCancelTransactionAvailable)
+                isTransactionInProgress = true
             case .confirmed:
                 viewModel.transactionState = .success
-            case .failed, .expired, .declined:
+            case .failed:
+                if let reason = result.failReasonDisplay {
+                    viewModel.transactionState = .failed(errorMessage: reason)
+                } else {
+                    viewModel.transactionState = .cancelled
+                }
+            case .expired, .declined:
                 viewModel.transactionState = .cancelled
             }
         }
@@ -215,24 +226,24 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
         
         let accounts = viewModel.accounts.map {
             let transactionResponse = updates[$0.address]
-            let signatureStatus = viewModelSignatureStatus(signRequestStatus: transactionResponse)
+            let signatureStatus = viewModelSignatureStatus(signRequestStatus: transactionResponse, isTransactionInProgress: isTransactionInProgress)
             return AccountModel(id: $0.id, address: $0.address, avatar: $0.avatar, title: $0.title, subtitle: $0.subtitle, signatureStatus: signatureStatus)
         }
         
         update(accounts: accounts)
     }
     
-    private func viewModelSignatureStatus(signRequestStatus: SignRequestStatus?) -> SignatureStatus {
+    private func viewModelSignatureStatus(signRequestStatus: SignRequestStatus?, isTransactionInProgress: Bool) -> SignatureStatus {
         switch signRequestStatus {
         case .signed: .signed
         case .declined: .declined
-        case .none: .pending
+        case .none: isTransactionInProgress ? .pending : .expired
         }
     }
     
     private func accountModel(address: String, signRequestStatus: SignRequestStatus?, localAccounts: Set<PeraAccount>) -> AccountModel {
         
-        let signatureStatus = viewModelSignatureStatus(signRequestStatus: signRequestStatus)
+        let signatureStatus = viewModelSignatureStatus(signRequestStatus: signRequestStatus, isTransactionInProgress: true)
         let title: String
         let subtitle: String?
         let avatar: ImageType
@@ -244,7 +255,7 @@ final class JointAccountPendingTransactionOverlayModel: JointAccountPendingTrans
         } else if let localAccount = localAccounts.first(where: { $0.address == address }) {
             title = localAccount.titles.primary
             subtitle = localAccount.titles.secondary
-            avatar = .placeholderGroupIconData
+            avatar = .icon(data: AccountIconProvider.iconData(account: localAccount))
         } else {
             title = address.shortAddressDisplay
             subtitle = nil

@@ -61,14 +61,6 @@ public final class Account: ALGEntityModel {
     public private(set) var standardAssets: [StandardAsset]?
     public private(set) var collectibleAssets: [CollectibleAsset]?
     
-    public var assetsToFetch: [ALGAsset] {
-        let algoAsset = ALGAsset(id: 0)
-        if let assets {
-            return assets + [algoAsset]
-        }
-        return [algoAsset]
-    }
-    
     public var canSignTransaction: Bool {
         authorization.isStandard || isHDAccount || authorization.isLedger || authorization.isRekeyed
     }
@@ -719,6 +711,10 @@ extension AccountAuthorization {
 
     public var isUnknownToNoAuthInLocalRekeyed: Bool {
         return self == .unknownToNoAuthInLocalRekeyed
+    }
+    
+    public var isJointAccount: Bool {
+        self == .jointAccount || self == .jointAccountRekeyed
     }
     
     public var isJointAccountRekeyed: Bool {

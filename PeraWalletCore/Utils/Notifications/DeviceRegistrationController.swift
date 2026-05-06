@@ -105,7 +105,9 @@ final class DeviceRegistrationController {
                 handler?(nil)
             case let .failure(apiError, apiErrorDetail):
                 if let errorType = apiErrorDetail?.type,
-                   errorType == APIErrorType.deviceAlreadyExists.rawValue {
+                   errorType == APIErrorType.deviceAlreadyExists.rawValue ||
+                   errorType == APIErrorType.http404.rawValue
+                {
                     self.registerDevice(for: user, completion: handler)
                 } else {
                     let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)

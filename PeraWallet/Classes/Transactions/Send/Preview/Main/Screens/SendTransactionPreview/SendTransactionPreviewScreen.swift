@@ -18,6 +18,7 @@
 import UIKit
 import MacaroonUIKit
 import pera_wallet_core
+import Combine
 
 final class SendTransactionPreviewScreen: BaseScrollViewController {
    
@@ -54,7 +55,8 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
    private lazy var theme = Theme()
    
    private lazy var currencyFormatter = CurrencyFormatter()
-   private let jointAccountTransactionHandler: JointAccountTransactionHandler
+   private let jointAccountTransactionCoordinator: JointAccountTransactionCoordinator
+   private var cancellables: Set<AnyCancellable> = []
 
    private var draft: TransactionSendDraft
    private lazy var transactionController = {
@@ -78,7 +80,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
       accountsService: AccountsServiceable
    ) {
       self.draft = draft
-      jointAccountTransactionHandler = JointAccountTransactionHandler(accountsService: accountsService)
+      jointAccountTransactionCoordinator = JointAccountTransactionCoordinator(accountsService: accountsService)
       super.init(configuration: configuration)
    }
    
@@ -121,6 +123,22 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
          currency: currency,
          currencyFormatter: currencyFormatter
       )
+      
+      jointAccountTransactionCoordinator.$action
+         .compactMap { $0 }
+         .sink { [weak self] in self?.handle(action: $0) }
+         .store(in: &cancellables)
+   }
+   
+   private func handle(action: JointAccountTransactionCoordinator.Action) {
+      switch action {
+      case .connectionWithLedgerNeeded:
+         openLedgerConnection()
+      case .overlayDismissed:
+         dismissScreen()
+      case let .failure(error, _):
+         show(error: error)
+      }
    }
    
    override func linkInteractors() {
@@ -366,15 +384,7 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
       }
       
       openLoading()
-      
-      Task {
-         do {
-            let result = try await jointAccountTransactionHandler.handleTransaction(jointAccount: draft.from, type: transactionType, sharedDataController: sharedDataController, transactionController: transactionController)
-            self.openPendingTransactionOverlay(signRequestMetadata: result.signRequestMetadata, presentingScreen: self)
-         } catch {
-            show(error: error)
-         }
-      }
+      jointAccountTransactionCoordinator.handleTransaction(jointAccount: draft.from, transactionType: transactionType, sharedDataController: sharedDataController, transactionController: transactionController, presenter: self)
    }
 }
 
@@ -399,33 +409,32 @@ extension SendTransactionPreviewScreen {
       
       transactionController.delegate = self
       transactionController.setTransactionDraft(composedTransacation)
-      transactionController.getTransactionParamsAndComposeTransactionData(for: transactionType)
-      
-      if draft.from.requiresLedgerConnection() {
-         openLedgerConnection()
+      Task {
+         await transactionController.getTransactionParamsAndComposeTransactionData(for: transactionType)
          
-         transactionController.initializeLedgerTransactionAccount()
-         transactionController.startTimer()
-         return
-      }
-      
-      if transactionType == .optInAndSend {
-         guard let receiver = draft.toAccount?.address ??
-                  draft.toContact?.address ??
-                  draft.toNameService?.address,
-               let receiverAccount = sharedDataController.accountCollection[receiver]?.value,
-               receiverAccount.authorization.isAuthorized else {
-            assertionFailure("Not authorized to send transaction")
+         if draft.from.requiresLedgerConnection() {
+            openLedgerConnection()
             return
          }
          
-         if receiverAccount.requiresLedgerConnection() {
-            openLedgerConnection()
+         if transactionType == .optInAndSend {
+            guard let receiver = draft.toAccount?.address ??
+                     draft.toContact?.address ??
+                     draft.toNameService?.address,
+                  let receiverAccount = sharedDataController.accountCollection[receiver]?.value,
+                  receiverAccount.authorization.isAuthorized else {
+               assertionFailure("Not authorized to send transaction")
+               return
+            }
+            
+            if receiverAccount.requiresLedgerConnection() {
+               openLedgerConnection()
+            }
          }
-      }
-      
-      if draft.from.isJointAccount {
-         createJointAccountSignTransactionRequest()
+         
+         if draft.from.isJointAccount {
+            createJointAccountSignTransactionRequest()
+         }
       }
    }
 }
@@ -598,15 +607,32 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
    }
    
    func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
-      ledgerConnectionScreen?.dismissScreen()
-      ledgerConnectionScreen = nil
       
-      signWithLedgerProcessScreen?.dismissScreen()
-      signWithLedgerProcessScreen = nil
+      let dispatchGroup = DispatchGroup()
+      
+      if let ledgerConnectionScreen {
+         dispatchGroup.enter()
+         ledgerConnectionScreen.dismissScreen() { dispatchGroup.leave() }
+         self.ledgerConnectionScreen = nil
+      }
+      
+      if let signWithLedgerProcessScreen {
+         dispatchGroup.enter()
+         signWithLedgerProcessScreen.dismissScreen() { dispatchGroup.leave() }
+         self.signWithLedgerProcessScreen = nil
+      }
+      
+      dispatchGroup.notify(queue: .main) { [weak self] in
+         self?.loadingScreen?.popScreen()
+      }
       
       loadingController?.stopLoading()
-      
       cancelMonitoringOptOutUpdatesIfNeeded(for: transactionController)
+   }
+   
+   func transactionControllerDidResetLedgerOperationOnSuccess(_ transactionController: TransactionController) {
+      signWithLedgerProcessScreen?.dismissScreen()
+      signWithLedgerProcessScreen = nil
    }
 }
 
@@ -642,16 +668,6 @@ extension SendTransactionPreviewScreen {
             }
          }
       }
-   }
-   
-   
-   private func openPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata?, presentingScreen: UIViewController?) {
-      guard let signRequestMetadata else { return }
-      let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata) { [weak self] in
-         guard let self else { return }
-         dismissScreen()
-      }
-      presentingScreen?.present(viewController, animated: true)
    }
    
    private func show(error: Error) {
@@ -743,7 +759,9 @@ extension SendTransactionPreviewScreen {
             self.transactionController.stopBLEScan()
             self.transactionController.stopTimer()
             
-            self.ledgerConnectionScreen?.dismissScreen()
+            self.ledgerConnectionScreen?.dismissScreen() { [weak self] in
+               self?.loadingScreen?.popScreen()
+            }
             self.ledgerConnectionScreen = nil
             
             self.loadingController?.stopLoading()
@@ -791,7 +809,9 @@ extension SendTransactionPreviewScreen {
             transactionController.stopBLEScan()
             transactionController.stopTimer()
             
-            self.signWithLedgerProcessScreen?.dismissScreen()
+            self.signWithLedgerProcessScreen?.dismissScreen() { [weak self] in
+               self?.loadingScreen?.popScreen()
+            }
             self.signWithLedgerProcessScreen = nil
             
             self.loadingController?.stopLoading()

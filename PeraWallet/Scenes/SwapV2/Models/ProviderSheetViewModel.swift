@@ -53,11 +53,17 @@ enum SelectedProvider: Equatable {
 
 final class ProviderSheetViewModel: ObservableObject {
     @Published var selectedProvider: SelectedProvider
-    var availableProviders: [SwapProviderV2]
+    private var availableProviders: [SwapProviderV2]
     var quoteList: [SwapQuote]?
     
     var sheetHeight: Double {
         Double(150 + ((availableProviders.count + 1) * 72))
+    }
+    
+    var validProviders: [SwapProviderV2] {
+        availableProviders.filter { provider in
+            quoteList?.contains { $0.provider?.rawValue == provider.name } ?? false
+        }
     }
     
     init(

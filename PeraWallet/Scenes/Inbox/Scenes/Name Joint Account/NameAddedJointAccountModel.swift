@@ -26,6 +26,7 @@ final class NameAddedJointAccountModel: CreateJointAccountNameAccountModelable {
     private var cancellables = Set<AnyCancellable>()
     
     var isAccountDuplicate: Bool = false
+    var isLoadedFromInbox: Bool = true
     
     @MainActor private var writableViewModel: CreateJointAccountNameAccountViewModelWritable { viewModel as CreateJointAccountNameAccountViewModelWritable }
     

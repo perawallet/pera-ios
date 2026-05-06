@@ -18,8 +18,8 @@ import SwiftUI
 
 enum CreateJointAccountSetThresholdConstructor {
     
-    static func buildScene(participantAddresses: [String], navigationPath: Binding<NavigationPath>, onDismissRequest: (() -> Void)?) -> CreateJointAccountSetThresholdView {
+    static func buildScene(participantAddresses: [String], navigationPath: Binding<NavigationPath>, onDismissRequest: (() -> Void)?, onAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?) -> CreateJointAccountSetThresholdView {
         let model = CreateJointAccountSetThresholdModel(participantAddresses: participantAddresses)
-        return CreateJointAccountSetThresholdView(model: model, navigationPath: navigationPath, onDismissRequest: onDismissRequest)
+        return CreateJointAccountSetThresholdView(model: model, navigationPath: navigationPath, onDismissRequest: onDismissRequest, onAnalyticsCall: onAnalyticsCall)
     }
 }

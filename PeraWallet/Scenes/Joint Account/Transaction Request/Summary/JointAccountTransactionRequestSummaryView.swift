@@ -33,6 +33,8 @@ struct JointAccountTransactionRequestSummaryView: View {
     var onShowDetails: ((_ account: Account, _ transaction: TransactionItem) -> Void)?
     var onShowSigningStatus: ((_ transaction: TransactionItem) -> Void)?
     var onShowError: ((any Error) -> Void)?
+    var onAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?
+    var onRequestConnectionWithLedger: ((_ transactionController: TransactionController) -> Void)?
     
     // MARK: - Initialisers
     
@@ -49,7 +51,7 @@ struct JointAccountTransactionRequestSummaryView: View {
                 HStack(alignment: .top) {
                     Spacer()
                     VStack {
-                        Text("joint-account-transaction-requset-summary-title")
+                        Text("joint-account-transaction-request-summary-title")
                             .font(.DMSans.medium.size(15.0))
                             .foregroundStyle(Color.Text.main)
                             .padding(.vertical, 10.0)
@@ -197,10 +199,12 @@ struct JointAccountTransactionRequestSummaryView: View {
     }
     
     private func onConfirmAction() {
+        onAnalyticsCall?(.declinePendingTransaction)
         model.confirmTransaction()
     }
     
     private func onDeclineAction() {
+        onAnalyticsCall?(.declinePendingTransaction)
         model.declineTransaction()
     }
     
@@ -217,10 +221,12 @@ struct JointAccountTransactionRequestSummaryView: View {
         switch action {
         case let .presentTransactionDetails(account, transaction):
             onShowDetails?(account, transaction)
-        case let .presentSigningStatus(account, transaction):
+        case let .presentSigningStatus(_, transaction):
             onShowSigningStatus?(transaction)
         case let .copyAddress(address):
             onCopy?(address)
+        case let .requestConnectionWithLedger(transactionController):
+            onRequestConnectionWithLedger?(transactionController)
         case .success:
             onDismiss?()
         }

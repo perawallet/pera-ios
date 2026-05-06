@@ -16,6 +16,24 @@
 
 import SwiftUI
 
+enum JointAccountAnalyticEvent {
+    case welcomePressed
+    case addAccount
+    case editAccount
+    case removeAddress
+    case addAccountContinue
+    case addAccountContinueFromInbox
+    case thresholdContinue
+    case nameAccount
+    case infoScreenProceed
+    case infoScreenGoBack
+    case cancelTransaction
+    case declinePendingTransaction
+    case confirmTransaction
+    case closeForNow
+    case closePendingTransaction
+}
+
 struct AddAccountView: View {
     
     enum LegacyNavigationOption {
@@ -50,6 +68,7 @@ struct AddAccountView: View {
     var onDismissRequest: (() -> Void)?
     var onLearnMoreTap: (() -> Void)?
     var onScanQRTap: (() -> Void)?
+    var onJointAccountAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?
     
     // MARK: - Initialisers
     
@@ -128,7 +147,8 @@ struct AddAccountView: View {
                             scannedAddress: $viewModel.scannedAddress,
                             onDismissRequest: onDismissRequest,
                             onLearnMoreTap: onLearnMoreTap,
-                            onScanQRTap: onScanQRTap
+                            onScanQRTap: onScanQRTap,
+                            onAnalyticsCall: onJointAccountAnalyticsCall,
                         )
                     }
                 }
@@ -145,6 +165,7 @@ struct AddAccountView: View {
     
     private func onJointAccountContinueButtonTapAction() {
         isJointAccountOverlayVisible = false
+        onJointAccountAnalyticsCall?(.welcomePressed)
         DispatchQueue.main.asyncAfter(deadline: .now() + navigationDelayTimeInterval) {
             moveTo(option: .addJointAccount)
         }

@@ -15,6 +15,7 @@
 //   AccountInformationOptionItemViewModel.swift
 
 import MacaroonUIKit
+import UIKit
 
 protocol AccountInformationOptionItemViewModel: ListItemButtonViewModel { }
 
@@ -33,6 +34,11 @@ where Self == RescanRekeyedAccountsInformationOptionItemViewModel {
     static var rescanRekeyedAccounts: Self { Self() }
 }
 
+extension AccountInformationOptionItemViewModel
+where Self == RekeyToJointAccountInformationOptionItemViewModel {
+    static var rekeyToJointAccount: Self { Self() }
+}
+
 struct RekeyToLedgerAccountInformationOptionItemViewModel: AccountInformationOptionItemViewModel {
     private(set) var icon: Image?
     private(set) var title: EditText?
@@ -44,7 +50,7 @@ struct RekeyToLedgerAccountInformationOptionItemViewModel: AccountInformationOpt
             String(localized: "title-rekey-to-ledger-account")
                 .bodyRegular(lineBreakMode: .byTruncatingTail)
         )
-        accessory = "icon-arrow-24".templateImage
+        accessory = UIImage.iconArrow24.templateImage
     }
 }
 
@@ -59,7 +65,7 @@ struct RekeyToStandardAccountInformationOptionItemViewModel: AccountInformationO
             String(localized: "title-rekey-to-standard-account")
                 .bodyRegular(lineBreakMode: .byTruncatingTail)
         )
-        accessory = "icon-arrow-24".templateImage
+        accessory = UIImage.iconArrow24.templateImage
     }
 }
 
@@ -70,5 +76,20 @@ struct RescanRekeyedAccountsInformationOptionItemViewModel: AccountInformationOp
             .bodyRegular(lineBreakMode: .byTruncatingTail)
     )
     let subtitle: EditText? = nil
-    var accessory: Image? = "icon-arrow-24".templateImage
+    var accessory: Image? = UIImage.iconArrow24.templateImage
+}
+
+struct RekeyToJointAccountInformationOptionItemViewModel: AccountInformationOptionItemViewModel {
+    private(set) var icon: Image?
+    private(set) var title: EditText?
+    private(set) var subtitle: EditText?
+    private(set) var accessory: Image?
+
+    init() {
+        title = .attributedString(
+            String(localized: "title-rekey-to-joint-account")
+                .bodyRegular(lineBreakMode: .byTruncatingTail)
+        )
+        accessory = UIImage.iconArrow24.templateImage
+    }
 }
