@@ -40,9 +40,6 @@ final class ASAProfileView:
     var onPeriodChange: ((ChartDataPeriod) -> Void)?
     var onPointSelected: ((ChartDataPoint?) -> Void)?
 
-    private(set) var intrinsicExpandedContentSize: CGSize = .zero
-    private(set) var intrinsicCompressedContentSize: CGSize = .zero
-
     private(set) var isLayoutLoaded = false
 
     private lazy var contentView = VStackView()
@@ -246,7 +243,7 @@ extension ASAProfileView {
 
         titleView.addSubview(iconView)
         iconView.snp.makeConstraints {
-            $0.fitToSize(theme.expandedIconSize)
+            $0.fitToSize(theme.icon.size)
             $0.leading == 0
         }
     }

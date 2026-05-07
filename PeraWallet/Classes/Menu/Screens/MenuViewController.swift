@@ -91,13 +91,12 @@ final class MenuViewController: BaseViewController {
     ) {
         
         let showCards = (cardsOption == .cards(state: .active) && configuration.featureFlagService.isEnabled(.enableImmersve))
-        let isXoSwapEnabled = configuration.featureFlagService.isEnabled(.xoSwapEnabled)
         
         var baseOptions: [MenuOption] = []
         
         baseOptions.append(nftsOption)
         
-        baseOptions.append(contentsOf: isXoSwapEnabled ? [.buy, .stake, .receive, .inviteFriends] : [.buyAlgo, .receive, .inviteFriends])
+        baseOptions.append(contentsOf: [.buy, .stake, .receive, .inviteFriends])
         
         if showCards {
             baseOptions.append(cardsOption)

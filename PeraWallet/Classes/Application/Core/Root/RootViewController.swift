@@ -136,27 +136,11 @@ extension RootViewController {
         let swapVC = SwapViewController(configuration: appConfiguration.all())
         let swapTab = SwapTabBarItem(NavigationContainer(rootViewController: swapVC))
         
-        let stakingVC = StakingScreen(configuration: appConfiguration.all())
-        stakingVC.hideBackButtonInWebView = true
-        let stakeTab = StakeTabBarItem(NavigationContainer(rootViewController: stakingVC))
-        
         let menuVC = MenuViewController(configuration: appConfiguration.all())
         let menuTab = MenuTabBarItem(NavigationContainer(rootViewController: menuVC))
         
         let fundVC = FundInAppBrowserScreen(configuration: appConfiguration.all())
         let fundTab = FundTabBarItem(NavigationContainer(rootViewController: fundVC))
-        
-        guard appConfiguration.featureFlagService.isEnabled(.xoSwapEnabled) else {
-            mainContainer.items = [
-                homeTab,
-                discoverTab,
-                swapTab,
-                stakeTab,
-                menuTab
-            ]
-            setNeedsDiscoverTabBarItemUpdateIfNeeded()
-            return
-        }
 
         mainContainer.items = [
             homeTab,

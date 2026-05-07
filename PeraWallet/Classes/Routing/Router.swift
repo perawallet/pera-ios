@@ -470,12 +470,8 @@ final class Router:
                     launch(tab: .discover)
                 }
             case .staking:
-                if appConfiguration.featureFlagService.isEnabled(.xoSwapEnabled) {
-                    let visibleScreen = findVisibleScreen(over: rootViewController)
-                    visibleScreen.open(.staking, by: .present)
-                } else {
-                    launch(tab: .stake)
-                }
+                let visibleScreen = findVisibleScreen(over: rootViewController)
+                visibleScreen.open(.staking, by: .present)
             case .cards(path: let path):
                 let isCardsFeatureEnabled = AppEnvironment.current.isCardsFeatureEnabled(
                     for: appConfiguration.api.network
@@ -501,7 +497,6 @@ final class Router:
                     )
                 )
             case .buy(path: let path, address: let address):
-                guard appConfiguration.featureFlagService.isEnabled(.xoSwapEnabled) else { return }
                 rootViewController.mainContainer.launchFundFromDeeplink(with: path, and: address)
             case .assetInbox:
                 let visibleScreen = findVisibleScreen(over: rootViewController)

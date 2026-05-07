@@ -9138,16 +9138,6 @@
         }
       }
     },
-    "title-about" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "About"
-          }
-        }
-      }
-    },
     "title-about-with-param" : {
       "localizations" : {
         "en" : {
@@ -9224,16 +9214,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Active"
-          }
-        }
-      }
-    },
-    "title-activity" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Activity"
           }
         }
       }
