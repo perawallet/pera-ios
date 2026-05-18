@@ -15,28 +15,52 @@
 //   PeraUserDefaults.swift
 
 public enum PeraUserDefaults {
-    
-    @UserDefault(key: "wasPrivacyTooltipPresented") public static var wasPrivacyTooltipPresented: Bool?
-    @UserDefault(key: "isPrivacyModeEnabled") public static var isPrivacyModeEnabled: Bool?
-    @UserDefault(key: "shouldShowNewAccountAnimation") public static var shouldShowNewAccountAnimation: Bool?
-    @UserDefault(key: "shouldUseLocalCurrencyInSwap") public static var shouldUseLocalCurrencyInSwap: Bool?
-    @UserDefault(key: "isMediaCleanupCompleted") public static var isMediaCleanupCompleted: Bool?
-    @UserDefault(key: "lastAddressUsedInSwapCompleted") public static var lastAddressUsedInSwapCompleted: String?
-    
+
+    public enum Key: String, CaseIterable {
+        case wasPrivacyTooltipPresented
+        case isPrivacyModeEnabled
+        case shouldShowNewAccountAnimation
+        case shouldUseLocalCurrencyInSwap
+        case isMediaCleanupCompleted
+        case lastAddressUsedInSwapCompleted
+        case isRekeySupported
+        case watchedJointAccountInvitations
+        case watchedSignRequestMessage
+        case hasJointAccountCreationPopupBeenShown
+        case shouldShowDevMenu
+        case enableTestCards
+        case overrideRemoteConfigValues
+        case enableTestXOSwapPage
+    }
+
+    @UserDefault(key: .wasPrivacyTooltipPresented) public static var wasPrivacyTooltipPresented: Bool?
+    @UserDefault(key: .isPrivacyModeEnabled) public static var isPrivacyModeEnabled: Bool?
+    @UserDefault(key: .shouldShowNewAccountAnimation) public static var shouldShowNewAccountAnimation: Bool?
+    @UserDefault(key: .shouldUseLocalCurrencyInSwap) public static var shouldUseLocalCurrencyInSwap: Bool?
+    @UserDefault(key: .isMediaCleanupCompleted) public static var isMediaCleanupCompleted: Bool?
+    @UserDefault(key: .lastAddressUsedInSwapCompleted) public static var lastAddressUsedInSwapCompleted: String?
+
     // MARK: - Security Settings
-    
-    @UserDefault(key: "isRekeySupported") public static var isRekeySupported: Bool?
+
+    @UserDefault(key: .isRekeySupported) public static var isRekeySupported: Bool?
 
     // MARK: - MultiSig
-    
-    @UserDefault(key: "watchedJointAccountInvitations") public static var watchedJointAccountInvitations: [String]?
-    @UserDefault(key: "watchedSignRequestMessage") public static var watchedSignRequestMessage: [String]?
-    @UserDefault(key: "hasJointAccountCreationPopupBeenShown") public static var hasJointAccountCreationPopupBeenShown: Bool?
-    
+
+    @UserDefault(key: .watchedJointAccountInvitations) public static var watchedJointAccountInvitations: [String]?
+    @UserDefault(key: .watchedSignRequestMessage) public static var watchedSignRequestMessage: [String]?
+    @UserDefault(key: .hasJointAccountCreationPopupBeenShown) public static var hasJointAccountCreationPopupBeenShown: Bool?
+
     // MARK: - Secret Developer Settings
+
+    @UserDefault(key: .shouldShowDevMenu) public static var shouldShowDevMenu: Bool?
+    @UserDefault(key: .enableTestCards) public static var enableTestCards: Bool?
+    @UserDefault(key: .overrideRemoteConfigValues) public static var overrideRemoteConfigValues: [String: Bool]?
+    @UserDefault(key: .enableTestXOSwapPage) public static var enableTestXOSwapPage: Bool?
+}
+
+extension UserDefault {
     
-    @UserDefault(key: "shouldShowDevMenu") public static var shouldShowDevMenu: Bool?
-    @UserDefault(key: "enableTestCards") public static var enableTestCards: Bool?
-    @UserDefault(key: "overrideRemoteConfigValues") public static var overrideRemoteConfigValues: [String: Bool]?
-    @UserDefault(key: "enableTestXOSwapPage") public static var enableTestXOSwapPage: Bool?
+    init(key: PeraUserDefaults.Key, suiteName: String? = nil) {
+        self.init(key: key.rawValue, suiteName: suiteName)
+    }
 }

@@ -379,6 +379,11 @@ public extension Session {
     func hasPassword() -> Bool {
         return privateStorage.string(for: passwordKey) != nil
     }
+
+    // Exposes the plaintext PIN for one-shot migration export (RN port).
+    func passwordForBackup() -> String? {
+        return privateStorage.string(for: passwordKey)
+    }
 }
 
 // MARK: Terms and Services

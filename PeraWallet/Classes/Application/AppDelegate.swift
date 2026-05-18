@@ -99,6 +99,8 @@ class AppDelegate:
         walletConnectCoordinator.setup()
         
         session.authenticatedUser?.logAccounts()
+        
+        backupExample()
 
         return true
     }
@@ -282,6 +284,25 @@ class AppDelegate:
     func handle(deeplink: String) {
         guard let externalDeepLink = URL(string: deeplink)?.externalDeepLink else { return }
         receive(deeplinkWithSource: .externalDeepLink(externalDeepLink))
+    }
+    
+    private func backupExample() {
+        
+        let backupComposer = BackupComposer(session: session, hdWalletStorage: hdWalletStorage, sharedDataController: sharedDataController, accountsService: PeraCoreManager.shared.accounts)
+
+        Task {
+            do {
+                let backup = try await backupComposer.backup()
+                let jsonBackup = try await backupComposer.backupAsJSON()
+                let rawJson = String(data: jsonBackup, encoding: .utf8) ?? ""
+                
+                print("[Backup] Backup: \(backup)")
+                print("[Backup] JSON Data: \(jsonBackup)")
+                print("[Backup] JSON: \(rawJson)")
+            } catch {
+                print("[Backup] Error: \(error)")
+            }
+        }
     }
 }
 

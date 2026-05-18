@@ -10866,6 +10866,7 @@
 		5493547A2E9FD157009E53CF /* Formatters */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (5470AA3D2EA0D2E100BCB13B /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Formatters; sourceTree = "<group>"; };
 		54C2F7AF2F7BB26900715A1E /* RekeyedJointAccountInformation */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = RekeyedJointAccountInformation; sourceTree = "<group>"; };
 		54C7260E2E27920B00E08B4C /* Data Providers */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (54C726112E27922700E08B4C /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Data Providers"; sourceTree = "<group>"; };
+		54E0A12F2FB5CD37003CC298 /* Backup */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Backup; sourceTree = "<group>"; };
 		594D7B302EB4F88F00D0DA38 /* AccountSearchRecovery */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = AccountSearchRecovery; sourceTree = "<group>"; };
 		59B1F8B52E4B319500B8F6FB /* PassKeyExtension */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (59B1FE5B2E4B588200B8F6FB /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 59B1FE582E4B587600B8F6FB /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = PassKeyExtension; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -17432,6 +17433,7 @@
 		2BF7280427471E8F00CCAC30 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				54E0A12F2FB5CD37003CC298 /* Backup */,
 				5498C23A2EDC7D050006A55D /* AppConfigurator.swift */,
 				2B8BE4D122391C38005D8565 /* AppDelegate.swift */,
 				2B8BE4EB22393547005D8565 /* Core */,
@@ -24574,6 +24576,7 @@
 				5458D85A2DEDB35700DADA06 /* Extensions */,
 				5458D8902DEDB36200DADA06 /* Utils */,
 				54C2F7AF2F7BB26900715A1E /* RekeyedJointAccountInformation */,
+				54E0A12F2FB5CD37003CC298 /* Backup */,
 				594D7B302EB4F88F00D0DA38 /* AccountSearchRecovery */,
 			);
 			name = "pera-staging";
@@ -24607,6 +24610,7 @@
 				5458D85A2DEDB35700DADA06 /* Extensions */,
 				5458D8902DEDB36200DADA06 /* Utils */,
 				54C2F7AF2F7BB26900715A1E /* RekeyedJointAccountInformation */,
+				54E0A12F2FB5CD37003CC298 /* Backup */,
 				594D7B302EB4F88F00D0DA38 /* AccountSearchRecovery */,
 			);
 			name = "pera-beta";
@@ -24640,6 +24644,7 @@
 				5458D85A2DEDB35700DADA06 /* Extensions */,
 				5458D8902DEDB36200DADA06 /* Utils */,
 				54C2F7AF2F7BB26900715A1E /* RekeyedJointAccountInformation */,
+				54E0A12F2FB5CD37003CC298 /* Backup */,
 				594D7B302EB4F88F00D0DA38 /* AccountSearchRecovery */,
 			);
 			name = pera;
@@ -32523,6 +32528,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = Develop;
 				DEVELOPMENT_TEAM = KHH37325LN;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libraries",
@@ -32537,6 +32543,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Bitrise iOS ad-hoc - (com.peralda.perawallet.staging)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -32552,6 +32559,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = Develop;
 				DEVELOPMENT_TEAM = KHH37325LN;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = KHH37325LN;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libraries",
@@ -32566,6 +32574,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Bitrise iOS ad-hoc - (com.peralda.perawallet.staging)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
