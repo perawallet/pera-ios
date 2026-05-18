@@ -199,6 +199,12 @@ class BaseViewController:
             preferredUserInterfaceStyleDidChange(to: traitCollection.userInterfaceStyle)
         }
     }
+    
+    // MARK: - Factories
+    
+    func makeTransactionController() -> TransactionController {
+        TransactionController(api: api!, sharedDataController: sharedDataController, bannerController: bannerController, analytics: analytics, hdWalletStorage: hdWalletStorage)
+    }
 }
 
 /// <mark>

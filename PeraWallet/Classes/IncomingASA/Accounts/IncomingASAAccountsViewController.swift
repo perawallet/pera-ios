@@ -200,6 +200,7 @@ final class IncomingASAAccountsViewController: BaseViewController {
             )
             let signRequestMetadata = SignRequestMetadata(
                 signRequestID: request.id,
+                transactions: request.transactionLists,
                 proposerAddress: proposerAddress,
                 signaturesInfo: signaturesInfo,
                 threshold: request.jointAccount.threshold,
@@ -217,20 +218,24 @@ final class IncomingASAAccountsViewController: BaseViewController {
         pendingTransactionOverlay = JointAccountPendingTransactionOverlayConstructor.buildViewController(
             signRequestMetadata: signRequestMetadata,
             isCancelTransactionAvailable: isCancelTransactionAvailable,
-            onDismiss: { [weak self] in
-                self?.analytics.track(.jointAccount(type: .closePendingTransaction))
-                self?.pendingTransactionOverlay = nil
-            },
-            onCancelTransaction: { [weak self] in
-                guard let self, let pendingTransactionOverlay else { return }
-                analytics.track(.jointAccount(type: .cancelTransaction))
-                openTransactionCancellationDialog(
-                    jointAccount: jointAccount,
-                    presenter: pendingTransactionOverlay,
-                    sharedDataController: sharedDataController
-                )
-            }
+            isSignWithLedgerActionAvailable: false,
+            legacyConfiguration: configuration
         )
+        
+        pendingTransactionOverlay?.onDismiss = { [weak self] in
+            self?.analytics.track(.jointAccount(type: .closePendingTransaction))
+            self?.pendingTransactionOverlay = nil
+        }
+        
+        pendingTransactionOverlay?.onCancelTransaction = { [weak self] in
+            guard let self, let pendingTransactionOverlay else { return }
+            analytics.track(.jointAccount(type: .cancelTransaction))
+            openTransactionCancellationDialog(
+                jointAccount: jointAccount,
+                presenter: pendingTransactionOverlay,
+                sharedDataController: sharedDataController
+            )
+        }
         
         guard let pendingTransactionOverlay else { return }
         present(pendingTransactionOverlay, animated: true)

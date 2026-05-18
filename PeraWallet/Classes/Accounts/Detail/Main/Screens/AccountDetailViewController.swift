@@ -62,6 +62,7 @@ final class AccountDetailViewController: PageContainer {
     private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
         presentingScreen: self,
         sharedDataController: sharedDataController,
+        legacyConfiguration: configuration,
         account: accountHandle.value
     )
     private lazy var receiveTransactionFlowCoordinator = ReceiveTransactionFlowCoordinator(

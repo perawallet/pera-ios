@@ -71,7 +71,8 @@ final class HomeViewController:
     )
     private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
         presentingScreen: self,
-        sharedDataController: sharedDataController
+        sharedDataController: sharedDataController,
+        legacyConfiguration: configuration
     )
     private lazy var receiveTransactionFlowCoordinator = ReceiveTransactionFlowCoordinator(presentingScreen: self)
     private lazy var scanQRFlowCoordinator = ScanQRFlowCoordinator(

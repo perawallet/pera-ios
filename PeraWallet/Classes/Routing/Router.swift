@@ -1251,7 +1251,8 @@ final class Router:
                 bannerController: configuration.bannerController!,
                 loadingController: configuration.loadingController!,
                 analytics: configuration.analytics,
-                hdWalletStorage: configuration.hdWalletStorage
+                hdWalletStorage: configuration.hdWalletStorage,
+                viewControllerConfiguration: configuration
             )
         case let .rekeySuccess(sourceAccount, eventHandler):
             let aViewController = RekeySuccessScreen(
@@ -1271,7 +1272,8 @@ final class Router:
                 bannerController: configuration.bannerController!,
                 loadingController: configuration.loadingController!,
                 analytics: configuration.analytics,
-                hdWalletStorage: configuration.hdWalletStorage
+                hdWalletStorage: configuration.hdWalletStorage,
+                viewControllerConfiguration: configuration
             )
         case let .undoRekeySuccess(sourceAccount, eventHandler):
             let aViewController = UndoRekeySuccessScreen(

@@ -18,10 +18,10 @@ import SwiftUI
 
 struct JointAccountPendingTransactionOverlayRow: View {
     
-    enum State {
+    enum State: Equatable {
         case approved
         case rejected
-        case waiting
+        case waiting(showSignButton: Bool)
         case none
     }
     
@@ -31,6 +31,7 @@ struct JointAccountPendingTransactionOverlayRow: View {
     let title: String
     let subtitle: String?
     let state: State
+    let signButtonAction: () -> Void
     
     // MARK: - Body
     
@@ -49,8 +50,7 @@ struct JointAccountPendingTransactionOverlayRow: View {
                 }
             }
             Spacer()
-            stateIcon()
-                .frame(width: 20.0, height: 20.0)
+            accessoryView()
                 .padding(.trailing, 12.0)
                 
         }
@@ -62,21 +62,39 @@ struct JointAccountPendingTransactionOverlayRow: View {
     }
     
     @ViewBuilder
-    private func stateIcon() -> some View {
+    private func accessoryView() -> some View {
         switch state {
         case .approved:
             Image(.Icons.check)
                 .resizable()
                 .foregroundStyle(Color.Helpers.positive)
+                .frame(width: 20.0, height: 20.0)
         case .rejected:
             Image(.Icons.close)
                 .resizable()
                 .foregroundStyle(Color.Helpers.negative)
-        case .waiting:
-            ProgressView()
-                .tint(.Text.gray)
+                .frame(width: 20.0, height: 20.0)
+        case let .waiting(showSignButton):
+            if showSignButton {
+                SwiftUI.Button(action: signButtonAction) {
+                    Text("shared-account-pending-transaction-overlay-sign-button")
+                        .padding(.horizontal, 12.0)
+                        .padding(.vertical, 8.0)
+                        .font(.DMSans.medium.size(15.0))
+                        .foregroundColor(.ButtonPrimary.text)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8.0)
+                                .fill(Color.ButtonPrimary.bg)
+                        )
+                }
+            } else {
+                ProgressView()
+                    .frame(width: 20.0, height: 20.0)
+                    .tint(.Text.gray)
+            }
         case .none:
             EmptyView()
+                .frame(width: 20.0, height: 20.0)
         }
     }
 }

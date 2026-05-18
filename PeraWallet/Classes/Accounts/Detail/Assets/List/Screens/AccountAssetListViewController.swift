@@ -59,7 +59,7 @@ final class AccountAssetListViewController:
     )
 
     private lazy var optOutAssetCoordinator: OptOutAssetCoordinator = {
-        let coordinator = OptOutAssetCoordinator(accountsService: PeraCoreManager.shared.accounts)
+        let coordinator = OptOutAssetCoordinator(accountsService: PeraCoreManager.shared.accounts, viewControllerConfiguration: configuration)
         coordinator.presenter = self
         return coordinator
     }()

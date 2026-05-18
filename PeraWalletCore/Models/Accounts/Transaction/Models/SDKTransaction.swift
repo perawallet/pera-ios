@@ -26,6 +26,7 @@ public final class SDKTransaction: Codable {
 
     public private(set) var sender: String?
     public let type: TransactionType?
+    public let transferAddress: String?
 
     private let algosAmount: UInt64?
     private let assetAmount: UInt64?
@@ -57,7 +58,8 @@ public final class SDKTransaction: Codable {
         assetAmount = try container.decodeIfPresent(UInt64.self, forKey: .assetAmount)
         algosAmount = try container.decodeIfPresent(UInt64.self, forKey: .algosAmount)
         assetId = try container.decodeIfPresent(Int64.self, forKey: .assetId)
-
+        transferAddress = try container.decodeIfPresent(String.self, forKey: .transferAddress)
+        
         if let senderMsgpack = try container.decodeIfPresent(Data.self, forKey: .sender) {
             sender = senderMsgpack.getAlgorandAddressFromPublicKey()
         }
@@ -86,6 +88,7 @@ public final class SDKTransaction: Codable {
         try container.encodeIfPresent(assetReceiver, forKey: .assetReceiver)
         try container.encodeIfPresent(algosReceiver, forKey: .algosReceiver)
         try container.encodeIfPresent(assetId, forKey: .assetId)
+        try container.encodeIfPresent(transferAddress, forKey: .transferAddress)
     }
 }
 
@@ -105,6 +108,7 @@ extension SDKTransaction {
         case algosReceiver = "rcv"
         case rekeyAddress = "rekey"
         case assetId = "xaid"
+        case transferAddress = "aclose"
     }
 }
 

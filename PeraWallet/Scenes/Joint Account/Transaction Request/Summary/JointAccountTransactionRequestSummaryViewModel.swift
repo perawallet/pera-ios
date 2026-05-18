@@ -48,10 +48,17 @@ final class JointAccountTransactionRequestSummaryViewModel: ObservableObject {
         case unableToSignTransaction(error: Error)
     }
     
+    enum TransactionTypeStyle {
+        case regular
+        case optIn
+        case optOut
+    }
+    
     @Published fileprivate(set) var receiverAddress: String = ""
     @Published fileprivate(set) var algoAmount: String = ""
     @Published fileprivate(set) var fiatAmount: String = ""
     @Published fileprivate(set) var transactionFee: String = ""
+    @Published fileprivate(set) var transactionTypeStyle: TransactionTypeStyle = .regular
     @Published fileprivate(set) var action: Action?
     @Published fileprivate(set) var error: InternalError?
 }
@@ -66,8 +73,8 @@ final class JointAccountTransactionRequestSummaryModel: JointAccountTransactionR
     
     private let accountsService: AccountsServiceable
     private let currencyService: CurrencyServiceable
-    private let signRequest: SignRequestObject
     private let transactionController: TransactionController
+    private let signRequest: SignRequestObject
     
     // MARK: - Initialisers
     
@@ -76,7 +83,6 @@ final class JointAccountTransactionRequestSummaryModel: JointAccountTransactionR
         self.accountsService = accountsService
         self.currencyService = currencyService
         signRequest = request
-        
         do {
             try setupData()
         } catch {
@@ -95,6 +101,15 @@ final class JointAccountTransactionRequestSummaryModel: JointAccountTransactionR
         viewModel.receiverAddress = receiverAddress.shortAddressDisplay
         viewModel.algoAmount = "\(algos)"
         viewModel.fiatAmount = currencyService.formattedFiatAmount(algoAmount: algos)
+        
+        switch sdkTransaction.type {
+        case .assetTransfer where sdkTransaction.transferAddress != nil:
+            viewModel.transactionTypeStyle = .optOut
+        case .assetTransfer:
+            viewModel.transactionTypeStyle = .optIn
+        case .applicationCall, .assetConfig, .assetFreeze, .keyReg, .payment, .heartbeat, .unsupported, .none:
+            viewModel.transactionTypeStyle = .regular
+        }
         
         let algoCurrencyFormatter = CurrencyFormatter()
         algoCurrencyFormatter.currency = AlgoLocalCurrency()
@@ -145,7 +160,6 @@ final class JointAccountTransactionRequestSummaryModel: JointAccountTransactionR
         
         viewModel.action = .presentTransactionDetails(account: account, transaction: transaction)
     }
-    
     
     @MainActor
     func requestSigningStatus() {

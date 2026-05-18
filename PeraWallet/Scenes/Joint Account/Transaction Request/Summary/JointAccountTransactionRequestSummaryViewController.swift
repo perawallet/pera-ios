@@ -15,6 +15,7 @@
 //   JointAccountTransactionRequestSummaryViewController.swift
 
 import pera_wallet_core
+import UIKit
 
 final class JointAccountTransactionRequestSummaryViewController: SwiftUICompatibilityBaseViewController {
     
@@ -122,6 +123,7 @@ final class JointAccountTransactionRequestSummaryViewController: SwiftUICompatib
         
         return SignRequestMetadata(
             signRequestID: transactionId,
+            transactions: signTransaction.transactionLists ?? [],
             proposerAddress: proposerAddress,
             signaturesInfo: signaturesInfo,
             threshold: threshold,
@@ -144,7 +146,14 @@ final class JointAccountTransactionRequestSummaryViewController: SwiftUICompatib
     }
     
     private func showJointAccountPendingTransactionOverlay(signRequestMetadata: SignRequestMetadata) {
-        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(signRequestMetadata: signRequestMetadata, isCancelTransactionAvailable: false, onJointAccountAnalyticsCall: nil)
+        
+        let viewController = JointAccountPendingTransactionOverlayConstructor.buildViewController(
+            signRequestMetadata: signRequestMetadata,
+            isCancelTransactionAvailable: false,
+            isSignWithLedgerActionAvailable: false,
+            legacyConfiguration: configuration
+        )
+        
         present(viewController, animated: true)
     }
     

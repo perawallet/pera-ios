@@ -60,7 +60,7 @@ final class CollectibleDetailTransactionController {
 extension CollectibleDetailTransactionController {
     
     @MainActor
-    func optOutAsset(presenter: UIViewController) {
+    func optOutAsset(presenter: UIViewController, legacyConfiguration: ViewControllerConfiguration) {
         guard let creator = asset.creator else {
             return
         }
@@ -90,13 +90,13 @@ extension CollectibleDetailTransactionController {
             }
             
             if account.isJointAccount {
-                performOptInOrOutAssetTransactionForJointAccount(draft: assetTransactionDraft, isOptIn: false, presenter: presenter)
+                performOptInOrOutAssetTransactionForJointAccount(draft: assetTransactionDraft, isOptIn: false, presenter: presenter, legacyConfiguration: legacyConfiguration)
             }
         }
     }
 
     @MainActor
-    func optInToAsset(presenter: UIViewController) {
+    func optInToAsset(presenter: UIViewController, legacyConfiguration: ViewControllerConfiguration) {
         if !transactionController.canSignTransaction(for: account) { return }
         
         let monitor = self.sharedDataController.blockchainUpdatesMonitor
@@ -120,7 +120,7 @@ extension CollectibleDetailTransactionController {
             }
             
             if account.isJointAccount {
-                performOptInOrOutAssetTransactionForJointAccount(draft: assetTransactionDraft, isOptIn: true, presenter: presenter)
+                performOptInOrOutAssetTransactionForJointAccount(draft: assetTransactionDraft, isOptIn: true, presenter: presenter, legacyConfiguration: legacyConfiguration)
             }
         }
     }
@@ -128,9 +128,15 @@ extension CollectibleDetailTransactionController {
     // MARK: - Joint Account
     
     @MainActor
-    private func performOptInOrOutAssetTransactionForJointAccount(draft: AssetTransactionSendDraft, isOptIn: Bool, presenter: UIViewController) {
+    private func performOptInOrOutAssetTransactionForJointAccount(draft: AssetTransactionSendDraft, isOptIn: Bool, presenter: UIViewController, legacyConfiguration: ViewControllerConfiguration) {
         let transactionType: JointAccountTransactionHandler.TransactionType = isOptIn ? .optIn(draft: draft) : .optOut(draft: draft)
-        jointAccountTransactionCoordinator.handleTransaction(jointAccount: account, transactionType: transactionType, sharedDataController: sharedDataController, transactionController: transactionController, presenter: presenter)
+        jointAccountTransactionCoordinator.handleTransaction(
+            jointAccount: account,
+            transactionType: transactionType,
+            transactionController: transactionController,
+            presenter: presenter,
+            legacyConfiguration: legacyConfiguration
+        )
     }
 }
 

@@ -30,6 +30,7 @@ struct JointAccountPendingTransactionOverlay: View {
     var onDismiss: (() -> Void)?
     var onCancelTransactionAction: (() -> Void)?
     var onJointAccountAnalyticsCall: ((JointAccountAnalyticEvent) -> Void)?
+    var onSignWithLedgerAction: ((_ signerAddress: String) -> Void)?
     
     // MARK: - Initialisers
     
@@ -69,14 +70,21 @@ struct JointAccountPendingTransactionOverlay: View {
                     .padding(.horizontal, 24.0)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            SelfSizingScrollView(models: viewModel.accounts) {
-                JointAccountPendingTransactionOverlayRow(avatar: $0.avatar, title: $0.title, subtitle: $0.subtitle, state: $0.signatureStatus.uiStatus)
-                    .padding(.horizontal, 24.0)
+            SelfSizingScrollView(models: viewModel.accounts) { accountModel in
+                JointAccountPendingTransactionOverlayRow(
+                    avatar: accountModel.avatar,
+                    title: accountModel.title,
+                    subtitle: accountModel.subtitle,
+                    state: accountModel.signatureStatus.uiStatus,
+                    signButtonAction: { model.signWithLedger(identifier: accountModel.id) }
+                )
+                .padding(.horizontal, 24.0)
             }
             .padding(.vertical, 16.0)
             buttonsRow()
                 .padding(.horizontal, 24.0)
         }
+        .onReceive(viewModel.$action) { handle(action: $0) }
     }
     
     @ViewBuilder
@@ -134,6 +142,16 @@ struct JointAccountPendingTransactionOverlay: View {
         model.stopPolling()
         onDismiss?()
     }
+    
+    // MARK: - Handlers
+    
+    private func handle(action: JointAccountPendingTransactionOverlayModel.Action?) {
+        guard let action else { return }
+        switch action {
+        case let .signWithLedger(signerAddress):
+            onSignWithLedgerAction?(signerAddress)
+        }
+    }
 }
 
 private extension JointAccountPendingTransactionOverlayModel.SignatureStatus {
@@ -144,8 +162,8 @@ private extension JointAccountPendingTransactionOverlayModel.SignatureStatus {
             return .approved
         case .declined:
             return .rejected
-        case .pending:
-            return .waiting
+        case let .pending(isSignatureNeeded):
+            return .waiting(showSignButton: isSignatureNeeded)
         case .expired:
             return .none
         }
