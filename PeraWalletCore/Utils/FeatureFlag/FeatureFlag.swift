@@ -30,7 +30,7 @@ public enum FeatureFlag: String, CaseIterable {
         case .liquidAuthEnabled: .bool(false)
         case .liquidConnectEnabled: .bool(false)
         case .ledgerDeflexFilterEnabled: .bool(false)
-        case .jointAccountEnabled: .bool(false)
+        case .jointAccountEnabled: .bool(true)
         case .enableImmersve: .bool(false)
         }
     }
