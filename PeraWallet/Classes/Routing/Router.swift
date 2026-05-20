@@ -3577,10 +3577,7 @@ extension Router {
     
     private func openJointAccountImportRequest(address: String) {
         guard let importRequest = PeraCoreManager.shared.inbox.jointAccountImportRequests.value.first(where: { $0.address == address }) else {
-            appConfiguration.bannerController.presentErrorBanner(
-                title: String(localized: "title-account-not-found"),
-                message: ""
-            )
+            appConfiguration.bannerController.presentErrorBanner(title: String(localized: "title-error"), message: String(localized: "title-account-not-found") )
             return
         }
 
