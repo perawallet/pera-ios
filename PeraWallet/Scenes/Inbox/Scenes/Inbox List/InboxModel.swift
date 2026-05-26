@@ -78,7 +78,7 @@ final class InboxViewModel {
 
 protocol InboxModelable {
     var viewModel: InboxViewModel { get }
-    func requestAction(identifier: InboxRowIdentifier)
+    @MainActor func requestAction(identifier: InboxRowIdentifier)
     func ignoreJointAccountInvitation(address: String) async -> Bool
     func markMessagesAsRead()
 }

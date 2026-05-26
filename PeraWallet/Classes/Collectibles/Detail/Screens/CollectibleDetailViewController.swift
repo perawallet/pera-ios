@@ -785,7 +785,7 @@ extension CollectibleDetailViewController {
             [weak self] in
             guard let self = self else { return }
 
-            self.collectibleDetailTransactionController.optOutAsset(presenter: self)
+            self.collectibleDetailTransactionController.optOutAsset(presenter: self, legacyConfiguration: configuration)
         }
     }
 
@@ -832,7 +832,7 @@ extension CollectibleDetailViewController {
             [weak self] in
             guard let self = self else { return }
 
-            self.collectibleDetailTransactionController.optInToAsset(presenter: self)
+            self.collectibleDetailTransactionController.optInToAsset(presenter: self, legacyConfiguration: configuration)
         }
     }
 

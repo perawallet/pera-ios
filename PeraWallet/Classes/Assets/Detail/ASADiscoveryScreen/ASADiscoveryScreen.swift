@@ -503,11 +503,9 @@ extension ASADiscoveryScreen {
         let width = view.bounds.width
         let minHeight =
             theme.foldedProfileVerticalEdgeInsets.top +
-            profileView.intrinsicCompressedContentSize.height +
             theme.foldedProfileVerticalEdgeInsets.bottom
         let maxHeight =
             theme.normalProfileVerticalEdgeInsets.top +
-            profileView.intrinsicExpandedContentSize.height +
             theme.normalProfileVerticalEdgeInsets.bottom
         let height = maxHeight - minHeight
         return CGRect(x: 0, y: minHeight, width: width, height: height)
@@ -806,9 +804,9 @@ extension ASADiscoveryScreen {
                     self.jointAccountTransactionCoordinator.handleTransaction(
                         jointAccount: account,
                         transactionType: .optIn(draft: assetTransactionDraft),
-                        sharedDataController: self.sharedDataController,
                         transactionController: self.transactionController,
-                        presenter: self
+                        presenter: self,
+                        legacyConfiguration: configuration
                     )
                 }
             }

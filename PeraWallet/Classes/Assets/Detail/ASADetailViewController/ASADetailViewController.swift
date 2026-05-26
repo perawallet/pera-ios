@@ -82,6 +82,7 @@ final class ASADetailViewController: PageContainer {
     private lazy var sendTransactionFlowCoordinator = SendTransactionFlowCoordinator(
         presentingScreen: self,
         sharedDataController: sharedDataController,
+        legacyConfiguration: configuration,
         account: dataController.account,
         asset: dataController.asset
     )
@@ -432,12 +433,7 @@ extension ASADetailViewController {
     }
     
     private func navigateToStake() {
-        if configuration.featureFlagService.isEnabled(.xoSwapEnabled) {
-            open(.staking, by: .push)
-        } else {
-            guard let rootViewController = UIApplication.shared.rootViewController() else { return }
-            rootViewController.launch(tab: .stake)
-        }
+        open(.staking, by: .push)
     }
 
     private func navigateToSendTransactionIfPossible() {

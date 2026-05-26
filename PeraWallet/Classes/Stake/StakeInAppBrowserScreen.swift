@@ -46,10 +46,7 @@ class StakingInAppBrowserScreen: InAppBrowserScreen {
         self.destination = destination
         super.init(configuration: configuration)
         
-        if configuration.featureFlagService.isEnabled(.xoSwapEnabled) {
-            hideBackButtonInWebView = false
-        }
-
+        hideBackButtonInWebView = false
         startObservingNotifications()
         allowsPullToRefresh = false
     }

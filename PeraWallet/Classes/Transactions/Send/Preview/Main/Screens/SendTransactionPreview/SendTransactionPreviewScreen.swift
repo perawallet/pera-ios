@@ -384,7 +384,13 @@ final class SendTransactionPreviewScreen: BaseScrollViewController {
       }
       
       openLoading()
-      jointAccountTransactionCoordinator.handleTransaction(jointAccount: draft.from, transactionType: transactionType, sharedDataController: sharedDataController, transactionController: transactionController, presenter: self)
+      jointAccountTransactionCoordinator.handleTransaction(
+         jointAccount: draft.from,
+         transactionType: transactionType,
+         transactionController: transactionController,
+         presenter: self,
+         legacyConfiguration: configuration
+      )
    }
 }
 

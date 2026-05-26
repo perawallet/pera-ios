@@ -89,7 +89,7 @@ struct JointAccountTransactionRequestSummaryView: View {
                     )
                     .padding(.bottom, 24.0)
                     HStack(spacing: 8.0) {
-                        Text("joint-account-transaction-requset-summary-receiver-address-text-prefix")
+                        transactionPrefixText(transactionTypeStyle: viewModel.transactionTypeStyle)
                             .font(Font.DMSans.regular.size(15.0))
                             .foregroundColor(Color.Text.gray)
                         + Text(verbatim: " ")
@@ -182,6 +182,17 @@ struct JointAccountTransactionRequestSummaryView: View {
         }
         .onReceive(viewModel.$action) { handle(action: $0) }
         .onReceive(viewModel.$error, perform: { handle(error: $0) })
+    }
+    
+    private func transactionPrefixText(transactionTypeStyle: JointAccountTransactionRequestSummaryViewModel.TransactionTypeStyle) -> Text {
+        switch transactionTypeStyle {
+        case .regular:
+            Text("joint-account-transaction-requset-summary-receiver-address-text-prefix-regular")
+        case .optIn:
+            Text("joint-account-transaction-requset-summary-receiver-address-text-prefix-opt-in")
+        case .optOut:
+            Text("joint-account-transaction-requset-summary-receiver-address-text-prefix-opt-out")
+        }
     }
     
     // MARK: - Actions

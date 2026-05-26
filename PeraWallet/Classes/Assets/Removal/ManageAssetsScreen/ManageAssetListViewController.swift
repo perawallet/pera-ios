@@ -663,9 +663,9 @@ extension ManageAssetListViewController {
                     self.jointAccountTransactionCoordinator.handleTransaction(
                         jointAccount: account,
                         transactionType: .optOut(draft: assetTransactionDraft),
-                        sharedDataController: self.sharedDataController,
                         transactionController: transactionController,
-                        presenter: self
+                        presenter: self,
+                        legacyConfiguration: configuration
                     )
                 }
             }

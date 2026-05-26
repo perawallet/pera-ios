@@ -518,9 +518,9 @@ extension AssetAdditionViewController {
                     self.jointAccountTransactionCoordinator.handleTransaction(
                         jointAccount: account,
                         transactionType: .optIn(draft: assetTransactionDraft),
-                        sharedDataController: self.sharedDataController,
                         transactionController: transactionController,
-                        presenter: self
+                        presenter: self,
+                        legacyConfiguration: configuration
                     )
                 }
             }

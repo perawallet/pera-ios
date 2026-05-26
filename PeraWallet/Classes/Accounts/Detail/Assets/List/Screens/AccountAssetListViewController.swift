@@ -59,7 +59,7 @@ final class AccountAssetListViewController:
     )
 
     private lazy var optOutAssetCoordinator: OptOutAssetCoordinator = {
-        let coordinator = OptOutAssetCoordinator(accountsService: PeraCoreManager.shared.accounts)
+        let coordinator = OptOutAssetCoordinator(accountsService: PeraCoreManager.shared.accounts, viewControllerConfiguration: configuration)
         coordinator.presenter = self
         return coordinator
     }()
@@ -507,7 +507,6 @@ extension AccountAssetListViewController: UICollectionViewDelegate {
                 }
 
                 item.isRequestsBadgeVisible = incomingASAsRequestsCount != 0
-                item.showFundButton = configuration.featureFlagService.isEnabled(.xoSwapEnabled)
                 item.isJointAccount = dataController.account.value.authorization == .jointAccount
                 positionYForVisibleAccountActionsMenuAction = cell.frame.maxY
 

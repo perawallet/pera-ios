@@ -33,7 +33,6 @@ final class ASADetailQuickActionsView:
     private(set) var isLayoutLoaded = false
 
     private lazy var contentView = HStackView()
-    private lazy var buyActionView = makeActionView()
     private lazy var stakeActionView = makeActionView()
     private lazy var swapActionView = makeActionView()
     private lazy var sendActionView =  makeActionView()
@@ -50,20 +49,14 @@ final class ASADetailQuickActionsView:
 
     func bindData(_ viewModel: ASADetailQuickActionsViewModel?) {
         guard !(viewModel?.isJointAccount ?? false) else {
-            buyActionView.isHidden = true
             swapActionView.isHidden = true
             stakeActionView.isHidden = true
             return 
         }
         guard viewModel?.isBuyActionAvailable ?? false else {
-            buyActionView.isHidden = true
             stakeActionView.isHidden = true
             return
         }
-        
-        let showStake = viewModel?.shouldShowStakeAction ?? false
-        buyActionView.isHidden = showStake
-        stakeActionView.isHidden = !showStake
     }
 
     static func calculatePreferredSize(
@@ -110,24 +103,8 @@ extension ASADetailQuickActionsView {
 
         addSwapAction(theme)
         addStakeAction(theme)
-        addBuyAction(theme)
         addSendAction(theme)
         addReceiveAction(theme)
-    }
-
-    private func addBuyAction(_ theme: ASADetailQuickActionsViewTheme) {
-        buyActionView.customizeAppearance(theme.buyAction)
-        customizeAction(
-            buyActionView,
-            theme
-        )
-
-        contentView.addArrangedSubview(buyActionView)
-
-        startPublishing(
-            event: .buy,
-            for: buyActionView
-        )
     }
     
     private func addStakeAction(_ theme: ASADetailQuickActionsViewTheme) {
