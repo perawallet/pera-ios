@@ -118,6 +118,8 @@ public final class QRText: Codable {
                   amount != nil {
             if amount == 0 && address == nil {
                 mode = .optInRequest
+            } else if asset == 0 {
+                mode = .algosRequest
             } else {
                 mode = .assetRequest
             }
@@ -289,6 +291,8 @@ public final class QRText: Codable {
 
             return nil
         }
+
+        let address = address ?? queryParameters[QRText.CodingKeys.address.rawValue]
         
         if let type = queryParameters[QRText.CodingKeys.type.rawValue],
            type == "keyreg" {
@@ -355,6 +359,20 @@ public final class QRText: Codable {
 
         if let amount = queryParameters[QRText.CodingKeys.amount.rawValue],
            let asset = queryParameters[QRText.CodingKeys.asset.rawValue] {
+
+            if Int64(asset) == 0 {
+                guard let address = address else {
+                    return nil
+                }
+
+                return Self(
+                    mode: .algosRequest,
+                    address: address,
+                    amount: UInt64(amount),
+                    note: queryParameters[QRText.CodingKeys.note.rawValue],
+                    lockedNote: queryParameters[QRText.CodingKeys.lockedNote.rawValue]
+                )
+            }
 
             if let address = address {
                 return Self(
