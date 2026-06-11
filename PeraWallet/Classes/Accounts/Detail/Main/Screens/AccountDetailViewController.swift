@@ -217,11 +217,6 @@ extension AccountDetailViewController {
                 self.assetListScreen.endEditing()
 
                 self.openSwapAssetIfPossible()
-            case .buy:
-                self.assetListScreen.endEditing()
-                self.analytics.track(.recordAccountDetailScreen(type: .tapBuyAlgo))
-                
-                self.openBuySellOptionsIfPossible()
             case .fund:
                 self.assetListScreen.endEditing()
                 self.analytics.track(.recordAccountDetailScreen(type: .tapFund))

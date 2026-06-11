@@ -25,7 +25,6 @@ final class HomeQuickActionsView:
     UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
         .swap: TargetActionInteraction(),
-        .buy: TargetActionInteraction(),
         .stake: TargetActionInteraction(),
         .fund: TargetActionInteraction(),
         .send: TargetActionInteraction()
@@ -33,7 +32,6 @@ final class HomeQuickActionsView:
 
     private lazy var contentView = HStackView()
     private lazy var swapActionView = makeActionView()
-    private lazy var buyActionView = makeActionView()
     private lazy var fundActionView = makeActionView()
     private lazy var stakeActionView = makeActionView()
     private lazy var sendActionView =  makeActionView()
@@ -70,16 +68,16 @@ final class HomeQuickActionsView:
             for: theme.swapAction,
             fittingIn: maxActionSize
         )
-        let buyActionSize = calculateActionPreferredSize(
+        let fundActionSize = calculateActionPreferredSize(
             theme,
-            for: theme.buyAction,
+            for: theme.fundAction,
             fittingIn: maxActionSize
         )
         let preferredHeight = [
             stakeActionSize.height,
             swapActionSize.height,
             sendActionSize.height,
-            buyActionSize.height
+            fundActionSize.height
         ].max()!
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }
@@ -118,7 +116,6 @@ extension HomeQuickActionsView {
         }
 
         addSwapAction(theme)
-        addBuyAction(theme)
         addFundAction(theme)
         addStakeAction(theme)
         addSendAction(theme)
@@ -139,21 +136,6 @@ extension HomeQuickActionsView {
         )
     }
     
-    private func addBuyAction(_ theme: HomeQuickActionsViewTheme) {
-        buyActionView.customizeAppearance(theme.buyAction)
-        customizeAction(
-            buyActionView,
-            theme
-        )
-
-        contentView.addArrangedSubview(buyActionView)
-
-        startPublishing(
-            event: .buy,
-            for: buyActionView
-        )
-    }
-    
     private func addFundAction(_ theme: HomeQuickActionsViewTheme) {
         fundActionView.customizeAppearance(theme.fundAction)
         customizeAction(
@@ -162,7 +144,6 @@ extension HomeQuickActionsView {
         )
 
         contentView.addArrangedSubview(fundActionView)
-        fundActionView.isHidden = true
 
         startPublishing(
             event: .fund,
@@ -223,7 +204,6 @@ extension HomeQuickActionsView {
 extension HomeQuickActionsView {
     enum Event {
         case swap
-        case buy
         case fund
         case stake
         case send

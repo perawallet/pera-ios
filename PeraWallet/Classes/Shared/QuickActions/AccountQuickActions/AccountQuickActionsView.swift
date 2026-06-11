@@ -24,7 +24,6 @@ final class AccountQuickActionsView:
     UIInteractable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
         .swap: TargetActionInteraction(),
-        .buy: TargetActionInteraction(),
         .requests: TargetActionInteraction(),
         .more: TargetActionInteraction(),
         .fund: TargetActionInteraction()
@@ -45,17 +44,12 @@ final class AccountQuickActionsView:
         }
     }
     
-    var showFundButton: Bool = false {
-        didSet { updateActions() }
-    }
-    
     var isJointAccount: Bool = false {
         didSet { updateActions() }
     }
-    
+
     private var isSwapHidden: Bool { isJointAccount }
-    private var isBuyHidden: Bool  { isJointAccount || showFundButton }
-    private var isFundHidden: Bool { isJointAccount || !showFundButton }
+    private var isFundHidden: Bool { isJointAccount }
     
     private func updateActions() {
         swapActionView.isHidden = isSwapHidden
@@ -77,9 +71,9 @@ final class AccountQuickActionsView:
         fittingIn size: CGSize
     ) -> CGSize {
         let maxActionSize = CGSize((size.width, .greatestFiniteMagnitude))
-        let buyActionSize = calculateActionPreferredSize(
+        let fundActionSize = calculateActionPreferredSize(
             theme,
-            for: theme.buyAction,
+            for: theme.fundAction,
             fittingIn: maxActionSize
         )
         let requestsActionSize = calculateActionPreferredSize(
@@ -98,7 +92,7 @@ final class AccountQuickActionsView:
             fittingIn: maxActionSize
         )
         let preferredHeight = [
-            buyActionSize.height,
+            fundActionSize.height,
             swapActionSize.height,
             requestsActionSize.height,
             moreActionSize.height
@@ -245,7 +239,6 @@ extension AccountQuickActionsView {
 extension AccountQuickActionsView {
     enum Event {
         case swap
-        case buy
         case fund
         case requests
         case more

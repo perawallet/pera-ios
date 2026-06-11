@@ -30,7 +30,6 @@ final class HomeViewController:
     private lazy var transitionToPassphraseDisplay = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToInvalidAccount = BottomSheetTransition(presentingViewController: self)
     private lazy var transitionToPortfolioCalculationInfo = BottomSheetTransition(presentingViewController: self)
-    private lazy var transitionToBuySellOptions = BottomSheetTransition(presentingViewController: self)
 
     private lazy var alertPresenter = AlertPresenter(
         presentingScreen: self,
@@ -57,10 +56,6 @@ final class HomeViewController:
         bannerController: bannerController!
     )
     private lazy var moonPayFlowCoordinator = MoonPayFlowCoordinator(presentingScreen: self)
-    private lazy var meldFlowCoordinator = MeldFlowCoordinator(
-        analytics: analytics,
-        presentingScreen: self
-    )
     private lazy var bidaliFlowCoordinator = BidaliFlowCoordinator(presentingScreen: self, api: api!)
 
     private lazy var swapAssetFlowCoordinator = SwapAssetFlowCoordinator(
@@ -589,13 +584,6 @@ extension HomeViewController {
             rootViewController.launch(tab: .swap)
         }
         
-        cell.startObserving(event: .buy) {
-            [weak self] in
-            guard let self else { return }
-            analytics.track(.recordHomeScreen(type: .buyAlgo))
-            openBuySellOptions()
-        }
-        
         cell.startObserving(event: .stake) {
             [weak self] in
             guard let self, let rootViewController = UIApplication.shared.rootViewController() else { return }
@@ -849,39 +837,6 @@ extension HomeViewController {
             return !$0.value.isBackedUp
         }
         backupAccountFlowCoordinator.launch(notBackedUpAccounts)
-    }
-}
-
-extension HomeViewController {
-    private func openBuySellOptions() {
-        let eventHandler: BuySellOptionsScreen.EventHandler = {
-            [unowned self] event in
-            switch event {
-            case .performBuyWithMeld:
-                self.dismiss(animated: true) {
-                    [weak self] in
-                    guard let self else { return }
-                    self.openBuyWithMeld()
-                }
-            case .performBuyGiftCardsWithBidali:
-                self.dismiss(animated: true) {
-                    [weak self] in
-                    guard let self else { return }
-                    self.openBuyGiftCardsWithBidali()
-                }
-            }
-        }
-
-        transitionToBuySellOptions.perform(
-            .buySellOptions(eventHandler: eventHandler),
-            by: .presentWithoutNavigationController
-        )
-    }
-
-    private func openBuyWithMeld() {
-        analytics.track(.recordHomeScreen(type: .buyAlgo))
-
-        meldFlowCoordinator.launch()
     }
 }
 
