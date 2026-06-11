@@ -268,4 +268,52 @@ class QRTextTests: XCTestCase {
             XCTAssertNotNil(decoded)
         }
     }
+    
+    func testQRTextBuildWithAddressQueryParameter() {
+        // Legacy deeplinks may carry the receiver as a query param instead of the URL host,
+        // e.g. perawallet://?address=...&amount=...&asset=0
+        let params = [
+            "address": "GTAKGY64LESRSFFNYFAXJTACK5WSCOSNWTY62KVR2H76SHOYN5AJYAADGQ",
+            "amount": "20000000",
+            "asset": "0",
+            "xnote": "b_59596073_1051287026_0"
+        ]
+        let qr = QRText.build(for: nil, with: params)
+
+        XCTAssertNotNil(qr)
+        XCTAssertEqual(qr?.mode, .algosRequest)
+        XCTAssertEqual(qr?.address, "GTAKGY64LESRSFFNYFAXJTACK5WSCOSNWTY62KVR2H76SHOYN5AJYAADGQ")
+        XCTAssertEqual(qr?.amount, 20000000)
+        XCTAssertEqual(qr?.lockedNote, "b_59596073_1051287026_0")
+    }
+
+    func testQRTextBuildWithAssetZeroIsAlgosRequest() {
+        // asset=0 means ALGO, not an ASA
+        let params = ["amount": "500", "asset": "0", "note": "payment"]
+        let qr = QRText.build(for: "ABC123", with: params)
+
+        XCTAssertNotNil(qr)
+        XCTAssertEqual(qr?.mode, .algosRequest)
+        XCTAssertEqual(qr?.address, "ABC123")
+        XCTAssertEqual(qr?.amount, 500)
+        XCTAssertEqual(qr?.note, "payment")
+        XCTAssertNil(qr?.asset)
+    }
+
+    func testQRTextBuildWithAssetZeroAndNoAddressReturnsNil() {
+        let params = ["amount": "500", "asset": "0"]
+        XCTAssertNil(QRText.build(for: nil, with: params))
+    }
+
+    func testQRModeDecodingWithAssetZeroIsAlgosRequest() {
+        // JSON-format QR with asset 0 must decode as an ALGO request
+        let json = """
+        {"version":"1.0","address":"ABC123","amount":"500","asset":"0"}
+        """
+        let decoded = try! JSONDecoder().decode(QRText.self, from: json.data(using: .utf8)!)
+
+        XCTAssertEqual(decoded.mode, .algosRequest)
+        XCTAssertEqual(decoded.address, "ABC123")
+        XCTAssertEqual(decoded.amount, 500)
+    }
 }

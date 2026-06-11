@@ -205,4 +205,28 @@ final class DeeplinkQRTests: XCTestCase {
         XCTAssertEqual(accountDetailQR?.mode, .accountDetail)
         XCTAssertEqual(accountDetailQR?.address, "ACCOUNT123")
     }
+    
+    func testLegacyDeeplinkWithAddressQueryParamAndAssetZero() {
+        // perawallet://?address=...&amount=...&asset=0&xnote=... — the format produced by
+        // payment-request redirect pages; address is a query param, asset 0 means ALGO
+        let url = URL(string: "perawallet://?address=GTAKGY64LESRSFFNYFAXJTACK5WSCOSNWTY62KVR2H76SHOYN5AJYAADGQ&amount=20000000&asset=0&xnote=b_59596073_1051287026_0")!
+        let qr = DeeplinkQR(url: url).qrText()
+
+        XCTAssertNotNil(qr)
+        XCTAssertEqual(qr?.mode, .algosRequest)
+        XCTAssertEqual(qr?.address, "GTAKGY64LESRSFFNYFAXJTACK5WSCOSNWTY62KVR2H76SHOYN5AJYAADGQ")
+        XCTAssertEqual(qr?.amount, 20000000)
+        XCTAssertEqual(qr?.lockedNote, "b_59596073_1051287026_0")
+    }
+
+    func testLegacyDeeplinkWithHostAddressAndAssetZero() {
+        // Host-based legacy form: algorand://ADDRESS?amount=...&asset=0
+        let url = URL(string: "algorand://GTAKGY64LESRSFFNYFAXJTACK5WSCOSNWTY62KVR2H76SHOYN5AJYAADGQ?amount=20000000&asset=0")!
+        let qr = DeeplinkQR(url: url).qrText()
+
+        XCTAssertNotNil(qr)
+        XCTAssertEqual(qr?.mode, .algosRequest)
+        XCTAssertEqual(qr?.address, "GTAKGY64LESRSFFNYFAXJTACK5WSCOSNWTY62KVR2H76SHOYN5AJYAADGQ")
+        XCTAssertEqual(qr?.amount, 20000000)
+    }
 }
