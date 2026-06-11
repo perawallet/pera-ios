@@ -27,7 +27,6 @@ struct HomeQuickActionsViewTheme:
     var stakeAction: ButtonStyle
     var swapAction: ButtonStyle
     var sendAction: ButtonStyle
-    var buyAction: ButtonStyle
     var fundAction: ButtonStyle
 
     init(_ family: LayoutFamily) {
@@ -45,10 +44,6 @@ struct HomeQuickActionsViewTheme:
         self.sendAction = [
             .icon(Self.makeActionIcon(icon: "send-icon")),
             .title(Self.makeActionTitle(title: String(localized: "quick-actions-send-title")))
-        ]
-        self.buyAction = [
-            .icon(Self.makeActionIcon(icon: "buy-sell-icon")),
-            .title(Self.makeActionTitle(title: String(localized: "title-buy-sell")))
         ]
         self.fundAction = [
             .icon(Self.makeActionIcon(icon: "fund-icon-badge")),

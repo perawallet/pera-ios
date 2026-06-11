@@ -520,11 +520,6 @@ extension AccountAssetListViewController: UICollectionViewDelegate {
                     eventHandler?(.swap)
                 }
 
-                item.startObserving(event: .buy) { [weak self] in
-                    guard let self = self else { return }
-                    eventHandler?(.buy)
-                }
-                
                 item.startObserving(event: .fund) { [weak self] in
                     guard let self = self else { return }
                     eventHandler?(.fund)
@@ -930,7 +925,6 @@ extension AccountAssetListViewController {
         case showAddress
         case addAsset
         case requests
-        case buy
         case swap
         case fund
         case send
